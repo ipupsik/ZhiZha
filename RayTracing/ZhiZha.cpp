@@ -94,7 +94,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
     glEnable(GL_COLOR_MATERIAL);
 
     Actor Serdechko;
-    Serdechko.InitMesh("Boss-Lustra.obj");
+    Serdechko.InitMesh("heart.obj");
     Serdechko.InitMaterialShader("BaseMat");
 
     while (true) {
