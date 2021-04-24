@@ -17,7 +17,6 @@ public:
 	void BeginPlay() override;
 	void Tick(float DeltaSeconds) override;
 
-	CollisionSphere* MainCollision;
 public:
 	bool IsJumping;
 };

@@ -12,7 +12,6 @@ Actor::Actor()
 
 Actor::~Actor()
 {
-	delete Collider;
 	delete Mesh;
 	delete Mat;
 }
@@ -66,7 +65,7 @@ void Actor::Draw()
 
 void Actor::MakeComplexCollision()
 {
-	Collider = new std::vector<Collision*>(0);
+	Collider = std::vector<Collision*>(0);
 
 	for (int i = 0; i < Mesh->faces.size(); i++)
 	{
@@ -80,6 +79,6 @@ void Actor::MakeComplexCollision()
 		v3.X = Mesh->vertices[Mesh->faces[i].v3].X;
 		v3.Y = Mesh->vertices[Mesh->faces[i].v3].Y;
 
-		Collider->push_back(new CollisionTriangle(v1, v2, v3));
+		Collider.push_back(new CollisionTriangle(v1, v2, v3));
 	}
 }

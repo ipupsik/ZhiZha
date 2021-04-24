@@ -23,13 +23,14 @@ public:
 	void MakeComplexCollision();
 
 	Vec2D Location, Rotation, Scale;
+	Vec2D Velocity, Acceleration;
 
 	void InitMaterialShader(const char* filename);
 
 public:
 	StaticMesh* Mesh;
 	Material* Mat;
-	std::vector<Collision*> *Collider;
+	std::vector<Collision*> Collider;
 
 	Actor* Parent;
 };
