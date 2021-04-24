@@ -21,9 +21,19 @@ Vec2D Vec2D::operator-(Vec2D Other)
     return { X - Other.X, Y - Other.Y };
 }
 
+Vec2D Vec2D::operator+(Vec2D Other)
+{
+    return { X + Other.X, Y + Other.Y };
+}
+
 float Vec2D::Dot(Vec2D Other)
 {
     return X * Other.X + Y * Other.Y;
+}
+
+Vec2D Vec2D::Cross(Vec2D Other)
+{
+    return Vec2D{ X * Other.Y, -Y * Other.X };
 }
 
 float Vec2D::DistanceTo(Vec2D Other)

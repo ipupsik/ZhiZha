@@ -1,19 +1,4 @@
-﻿E:\Programms\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: промежуточный каталог (Debug\) содержит файлы, которые используются совместно с другим проектом (RayTracing.vcxproj).  Это может привести к ошибкам очистки и перестроения.
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: промежуточный каталог (Debug\) содержит файлы, которые используются совместно с другим проектом (RayTracing.vcxproj).  Это может привести к ошибкам очистки и перестроения.
   Actor.cpp
-E:\REPOSITORII\Zhizha\zhizha\RayTracing\Actor.cpp(70,20): warning C4018: <: несоответствие типов со знаком и без знака
-  Character.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(130,1): warning C4005: APIENTRY: изменение макроопределения
-E:\Programms\Visual Studio\VC\Tools\MSVC\14.28.29910\include\glad\glad.h(32): message : см. предыдущее определение "APIENTRY"
-E:\REPOSITORII\Zhizha\zhizha\RayTracing\Character.cpp(39,33): warning C4305: =: усечение из "double" в "float"
-  Material.cpp
-  StaticMesh.cpp
-  World.cpp
-  ZhiZha.cpp
-E:\REPOSITORII\Zhizha\zhizha\RayTracing\ZhiZha.cpp(73,20): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-E:\REPOSITORII\Zhizha\zhizha\RayTracing\ZhiZha.cpp(81,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-E:\REPOSITORII\Zhizha\zhizha\RayTracing\ZhiZha.cpp(105,33): warning C4305: инициализация: усечение из "double" в "float"
-E:\REPOSITORII\Zhizha\zhizha\RayTracing\ZhiZha.cpp(108,55): warning C4305: =: усечение из "double" в "float"
-E:\REPOSITORII\Zhizha\zhizha\RayTracing\ZhiZha.cpp(143,25): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-  Создание кода...
-  glad.c
-  RayTracing.vcxproj -> E:\REPOSITORII\Zhizha\zhizha\Debug\ZhiZha.exe
+C:\Zhizha_project\RayTracing\Actor.cpp(70,20): warning C4018: <: несоответствие типов со знаком и без знака
+  RayTracing.vcxproj -> C:\Zhizha_project\Debug\ZhiZha.exe

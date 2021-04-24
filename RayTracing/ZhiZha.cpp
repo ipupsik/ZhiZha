@@ -83,7 +83,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
     auto start = std::chrono::high_resolution_clock::now();
     auto end = start;
-    
+
     EnableOpenGL(hwnd, &hDC, &hRC);
     gladLoadGL();
 
@@ -98,14 +98,16 @@ int WINAPI WinMain(HINSTANCE hInstance,
     // Инициализация всех челибасиков
     World = new GlobalWorld();
     World->InitActor("Map.obj", "BaseMat");
+    World->WorldActors[0]->Location = {0, -1};
+    World->WorldActors[0]->MakeComplexCollision();
 
     ACharacter* Player = new ACharacter;
     Player->InitMesh("Circle.obj");
     Player->InitMaterialShader("Circle");
     Player->Location = { 0, 0.4 };
     Player->Collider = std::vector<Collision*>(0);
-    Player->Collider.push_back(new CollisionSphere({ 0, 0 }, 1));
-    Player->Collider[0]->Acceleration.Y = -10.0 / 1000;
+    Player->Collider.push_back(new CollisionSphere({ 0, 0 }, 0.1, nullptr));
+    Player->Collider[0]->Acceleration.Y = -10.0 / 100000;
 
     World->InitActor(Player);
 
@@ -135,8 +137,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glPushMatrix();
-        glTranslatef(0, -1, -2.0f);
-        glScalef(2 * 9.0 / 16.0, 2, 2);
+        glTranslatef(0, 0, -2.0f);
+        glScalef(1 * 9.0 / 16.0, 1, 1);
 
         glEnableClientState(GL_VERTEX_ARRAY);
         {
