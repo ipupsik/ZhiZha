@@ -1,4 +1,2 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: промежуточный каталог (Debug\) содержит файлы, которые используются совместно с другим проектом (RayTracing.vcxproj).  Это может привести к ошибкам очистки и перестроения.
-  Actor.cpp
-C:\Zhizha_project\RayTracing\Actor.cpp(70,20): warning C4018: <: несоответствие типов со знаком и без знака
-  RayTracing.vcxproj -> C:\Zhizha_project\Debug\ZhiZha.exe
+﻿E:\Programms\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: промежуточный каталог (Debug\) содержит файлы, которые используются совместно с другим проектом (RayTracing.vcxproj).  Это может привести к ошибкам очистки и перестроения.
+  RayTracing.vcxproj -> E:\REPOSITORII\Zhizha\zhizha\Debug\ZhiZha.exe
