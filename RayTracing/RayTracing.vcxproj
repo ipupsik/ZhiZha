@@ -145,7 +145,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="HitResult.h" />
     <ClInclude Include="Material.h" />
-    <ClInclude Include="obj3d.h" />
+    <ClInclude Include="StaticMesh.h" />
     <ClInclude Include="PupsyaEnums.h" />
     <ClInclude Include="PupsyaTypes.h" />
     <ClInclude Include="RayTracing.h" />
@@ -157,7 +157,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Material.cpp" />
-    <ClCompile Include="obj3d.cpp" />
+    <ClCompile Include="StaticMesh.cpp" />
     <ClCompile Include="ZhiZha.cpp" />
   </ItemGroup>
   <ItemGroup>

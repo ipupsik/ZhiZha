@@ -2,7 +2,7 @@
 
 #define _H_ACTOR_
 
-#include "obj3d.h"
+#include "StaticMesh.h"
 #include "Material.h"
 
 class Actor
@@ -11,6 +11,7 @@ public:
 	Actor();
 
 	void InitMesh(const char* filename);
+	void InitMesh(StaticMesh* Other);
 
 	void BeginPlay();
 	void Tick(float DeltaSeconds);
@@ -24,7 +25,7 @@ public:
 	void InitMaterialShader(const char* filename);
 
 private:
-	Obj3d* Mesh;
+	StaticMesh* Mesh;
 	Material* Mat;
 };
 

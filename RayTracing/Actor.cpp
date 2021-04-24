@@ -9,11 +9,15 @@ Actor::Actor() : Mesh(nullptr)
 
 void Actor::InitMesh(const char* filename)
 {
-	if (!Mesh)
-		Mesh = new Obj3d;
+	Mesh = new StaticMesh;
 
 	Mesh->ReadFile(filename);
 	Mesh->Init();
+}
+
+void Actor::InitMesh(StaticMesh* Other)
+{
+	Mesh = Other;
 }
 
 void Actor::Tick(float DeltaSeconds)
