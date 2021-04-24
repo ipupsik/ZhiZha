@@ -12,6 +12,8 @@ public:
 	virtual void CollisionDetection_SphereSphere(Collision* OtherCollision, HitResult& OutputHitResult) = 0;
 	virtual void CollisionDetection_SphereTriangle(Collision* OtherCollision, HitResult& OutputHitResult) = 0;
 
+	virtual void UpdatePhysicState(float DeltaSeconds) = 0;
+
 	Vec2D Velocity, Acceleration;
 
 	float Mas;
@@ -27,6 +29,8 @@ public:
 	void CollisionDetection_SphereSphere(Collision* OtherCollision, HitResult& OutputHitResult) override;
 	void CollisionDetection_SphereTriangle(Collision* OtherCollision, HitResult& OutputHitResult) override;
 
+	void UpdatePhysicState(float DeltaSeconds) override;
+
 	Vec2D Position;
 	float Radius;
 };
@@ -38,6 +42,8 @@ public:
 
 	void CollisionDetection_SphereSphere(Collision* OtherCollision, HitResult& OutputHitResult) override;
 	void CollisionDetection_SphereTriangle(Collision* OtherCollision, HitResult& OutputHitResult) override;
+
+	void UpdatePhysicState(float DeltaSeconds) override;
 
 	Vec2D v1, v2, v3;
 };

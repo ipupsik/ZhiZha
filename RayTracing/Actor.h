@@ -30,5 +30,7 @@ public:
 	StaticMesh* Mesh;
 	Material* Mat;
 	std::vector<Collision*> *Collider;
+
+	Actor* Parent;
 };
 

@@ -161,6 +161,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="PupsyaTypes.cpp" />
     <ClCompile Include="StaticMesh.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="ZhiZha.cpp" />

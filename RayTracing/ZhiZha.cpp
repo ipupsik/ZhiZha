@@ -103,6 +103,9 @@ int WINAPI WinMain(HINSTANCE hInstance,
     Player->InitMesh("Circle.obj");
     Player->InitMaterialShader("Circle");
     Player->Location = { 0, 0.4 };
+    Player->Collider = new std::vector<Collision*>(0);
+    Player->MainCollision = new CollisionSphere({ 0, 0 }, 1);
+    Player->MainCollision->Acceleration.Y = -10.0 / 10000;
 
     World->InitActor(Player);
 

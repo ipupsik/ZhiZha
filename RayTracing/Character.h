@@ -5,6 +5,8 @@
 class ACharacter : public Actor
 {
 public:
+	ACharacter();
+
 	void ControllerInput();
 	void CameraManagement();
 
@@ -14,4 +16,8 @@ public:
 
 	void BeginPlay() override;
 	void Tick(float DeltaSeconds) override;
+
+	CollisionSphere* MainCollision;
+public:
+	bool IsJumping;
 };

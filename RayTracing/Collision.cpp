@@ -4,6 +4,11 @@
 CollisionSphere::CollisionSphere(Vec2D _Position, float _Radius)
 {
 	ShapeType = CollisionShape::Sphere;
+
+	Velocity = { 0,0 };
+	Acceleration = { 0, 0 };
+	Position = _Position;
+	Radius = _Radius;
 }
 
 CollisionTriangle::CollisionTriangle(Vec2D _Position_v1, Vec2D _Position_v2, Vec2D _Position_v3)
@@ -23,6 +28,10 @@ void CollisionTriangle::CollisionDetection_SphereTriangle(Collision* OtherCollis
 {
 }
 
+void CollisionTriangle::UpdatePhysicState(float DeltaSeconds)
+{
+}
+
 void Collision::CollisionDetection(Collision* OtherCollision, HitResult& OutputHitResult)
 {
 	if (ShapeType == CollisionShape::Sphere)
@@ -36,6 +45,15 @@ void Collision::CollisionDetection(Collision* OtherCollision, HitResult& OutputH
 			CollisionDetection_SphereTriangle(OtherCollision, OutputHitResult);
 		}
 	}
+}
+
+void CollisionSphere::UpdatePhysicState(float DeltaSeconds)
+{
+	Position.X += Velocity.X + Acceleration.X * DeltaSeconds * DeltaSeconds / 2;
+	Position.Y += Velocity.Y + Acceleration.Y * DeltaSeconds * DeltaSeconds / 2;
+
+	Velocity.X += Acceleration.X * DeltaSeconds;
+	Velocity.Y += Acceleration.Y * DeltaSeconds;
 }
 
 void CollisionSphere::CollisionDetection_SphereSphere(Collision* OtherCollision, HitResult& OutputHitResult)
@@ -64,5 +82,5 @@ void CollisionSphere::CollisionDetection_SphereSphere(Collision* OtherCollision,
 
 void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollision, HitResult& OutputHitResult)
 {
-
+	CollisionTriangle* OtherTriangle = dynamic_cast<CollisionTriangle*>(OtherCollision);
 }
