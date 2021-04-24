@@ -79,6 +79,6 @@ void Actor::MakeComplexCollision()
 		v3.X = Mesh->vertices[Mesh->faces[i].v3].X;
 		v3.Y = Mesh->vertices[Mesh->faces[i].v3].Y;
 
-		Collider.push_back(new CollisionTriangle(v1, v2, v3));
+		Collider.push_back(new CollisionTriangle(v1, v2, v3, this));
 	}
 }

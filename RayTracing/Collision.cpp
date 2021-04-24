@@ -1,7 +1,18 @@
 #include "Collision.h"
 #include <cmath>
+#include "Actor.h"
 
-CollisionSphere::CollisionSphere(Vec2D _Position, float _Radius)
+Collision::Collision()
+{
+
+}
+
+Collision::Collision(Actor* parent)
+{
+	Parent = parent;
+}
+
+CollisionSphere::CollisionSphere(Vec2D _Position, float _Radius, Actor* parent) : Collision(parent)
 {
 	ShapeType = CollisionShape::Sphere;
 
@@ -11,7 +22,7 @@ CollisionSphere::CollisionSphere(Vec2D _Position, float _Radius)
 	Radius = _Radius;
 }
 
-CollisionTriangle::CollisionTriangle(Vec2D _Position_v1, Vec2D _Position_v2, Vec2D _Position_v3)
+CollisionTriangle::CollisionTriangle(Vec2D _Position_v1, Vec2D _Position_v2, Vec2D _Position_v3, Actor* parent) : Collision(parent)
 {
 	ShapeType = CollisionShape::Triangle;
 
@@ -80,7 +91,66 @@ void CollisionSphere::CollisionDetection_SphereSphere(Collision* OtherCollision,
 	}
 }
 
+Vec2D find_parent_position(Collision* Collision)
+{
+	Actor* parent = Collision->Parent;
+	Vec2D pos = { 0, 0 };
+
+	while (parent)
+	{
+		pos = pos + parent->Location;
+
+		parent = parent->Parent;
+	}
+
+	return pos;
+}
+
 void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollision, HitResult& OutputHitResult)
 {
 	CollisionTriangle* OtherTriangle = dynamic_cast<CollisionTriangle*>(OtherCollision);
+
+	Vec2D pos_parent_triangle = find_parent_position(OtherTriangle);
+	Vec2D pos_parent_my = find_parent_position(this);
+
+	Vec2D vec12 = OtherTriangle->v2 - OtherTriangle->v1;
+	Vec2D vec13 = OtherTriangle->v3 - OtherTriangle->v1;
+	Vec2D vec23 = OtherTriangle->v3 - OtherTriangle->v2;
+	Vec2D vec10 = Position + pos_parent_my - OtherTriangle->v1 - pos_parent_triangle;
+	Vec2D vec20 = Position + pos_parent_my - OtherTriangle->v2 - pos_parent_triangle;
+	Vec2D vec30 = Position + pos_parent_my - OtherTriangle->v3 - pos_parent_triangle;
+
+	float h_12 = fabs(vec12.Dot(vec10) / vec12.Length());
+	float h_13 = fabs(vec13.Dot(vec10) / vec13.Length());
+	float h_23 = fabs(vec23.Dot(vec20) / vec23.Length());
+
+	float min_h = h_12;
+	Vec2D min_line = vec12;
+	Vec2D min_dist_to_center = vec10;
+
+	if (h_13 < min_h)
+	{
+		min_h = h_13;
+		min_line = vec13;
+		min_dist_to_center = vec10;
+	}
+
+	if (h_23 < min_h)
+	{
+		min_h = h_23;
+		min_line = vec23;
+		min_dist_to_center = vec20;
+	}
+
+	if (min_h < Radius)
+	{
+		Vec2D n = (min_line.Cross(min_line.Cross(min_dist_to_center))).Normalize();
+
+		float alpha_double = 2 * acos(min_line.Dot(n) / n.Length() / min_line.Length());
+
+		Vec2D new_velocity = {cos(alpha_double) * Velocity.X - sin(alpha_double) * Velocity.Y,
+							  sin(alpha_double) * Velocity.X + cos(alpha_double) * Velocity.Y};
+
+		Velocity = new_velocity;
+	}
 }
