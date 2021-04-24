@@ -1,6 +1,2 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: промежуточный каталог (Debug\) содержит файлы, которые используются совместно с другим проектом (RayTracing.vcxproj).  Это может привести к ошибкам очистки и перестроения.
-  Collision.cpp
-C:\Zhizha_project\RayTracing\Collision.cpp(77,15): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
-C:\Zhizha_project\RayTracing\Collision.cpp(82,51): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-C:\Zhizha_project\RayTracing\Collision.cpp(113,22): warning C4305: инициализация: усечение из "double" в "float"
-  RayTracing.vcxproj -> C:\Zhizha_project\Debug\ZhiZha.exe
+﻿E:\Programms\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: промежуточный каталог (Debug\) содержит файлы, которые используются совместно с другим проектом (RayTracing.vcxproj).  Это может привести к ошибкам очистки и перестроения.
+  RayTracing.vcxproj -> E:\REPOSITORII\Zhizha\zhizha\Debug\ZhiZha.exe
