@@ -12,7 +12,7 @@ void StaticMesh::Init()
 	glGenBuffers(1, &IndexVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, IndexVBO);
 	{
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * vertices.size(), vertices.begin()._Ptr, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec2D) * vertices.size(), vertices.begin()._Ptr, GL_STATIC_DRAW);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -49,8 +49,12 @@ void StaticMesh::ReadFile(const char* filename)
 	{
 		if (s == "v")
 		{
-			vertex v;
-			fin >> v.x >> v.y >> v.z;
+			Vec2D v;
+			fin >> v.X >> v.Y;
+
+			float tmp;
+			fin >> tmp;
+
 			vertices.push_back(v);
 		}
 		else if (s == "f")
@@ -86,14 +90,18 @@ void StaticMesh::ReadFile(const char* filename)
 		}
 		else if (s == "vn")
 		{
-			vertex vn;
-			fin >> vn.x >> vn.y >> vn.z;
+			Vec2D vn;
+			fin >> vn.X >> vn.Y;
+
+			float tmp;
+			fin >> tmp;
+
 			normals.push_back(vn);
 		}
 		else if (s == "vt")
 		{
-			uv_vertex vt;
-			fin >> vt.u >> vt.v;
+			Vec2D vt;
+			fin >> vt.X >> vt.Y;
 			uvs.push_back(vt);
 		}
 	}

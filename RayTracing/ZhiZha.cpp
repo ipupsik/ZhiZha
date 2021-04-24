@@ -97,10 +97,11 @@ int WINAPI WinMain(HINSTANCE hInstance,
     Serdechko.InitMesh("heart.obj");
     Serdechko.InitMaterialShader("BaseMat");
 
-    while (true) {
+    while (true) 
+    {
         end = std::chrono::high_resolution_clock::now();
         DeltaSeconds = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.0f;
-        TotalSeconds += 12.0f / 360;
+        TotalSeconds += 12.0f / 360.0f;
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
         {
             /* handle or dispatch messages */
@@ -121,8 +122,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
         glUseProgram(prog);
 
         glPushMatrix();
-        glTranslatef(0, 0, -4 - sin(TotalSeconds) / 3);
-        glRotatef(90, 0, 1, 0);
+        glTranslatef(0, 0, -4.0f - sin(TotalSeconds) / 3.0f);
+        glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
         glRotatef(TotalSeconds * 10, 0.0f, 1.0f, 0.0f);
         glScalef(2, 2, 2);
 

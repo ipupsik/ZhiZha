@@ -1,5 +1,4 @@
-#ifndef _H_COLLISION_
-#define _H_COLLISION_
+#pragma once
 
 #include "HitResult.h"
 #include "PupsyaEnums.h"
@@ -8,16 +7,14 @@
 class Collision
 {
 public:
-
 	void CollisionDetection(Collision* OtherCollision, HitResult& OutputHitResult);
 
-	void CollisionDetection_SphereSphere(Collision* OtherCollision, HitResult& OutputHitResult);
-	void CollisionDetection_SphereBox(Collision* OtherCollision, HitResult& OutputHitResult);
-	void CollisionDetection_BoxBox(Collision* OtherCollision, HitResult& OutputHitResult);
+	virtual void CollisionDetection_SphereSphere(Collision* OtherCollision, HitResult& OutputHitResult) = 0;
+	virtual void CollisionDetection_SphereTriangle(Collision* OtherCollision, HitResult& OutputHitResult) = 0;
 
-	Collision(Vec3D _Position);
+	Vec2D Velocity, Acceleration;
 
-	Vec3D Position;
+	float Mas;
 
 	CollisionShape ShapeType;
 };
@@ -25,26 +22,22 @@ public:
 class CollisionSphere : public Collision
 {
 public:
-	CollisionSphere(Vec3D _Position, float _Radius);
+	CollisionSphere(Vec2D _Position, float _Radius);
 
+	void CollisionDetection_SphereSphere(Collision* OtherCollision, HitResult& OutputHitResult) override;
+	void CollisionDetection_SphereTriangle(Collision* OtherCollision, HitResult& OutputHitResult) override;
+
+	Vec2D Position;
 	float Radius;
 };
 
-class CollisionBox : public Collision
+class CollisionTriangle : public Collision
 {
 public:
-	CollisionBox(Vec3D _Position, Vec3D _Scale, Vec3D _Rotation);
+	CollisionTriangle(Vec2D _Position_v1, Vec2D _Position_v2, Vec2D _Position_v3);
 
-	Vec3D Scale, Rotation;
+	void CollisionDetection_SphereSphere(Collision* OtherCollision, HitResult& OutputHitResult) override;
+	void CollisionDetection_SphereTriangle(Collision* OtherCollision, HitResult& OutputHitResult) override;
+
+	Vec2D v1, v2, v3;
 };
-
-class CollisionCapsule : public Collision
-{
-public:
-	CollisionCapsule(Vec3D _Position, Vec3D _Rotation, float _Radius, float _Height);
-
-	float Radius, Height;
-	Vec3D Rotation;
-};
-
-#endif

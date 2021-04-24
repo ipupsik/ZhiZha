@@ -1,26 +1,19 @@
-#ifndef _H_OBJ3D_
-#define _H_OBJ3D_
+#pragma once
 
 #include <vector>
 
+#include "PupsyaTypes.h"
+
 class StaticMesh
 {
-	struct vertex {
-		double x;
-		double y;
-		double z;
-	};
-	struct uv_vertex {
-		double u;
-		double v;
-	};
+public:
 	struct face {
 		unsigned int v1, v2, v3;
 	};
 	// raw data
-	std::vector<vertex> vertices;
-	std::vector<vertex> normals;
-	std::vector<uv_vertex> uvs;
+	std::vector<Vec2D> vertices;
+	std::vector<Vec2D> normals;
+	std::vector<Vec2D> uvs;
 
 	// elements data
 	std::vector<face> faces;
@@ -34,5 +27,3 @@ public:
 	void Init();
 	void Draw();
 };
-
-#endif

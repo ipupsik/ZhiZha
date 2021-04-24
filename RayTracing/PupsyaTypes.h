@@ -3,11 +3,6 @@
 
 typedef struct
 {
-	float X, Y, Z;
-} Vec3D;
-
-typedef struct
-{
 	float X, Y;
 } Vec2D;
 

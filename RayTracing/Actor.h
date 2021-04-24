@@ -1,9 +1,11 @@
-#ifndef _H_ACTOR_
-
-#define _H_ACTOR_
+#pragma once
 
 #include "StaticMesh.h"
 #include "Material.h"
+#include "Collision.h"
+#include <vector>
+
+class Collision;
 
 class Actor
 {
@@ -17,6 +19,8 @@ public:
 	void Tick(float DeltaSeconds);
 	void Draw();
 
+	void MakeComplexCollision();
+
 	struct
 	{
 		double X, Y, Z;
@@ -27,7 +31,6 @@ public:
 private:
 	StaticMesh* Mesh;
 	Material* Mat;
+	std::vector<Collision*> *Collider;
 };
-
-#endif
 

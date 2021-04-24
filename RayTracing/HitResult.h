@@ -1,16 +1,11 @@
-#ifndef _H_HITRESULT_
-#define _H_HITRESULT_
+#pragma once
 
-#include "Actor.h"
-
-class HitResult
+struct HitResult
 {
 	bool DoesHit;
 	struct
 	{
 		float x, y, z;
 	} HitLocation;
-	Actor* HitActor;
+	class Actor* HitActor;
 };
-
-#endif

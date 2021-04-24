@@ -3,9 +3,8 @@
 
 enum class CollisionShape
 {
-	Box,
+	Triangle,
 	Sphere,
-	Capsule
 };
 
 #endif
