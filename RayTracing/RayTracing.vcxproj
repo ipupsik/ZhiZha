@@ -141,8 +141,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="PupsyaGlobals.h" />
     <ClInclude Include="HitResult.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="StaticMesh.h" />
@@ -151,13 +153,16 @@
     <ClInclude Include="RayTracing.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="StaticMesh.cpp" />
+    <ClCompile Include="World.cpp" />
     <ClCompile Include="ZhiZha.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +175,7 @@
   <ItemGroup>
     <None Include="BaseMat.frag" />
     <None Include="BaseMat.vert" />
+    <None Include="Circle.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

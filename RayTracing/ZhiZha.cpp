@@ -15,7 +15,9 @@
 
 #pragma comment(lib, "opengl32.lib")
 
-#include "Actor.h"
+#define GLOBALS
+#include "PupsyaGlobals.h"
+#include "Character.h"
 
 #define _size 6
 
@@ -67,8 +69,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
-        1700,
-        1700 * 9.0 / 16.0,
+        1080,
+        1080 * 9.0 / 16.0,
         NULL,
         NULL,
         hInstance,
@@ -86,16 +88,26 @@ int WINAPI WinMain(HINSTANCE hInstance,
     gladLoadGL();
 
     glLoadIdentity();
-    glFrustum(-1, 1, -1, 1, 1, 8);
+    glOrtho(-1, 1, -1, 1, 1, 8);
     glEnable(GL_DEPTH_TEST);
 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glEnable(GL_COLOR_MATERIAL);
 
-    Actor Serdechko;
-    Serdechko.InitMesh("heart.obj");
-    Serdechko.InitMaterialShader("BaseMat");
+    // Инициализация всех челибасиков
+    World = new GlobalWorld();
+    World->InitActor("Map.obj", "BaseMat");
+
+    ACharacter* Player = new ACharacter;
+    Player->InitMesh("Circle.obj");
+    Player->InitMaterialShader("Circle");
+    Player->Location = { 0, 0.4 };
+
+    World->InitActor(Player);
+
+    // 0 кадр для всех объектов, настройка и тд
+    World->BeginPlay();
 
     while (true) 
     {
@@ -119,25 +131,19 @@ int WINAPI WinMain(HINSTANCE hInstance,
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glUseProgram(prog);
-
         glPushMatrix();
-        glTranslatef(0, 0, -4.0f - sin(TotalSeconds) / 3.0f);
-        glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-        glRotatef(TotalSeconds * 10, 0.0f, 1.0f, 0.0f);
-        glScalef(2, 2, 2);
+        glTranslatef(0, -1, -2.0f);
+        glScalef(2 * 9.0 / 16.0, 2, 2);
 
         glEnableClientState(GL_VERTEX_ARRAY);
         {
-            Serdechko.Tick(DeltaSeconds);
+            World->Tick(DeltaSeconds);
         }
         glDisableClientState(GL_VERTEX_ARRAY);
 
         glPopMatrix();
 
         SwapBuffers(hDC);
-
-        glUseProgram(0);
 
         start = end;
     }

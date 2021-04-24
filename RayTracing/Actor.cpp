@@ -2,9 +2,19 @@
 
 #include <glad/glad.h>
 
-Actor::Actor() : Mesh(nullptr)
+Actor::Actor()
 {
+	Mesh = nullptr;
+	Location = { 0, 0 };
+	Rotation = { 0, 0 };
+	Scale = { 1, 1 };
+}
 
+Actor::~Actor()
+{
+	delete Collider;
+	delete Mesh;
+	delete Mat;
 }
 
 void Actor::InitMesh(const char* filename)
@@ -21,6 +31,10 @@ void Actor::InitMesh(StaticMesh* Other)
 }
 
 
+void Actor::BeginPlay()
+{
+}
+
 void Actor::Tick(float DeltaSeconds)
 {
 	Draw();
@@ -36,7 +50,17 @@ void Actor::InitMaterialShader(const char* filename)
 void Actor::Draw()
 {
 	Mat->SetProgram();
-	Mesh->Draw();
+	glPushMatrix();
+	{
+		glTranslatef(Location.X, Location.Y, 0);
+
+		glScalef(Scale.X, Scale.Y, 1);
+		glRotatef(Rotation.X, 1, 0, 0);
+		glRotatef(Rotation.Y, 0, 1, 0);
+
+		Mesh->Draw();
+	}
+	glPopMatrix();
 	Mat->ResetProgram();
 }
 

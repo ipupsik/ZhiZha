@@ -28,7 +28,7 @@ void StaticMesh::Draw()
 { 
 	glBindBuffer(GL_ARRAY_BUFFER, IndexVBO);
 	{
-		glVertexPointer(3, GL_DOUBLE, 0, NULL);
+		glVertexPointer(2, GL_FLOAT, 0, NULL);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -103,6 +103,11 @@ void StaticMesh::ReadFile(const char* filename)
 			Vec2D vt;
 			fin >> vt.X >> vt.Y;
 			uvs.push_back(vt);
+		}
+		else
+		{
+			string tmp;
+			getline(fin, tmp);
 		}
 	}
 	std::cout << s;

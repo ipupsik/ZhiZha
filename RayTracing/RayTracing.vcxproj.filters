@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\Shaders">
+      <UniqueIdentifier>{b9e7e71c-4cc9-4f23-9e3f-bb57db5704ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -48,6 +51,15 @@
     <ClInclude Include="StaticMesh.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="PupsyaGlobals.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp">
@@ -68,6 +80,12 @@
     <ClCompile Include="StaticMesh.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RayTracing.rc">
@@ -84,10 +102,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BaseMat.frag">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\Shaders</Filter>
     </None>
     <None Include="BaseMat.vert">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\Shaders</Filter>
+    </None>
+    <None Include="Circle.frag">
+      <Filter>Исходные файлы\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

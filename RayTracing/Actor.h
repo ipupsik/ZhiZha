@@ -11,24 +11,22 @@ class Actor
 {
 public:
 	Actor();
+	~Actor();
 
 	void InitMesh(const char* filename);
 	void InitMesh(StaticMesh* Other);
 
-	void BeginPlay();
-	void Tick(float DeltaSeconds);
-	void Draw();
+	virtual void BeginPlay();
+	virtual void Tick(float DeltaSeconds);
+	virtual void Draw();
 
 	void MakeComplexCollision();
 
-	struct
-	{
-		double X, Y, Z;
-	} Location, Rotation, Scale;
+	Vec2D Location, Rotation, Scale;
 
 	void InitMaterialShader(const char* filename);
 
-private:
+public:
 	StaticMesh* Mesh;
 	Material* Mat;
 	std::vector<Collision*> *Collider;
