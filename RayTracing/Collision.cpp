@@ -169,7 +169,6 @@ void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollisio
 		min_dist_to_center = vec10;
 	}
 
-
 	offset = (world_pos_v1 - p_13).Length(); //смещение окружности относительно края отрезка
 	if ((world_pos_v3 - p_13).Length() < offset)
 		offset = (world_pos_v3 - p_13).Length();
@@ -177,12 +176,49 @@ void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollisio
 	if (h_13 < min_h &&
 		((fabs((p_13 - world_pos_v1).Length() + (p_13 - world_pos_v3).Length() - (vec13.Length())) < eps) ||
 		(vec10.Length() < Radius || vec30.Length() < Radius)))
+		{
+			min_h = h_13;
+			min_line = vec13;
+			min_dist_to_center = vec10;
+
+			//does_hit = true;
+		}
+	/*float cos_012 = vec12.Dot(vec10) / vec12.Length() / vec10.Length();
+	float cos_021 = (vec12 * -1).Dot(vec20) / vec12.Length() / vec20.Length();
+
+	float cos_013 = vec13.Dot(vec10) / vec13.Length() / vec10.Length();
+	float cos_031 = (vec13 * -1).Dot(vec30) / vec13.Length() / vec30.Length();
+
+	float cos_023 = vec23.Dot(vec20) / vec23.Length() / vec20.Length();
+	float cos_032 = (vec23 * -1).Dot(vec30) / vec23.Length() / vec30.Length();
+
+	float h_12 = fabs(sqrt(pow(vec10.Length(), 2) - pow(cos_012 * vec10.Length(),2)));
+	float h_13 = fabs(sqrt(pow(vec10.Length(), 2) - pow(cos_013 * vec10.Length(),2)));
+	float h_23 = fabs(sqrt(pow(vec20.Length(), 2) - pow(cos_023 * vec20.Length(),2))); код пупсика*/
+
+	/*(bool does_hit = false;
+
+	if (cos_012 >= 0 && cos_021 >= 0)
 	{
-		min_h = h_13;
-		min_line = vec13;
+		min_h = h_12;
+		min_line = vec12;
 		min_dist_to_center = vec10;
+
+		does_hit = true;
 	}
 
+	if (cos_013 >= 0 && cos_031 >= 0)
+	{
+		if (!does_hit || h_13 < min_h)
+		{
+			min_h = h_13;
+			min_line = vec13;
+			min_dist_to_center = vec10;
+
+			does_hit = true;
+		}
+	} */
+	
 	offset = (world_pos_v2 - p_23).Length(); //смещение окружности относительно края отрезка
 	if ((world_pos_v3 - p_23).Length() < offset)
 		offset = (world_pos_v3 - p_23).Length();
@@ -190,22 +226,32 @@ void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollisio
 	if (h_23 < min_h && 
 		((fabs((p_23 - world_pos_v2).Length() + (p_23 - world_pos_v3).Length() - (vec23.Length())) < eps) ||
 		(vec20.Length() < Radius || vec30.Length() < Radius)))
+	
+    //if (cos_023 >= 0 && cos_032 >= 0)
 	{
-		min_h = h_23;
-		min_line = vec23;
-		min_dist_to_center = vec20;
-	}
+		//if (!does_hit || h_23 < min_h)
+			min_h = h_23;
+			min_line = vec23;
+			min_dist_to_center = vec20;
 
+			//does_hit = true;
+	}
+	/*if (does_hit && min_h < Radius) Код пупсика
+	{
+		Vec2D n = (min_line.Cross(min_line.Cross(min_dist_to_center))).Normalize();*/
 
 	if (min_h != inf && min_h < Radius)
 	{
 		//Vec2D n = (min_line.Cross(min_line.Cross(min_dist_to_center))).Normalize();
 
 		//float alpha_double = 2 * acos(min_line.Dot(n) / n.Length() / min_line.Length());
-
-		//Vec2D new_velocity = {cos(alpha_double) * Velocity.X - sin(alpha_double) * Velocity.Y,
+		
+		/*//Vec2D new_velocity = {cos(alpha_double) * Velocity.X - sin(alpha_double) * Velocity.Y,
 		//					  sin(alpha_double) * Velocity.X + cos(alpha_double) * Velocity.Y};
 		Vec2D new_velocity = { 1, 1 };
-		Velocity = new_velocity;
+		Velocity = new_velocity; код пупска */
+		
+		//Velocity = new_velocity;
+		Velocity = { 0, 0 };
 	}
 }

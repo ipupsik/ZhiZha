@@ -36,7 +36,7 @@ void ACharacter::CameraManagement()
 
 void ACharacter::Jump()
 {
-	Collider[0]->Velocity.Y = 0.00005;
+	Collider[0]->Velocity.Y = 0.005;
 }
 
 void ACharacter::BeginPlay()

@@ -82,4 +82,5 @@ void Actor::MakeComplexCollision()
 
 		Collider.push_back(new CollisionTriangle(v1, v2, v3, this));
 	}
+
 }
