@@ -31,9 +31,24 @@ float Vec2D::Dot(Vec2D Other)
     return X * Other.X + Y * Other.Y;
 }
 
-Vec2D Vec2D::Cross(Vec2D Other)
+float Vec2D::FindCos(Vec2D Other)
 {
-    return Vec2D{ X * Other.Y, -Y * Other.X };
+    return Dot(Other) / Length() / Other.Length();
+}
+
+float Vec2D::Cross(Vec2D Other)
+{
+    return X * Other.Y - Y * Other.X;
+}
+
+float Vec2D::FindSin(Vec2D Other)
+{
+    return Cross(Other) / Length() / Other.Length();
+}
+
+Vec2D Vec2D::FindNormal(Vec2D Other)
+{
+    return Vec2D{ Other.Y, -1 * Other.X };
 }
 
 float Vec2D::DistanceTo(Vec2D Other)

@@ -73,6 +73,7 @@ void Actor::MakeComplexCollision()
 		v1.X = Mesh->vertices[Mesh->faces[i].v1].X;
 		v1.Y = Mesh->vertices[Mesh->faces[i].v1].Y;
 
+
 		v2.X = Mesh->vertices[Mesh->faces[i].v2].X;
 		v2.Y = Mesh->vertices[Mesh->faces[i].v2].Y;
 

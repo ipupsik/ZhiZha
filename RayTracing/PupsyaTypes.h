@@ -12,7 +12,10 @@ struct Vec2D
 	Vec2D operator+(Vec2D Other);
 
 	float Dot(Vec2D Other);
-	Vec2D Cross(Vec2D Other);
+	float FindCos(Vec2D Other);
+	float Cross(Vec2D Other);
+	float FindSin(Vec2D Other);
+	Vec2D FindNormal(Vec2D Other);
 
 	float DistanceTo(Vec2D Other);
 	float Length();

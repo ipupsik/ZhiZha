@@ -97,7 +97,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
     // Инициализация всех челибасиков
     World = new GlobalWorld();
-    World->InitActor("Map.obj", "BaseMat");
+    World->InitActor("simple_map.obj", "BaseMat");
     World->WorldActors[0]->Location = {0, -1};
     World->WorldActors[0]->MakeComplexCollision();
 
@@ -107,7 +107,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
     Player->Location = { 0, 0.4 };
     Player->Collider = std::vector<Collision*>(0);
     Player->Collider.push_back(new CollisionSphere({ 0, 0 }, 0.1, nullptr));
-    Player->Collider[0]->Acceleration.Y = -10.0 / 100000;
+    Player->Collider[0]->Acceleration.Y = -10.0 / 10000;
 
     World->InitActor(Player);
 
