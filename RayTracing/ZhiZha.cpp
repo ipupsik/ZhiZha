@@ -97,17 +97,17 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
     // Инициализация всех челибасиков
     World = new GlobalWorld();
-    World->InitActor("simple_map.obj", "BaseMat");
+    World->InitActor("Map.obj", "BaseMat");
     World->WorldActors[0]->Location = {0, -1};
     World->WorldActors[0]->MakeComplexCollision();
 
     ACharacter* Player = new ACharacter;
     Player->InitMesh("Circle.obj");
     Player->InitMaterialShader("Circle");
-    Player->Location = { 0, 0.4 };
+    Player->Location = { 0, 0.0 };
     Player->Collider = std::vector<Collision*>(0);
-    Player->Collider.push_back(new CollisionSphere({ 0, 0 }, 0.1, nullptr));
-    Player->Collider[0]->Acceleration.Y = -10.0 / 10000;
+    Player->Collider.push_back(new CollisionSphere({ 0, 0 }, 0.12, Player));
+    Player->Collider[0]->Acceleration.Y = -10.0 / 1000;
 
     World->InitActor(Player);
 
