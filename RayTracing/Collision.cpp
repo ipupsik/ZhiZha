@@ -120,29 +120,59 @@ void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollisio
 	Vec2D vec20 = Position + pos_parent_my - OtherTriangle->v2 - pos_parent_triangle;
 	Vec2D vec30 = Position + pos_parent_my - OtherTriangle->v3 - pos_parent_triangle;
 
-	float h_12 = fabs(vec12.Dot(vec10) / vec12.Length());
-	float h_13 = fabs(vec13.Dot(vec10) / vec13.Length());
-	float h_23 = fabs(vec23.Dot(vec20) / vec23.Length());
+	float cos_012 = vec12.Dot(vec10) / vec12.Length() / vec10.Length();
+	float cos_021 = (vec12 * -1).Dot(vec20) / vec12.Length() / vec20.Length();
 
-	float min_h = h_12;
-	Vec2D min_line = vec12;
-	Vec2D min_dist_to_center = vec10;
+	float cos_013 = vec13.Dot(vec10) / vec13.Length() / vec10.Length();
+	float cos_031 = (vec13 * -1).Dot(vec30) / vec13.Length() / vec30.Length();
 
-	if (h_13 < min_h)
+	float cos_023 = vec23.Dot(vec20) / vec23.Length() / vec20.Length();
+	float cos_032 = (vec23 * -1).Dot(vec30) / vec23.Length() / vec30.Length();
+
+	float h_12 = fabs(sqrt(pow(vec10.Length(), 2) - pow(cos_012 * vec10.Length(),2)));
+	float h_13 = fabs(sqrt(pow(vec10.Length(), 2) - pow(cos_013 * vec10.Length(),2)));
+	float h_23 = fabs(sqrt(pow(vec20.Length(), 2) - pow(cos_023 * vec20.Length(),2)));
+
+	float min_h;
+	Vec2D min_line;
+	Vec2D min_dist_to_center;
+
+	bool does_hit = false;
+
+	if (cos_012 >= 0 && cos_021 >= 0)
 	{
-		min_h = h_13;
-		min_line = vec13;
+		min_h = h_12;
+		min_line = vec12;
 		min_dist_to_center = vec10;
+
+		does_hit = true;
 	}
 
-	if (h_23 < min_h)
+	if (cos_013 >= 0 && cos_031 >= 0)
 	{
-		min_h = h_23;
-		min_line = vec23;
-		min_dist_to_center = vec20;
+		if (!does_hit || h_13 < min_h)
+		{
+			min_h = h_13;
+			min_line = vec13;
+			min_dist_to_center = vec10;
+
+			does_hit = true;
+		}
 	}
 
-	if (min_h < Radius)
+	if (cos_023 >= 0 && cos_032 >= 0)
+	{
+		if (!does_hit || h_23 < min_h)
+		{
+			min_h = h_23;
+			min_line = vec23;
+			min_dist_to_center = vec20;
+
+			does_hit = true;
+		}
+	}
+
+	if (does_hit && min_h < Radius)
 	{
 		Vec2D n = (min_line.Cross(min_line.Cross(min_dist_to_center))).Normalize();
 
@@ -151,6 +181,7 @@ void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollisio
 		Vec2D new_velocity = {cos(alpha_double) * Velocity.X - sin(alpha_double) * Velocity.Y,
 							  sin(alpha_double) * Velocity.X + cos(alpha_double) * Velocity.Y};
 
-		Velocity = new_velocity;
+		//Velocity = new_velocity;
+		Velocity = { 0, 0 };
 	}
 }
