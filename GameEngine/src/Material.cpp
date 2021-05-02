@@ -2,20 +2,20 @@
 
 #include <string>
 #include <fstream>
+#include <sstream>
 
 //FIXME glfw -> sfml
 
-std::string LoadFile(const char* FileName)
-{
+std::string LoadFile(const sf::String &FileName) {
     std::ifstream ifile(FileName, std::ifstream::binary);
-    std::string filetext;
+    std::stringstream ss;
 
     while (ifile.good()) {
-        std::string line;
-        std::getline(ifile, line);
-        filetext.append(line + "\n");
+        std::string temp;
+        std::getline(ifile, temp);
+        ss << temp << std::endl;
     }
-    return filetext;
+    return ss.str();
 }
 
 //GLuint LoadShader(const char* FileName, GLuint type)
@@ -29,22 +29,17 @@ std::string LoadFile(const char* FileName)
 //    return Shader;
 //}
 
-void Material::SetProgram()
-{
+void Material::SetProgram() {
 //    glUseProgram(prog);
 }
 
-void Material::ResetProgram()
-{
+void Material::ResetProgram() {
 //    glUseProgram(0);
 }
 
-void Material::InitShaders(const char* filename)
-{
-    std::string FragShaderName = filename;
-    FragShaderName += ".frag";
-    std::string VertShaderName = filename;
-    VertShaderName += ".vert";
+void Material::InitShaders(const sf::String &filename) {
+    auto FragShaderName = filename + ".frag";
+    auto VertShaderName = filename + ".vert";
 //    GLuint FragShader = LoadShader(FragShaderName.c_str(), GL_FRAGMENT_SHADER);
 //    GLuint VertShader = LoadShader(VertShaderName.c_str(), GL_VERTEX_SHADER);
 //

@@ -7,7 +7,7 @@ class GlobalWorld {
  public:
   std::vector<Actor *> WorldActors;
 
-  void InitActor(const char *MeshFilename, const char *MaterialFilename);
+  void InitActor(const sf::String &MeshFilename, const sf::String &MaterialFilename);
 
   void InitActor(Actor *NewActor);
 

@@ -40,7 +40,7 @@ void StaticMesh::Draw()
 //	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void StaticMesh::ReadFile(const char* filename)
+void StaticMesh::ReadFile(const sf::String &filename)
 {
 	string s;
 	ifstream fin(filename);

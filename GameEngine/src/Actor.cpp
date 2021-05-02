@@ -6,22 +6,16 @@ Actor::Actor() : Location({0, 0}), Rotation({0, 0}), Scale({0, 0}) {
     Mesh = nullptr;
 }
 
-Actor::~Actor() {
-    delete Mesh;
-    delete Mat;
-}
-
-void Actor::InitMesh(const char *filename) {
-    Mesh = new StaticMesh;
+void Actor::InitMesh(const sf::String& filename) {
+    Mesh = std::make_unique<StaticMesh>();
 
     Mesh->ReadFile(filename);
     Mesh->Init();
 }
 
-void Actor::InitMesh(StaticMesh *Other) {
-    Mesh = Other;
+void Actor::InitMesh(std::unique_ptr<StaticMesh> Other) {
+    Mesh = std::move(Other);
 }
-
 
 void Actor::BeginPlay() {
 }
@@ -30,8 +24,8 @@ void Actor::Tick(float DeltaSeconds) {
     Draw();
 }
 
-void Actor::InitMaterialShader(const char *filename) {
-    Mat = new Material;
+void Actor::InitMaterialShader(const sf::String& filename) {
+    Mat = std::make_unique<Material>();
 
     Mat->InitShaders(filename);
 }
@@ -53,7 +47,7 @@ void Actor::Draw() {
 }
 
 void Actor::MakeComplexCollision() {
-    Collider = std::vector<Collision *>(0);
+    Collider = std::vector<std::unique_ptr<Collision>>(0);
 
     for (auto &face : Mesh->faces) {
         Vec2D v1, v2, v3;
@@ -67,7 +61,6 @@ void Actor::MakeComplexCollision() {
         v3.X = Mesh->vertices[face.v3].X;
         v3.Y = Mesh->vertices[face.v3].Y;
 
-        Collider.push_back(new CollisionTriangle(v1, v2, v3, this));
+        Collider.emplace_back(new CollisionTriangle(v1, v2, v3, weak_from_this()));
     }
-
 }

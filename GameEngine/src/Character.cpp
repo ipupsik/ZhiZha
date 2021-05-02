@@ -42,18 +42,20 @@ void ACharacter::Tick(float DeltaSeconds) {
         OwnCollderit->UpdatePhysicState(DeltaSeconds);
     }
 
-    Location.X += dynamic_cast<CollisionSphere *>(Collider[0])->Position.X;
-    Location.Y += dynamic_cast<CollisionSphere *>(Collider[0])->Position.Y;
+    float &x = dynamic_cast<CollisionSphere *>(Collider[0].get())->Position.X;
+    float &y = dynamic_cast<CollisionSphere *>(Collider[0].get())->Position.Y;
+    Location.X += x;
+    Location.Y += y;
 
-    dynamic_cast<CollisionSphere *>(Collider[0])->Position.X = 0;
-    dynamic_cast<CollisionSphere *>(Collider[0])->Position.Y = 0;
+    x = 0;
+    y = 0;
 
     for (auto &OwnCollderit : Collider) {
         for (auto &ActorElem : World->WorldActors) {
             for (auto &OtherColliderit : ActorElem->Collider) {
                 if (OwnCollderit != OtherColliderit) {
                     HitResult tmp;
-                    OwnCollderit->CollisionDetection(OtherColliderit, tmp);
+                    OwnCollderit->CollisionDetection(std::move(OtherColliderit), tmp);
                 }
             }
         }
