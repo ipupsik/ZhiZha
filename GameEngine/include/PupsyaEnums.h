@@ -1,10 +1,7 @@
-#ifndef _H_PUPSYAENUMS_
-#define _H_PUPSYAENUMS_
+#pragma once
 
 enum class CollisionShape
 {
 	Triangle,
 	Sphere,
 };
-
-#endif
