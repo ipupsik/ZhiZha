@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <glad/glad.h>
+#include <glad/gl.h>
 
 using namespace std;
 
@@ -12,14 +12,14 @@ void StaticMesh::Init()
 	glGenBuffers(1, &IndexVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, IndexVBO);
 	{
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec2D) * vertices.size(), vertices.begin()._Ptr, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec2D) * vertices.size(), &*vertices.begin(), GL_STATIC_DRAW);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &IndexEBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexEBO);
 	{
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(face) * faces.size(), faces.begin()._Ptr, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(face) * faces.size(), &*faces.begin(), GL_STATIC_DRAW);
 	}
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
