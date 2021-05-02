@@ -1,25 +1,31 @@
-#ifndef _H_PUPSYATYPES_
-#define _H_PUPSYATYPES_
+#pragma once
 
-struct Vec2D
-{
-	float X, Y;
+struct Vec2D {
+  float X, Y;
 
-	Vec2D operator*(float Value);
-	Vec2D operator/(float Value);
-	Vec2D operator*(Vec2D Other);
-	Vec2D operator-(Vec2D Other);
-	Vec2D operator+(Vec2D Other);
+  static Vec2D FindNormal(Vec2D other);
 
-	float Dot(Vec2D Other);
-	float FindCos(Vec2D Other);
-	float Cross(Vec2D Other);
-	float FindSin(Vec2D Other);
-	Vec2D FindNormal(Vec2D Other);
+  Vec2D operator*(float value) const;
 
-	float DistanceTo(Vec2D Other);
-	float Length();
-	Vec2D Normalize();
+  Vec2D operator/(float value) const;
+
+  Vec2D operator*(Vec2D other) const;
+
+  Vec2D operator-(Vec2D other) const;
+
+  Vec2D operator+(Vec2D other) const;
+
+  [[nodiscard]] float Dot(Vec2D other) const;
+
+  [[nodiscard]] float FindCos(Vec2D other) const;
+
+  [[nodiscard]] float Cross(Vec2D other) const;
+
+  [[nodiscard]] float FindSin(Vec2D other) const;
+
+  [[nodiscard]] float DistanceTo(Vec2D other) const;
+
+  [[nodiscard]] float Length() const;
+
+  [[nodiscard]] Vec2D Normalize() const;
 };
-
-#endif

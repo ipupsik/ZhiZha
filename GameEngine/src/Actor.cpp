@@ -2,85 +2,72 @@
 
 #include <glad/gl.h>
 
-Actor::Actor()
-{
-	Mesh = nullptr;
-	Location = { 0, 0 };
-	Rotation = { 0, 0 };
-	Scale = { 1, 1 };
+Actor::Actor() : Location({0, 0}), Rotation({0, 0}), Scale({0, 0}) {
+    Mesh = nullptr;
 }
 
-Actor::~Actor()
-{
-	delete Mesh;
-	delete Mat;
+Actor::~Actor() {
+    delete Mesh;
+    delete Mat;
 }
 
-void Actor::InitMesh(const char* filename)
-{
-	Mesh = new StaticMesh;
+void Actor::InitMesh(const char *filename) {
+    Mesh = new StaticMesh;
 
-	Mesh->ReadFile(filename);
-	Mesh->Init();
+    Mesh->ReadFile(filename);
+    Mesh->Init();
 }
 
-void Actor::InitMesh(StaticMesh* Other)
-{
-	Mesh = Other;
+void Actor::InitMesh(StaticMesh *Other) {
+    Mesh = Other;
 }
 
 
-void Actor::BeginPlay()
-{
+void Actor::BeginPlay() {
 }
 
-void Actor::Tick(float DeltaSeconds)
-{
-	Draw();
+void Actor::Tick(float DeltaSeconds) {
+    Draw();
 }
 
-void Actor::InitMaterialShader(const char* filename)
-{
-	Mat = new Material;
+void Actor::InitMaterialShader(const char *filename) {
+    Mat = new Material;
 
-	Mat->InitShaders(filename);
+    Mat->InitShaders(filename);
 }
 
-void Actor::Draw()
-{
-	Mat->SetProgram();
-	glPushMatrix();
-	{
-		glTranslatef(Location.X, Location.Y, 0);
+void Actor::Draw() {
+    Mat->SetProgram();
+    glPushMatrix();
+    {
+        glTranslatef(Location.X, Location.Y, 0);
 
-		glScalef(Scale.X, Scale.Y, 1);
-		glRotatef(Rotation.X, 1, 0, 0);
-		glRotatef(Rotation.Y, 0, 1, 0);
+        glScalef(Scale.X, Scale.Y, 1);
+        glRotatef(Rotation.X, 1, 0, 0);
+        glRotatef(Rotation.Y, 0, 1, 0);
 
-		Mesh->Draw();
-	}
-	glPopMatrix();
-	Mat->ResetProgram();
+        Mesh->Draw();
+    }
+    glPopMatrix();
+    Mat->ResetProgram();
 }
 
-void Actor::MakeComplexCollision()
-{
-	Collider = std::vector<Collision*>(0);
+void Actor::MakeComplexCollision() {
+    Collider = std::vector<Collision *>(0);
 
-	for (int i = 0; i < Mesh->faces.size(); i++)
-	{
-		Vec2D v1, v2, v3;
-		v1.X = Mesh->vertices[Mesh->faces[i].v1].X;
-		v1.Y = Mesh->vertices[Mesh->faces[i].v1].Y;
+    for (auto &face : Mesh->faces) {
+        Vec2D v1, v2, v3;
+        v1.X = Mesh->vertices[face.v1].X;
+        v1.Y = Mesh->vertices[face.v1].Y;
 
 
-		v2.X = Mesh->vertices[Mesh->faces[i].v2].X;
-		v2.Y = Mesh->vertices[Mesh->faces[i].v2].Y;
+        v2.X = Mesh->vertices[face.v2].X;
+        v2.Y = Mesh->vertices[face.v2].Y;
 
-		v3.X = Mesh->vertices[Mesh->faces[i].v3].X;
-		v3.Y = Mesh->vertices[Mesh->faces[i].v3].Y;
+        v3.X = Mesh->vertices[face.v3].X;
+        v3.Y = Mesh->vertices[face.v3].Y;
 
-		Collider.push_back(new CollisionTriangle(v1, v2, v3, this));
-	}
+        Collider.push_back(new CollisionTriangle(v1, v2, v3, this));
+    }
 
 }
