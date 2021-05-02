@@ -1,7 +1,6 @@
-#ifndef _H_MATERIAL_
-#define _H_MATERIAL_
+#pragma once
 
-#include "../lib/glad/include/glad/gl.h"
+#include "../lib/glad/include/glad/glad.h"
 
 class Material
 {
@@ -11,5 +10,3 @@ public:
 	void ResetProgram();
 	GLuint prog;
 };
-
-#endif

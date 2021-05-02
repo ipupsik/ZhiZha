@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <glad/gl.h>
+#include <glad/glad.h>
 
 using namespace std;
 

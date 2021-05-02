@@ -1,6 +1,6 @@
 #include "Actor.h"
 
-#include <glad/gl.h>
+#include <glad/glad.h>
 
 Actor::Actor() : Location({0, 0}), Rotation({0, 0}), Scale({0, 0}) {
     Mesh = nullptr;
