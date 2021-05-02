@@ -1,37 +1,41 @@
 #pragma once
 
+#include <vector>
+#include <memory>
+#include <SFML/System/String.hpp>
+
 #include "StaticMesh.h"
 #include "Material.h"
 #include "Collision.h"
-#include <vector>
 
 class Collision;
 
-class Actor
-{
-public:
-	Actor();
-	~Actor();
+class Actor : private std::enable_shared_from_this<Actor> { // for safe use of std::shared_ptr(this)
+ public:
+  Actor();
 
-	void InitMesh(const char* filename);
-	void InitMesh(StaticMesh* Other);
+  void InitMesh(const sf::String& filename);
 
-	virtual void BeginPlay();
-	virtual void Tick(float DeltaSeconds);
-	virtual void Draw();
+  void InitMesh(std::unique_ptr<StaticMesh> Other);
 
-	void MakeComplexCollision();
+  virtual void BeginPlay();
 
-	Vec2D Location, Rotation, Scale;
-	Vec2D Velocity, Acceleration;
+  virtual void Tick(float DeltaSeconds);
 
-	void InitMaterialShader(const char* filename);
+  virtual void Draw();
 
-public:
-	StaticMesh* Mesh;
-	Material* Mat;
-	std::vector<Collision*> Collider;
+  void MakeComplexCollision();
 
-	Actor* Parent;
+  Vec2D Location, Rotation, Scale;
+  Vec2D Velocity, Acceleration;
+
+  void InitMaterialShader(const sf::String& filename);
+
+ public:
+  std::unique_ptr<StaticMesh> Mesh;
+  std::unique_ptr<Material> Mat;
+  std::vector<std::unique_ptr<Collision>> Collider;
+
+  std::weak_ptr<Actor> Parent;
 };
 

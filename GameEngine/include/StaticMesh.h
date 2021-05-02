@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <SFML/System/String.hpp>
 
 #include "PupsyaTypes.h"
 
@@ -23,7 +24,7 @@ public:
 	unsigned int IndexEBO, IndexVBO;
 
 public:
-	void ReadFile(const char* filename);
+	void ReadFile(const sf::String &filename);
 	void Init();
 	void Draw();
 };

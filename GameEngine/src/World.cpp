@@ -1,6 +1,6 @@
 #include "World.h"
 
-void GlobalWorld::InitActor(const char* MeshFilename, const char* MaterialFilename)
+void GlobalWorld::InitActor(const sf::String &MeshFilename, const sf::String &MaterialFilename)
 {
 	Actor* NewActor = new Actor;
 	NewActor->InitMesh(MeshFilename);

@@ -5,7 +5,7 @@
 class Material
 {
 public:
-	void InitShaders(const char* filename);
+	void InitShaders(const sf::String &filename);
 	void SetProgram();
 	void ResetProgram();
 	sf::Uint32 prog;
