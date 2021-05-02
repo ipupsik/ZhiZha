@@ -1,6 +1,5 @@
 #include "Material.h"
 
-#include <glad/glad.h>
 #include <string>
 #include <fstream>
 

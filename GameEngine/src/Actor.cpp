@@ -1,6 +1,6 @@
 #include "Actor.h"
 
-#include <glad/glad.h>
+#include <glad/gl.h>
 
 Actor::Actor()
 {

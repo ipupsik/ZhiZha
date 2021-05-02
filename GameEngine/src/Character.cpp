@@ -1,8 +1,6 @@
 #include "Character.h"
 #include "PupsyaGlobals.h"
 
-#include <Windows.h>
-
 ACharacter::ACharacter()
 {
 	IsJumping = false;
@@ -10,23 +8,23 @@ ACharacter::ACharacter()
 
 void ACharacter::ControllerInput()
 {
-	if (GetKeyState(VK_SPACE) < 0)
-	{
-		Jump();
-	}
-
-	if (GetKeyState('A') < 0)
-	{
-		Collider[0]->Velocity.X = -1.0f / 100;
-	}
-	else if (GetKeyState('D') < 0)
-	{
-		Collider[0]->Velocity.X = 1.0f / 100;
-	}
-	else
-	{
-		Collider[0]->Velocity.X = 0.0f;
-	}
+//	if (GetKeyState(VK_SPACE) < 0)
+//	{
+//		Jump();
+//	}
+//
+//	if (GetKeyState('A') < 0)
+//	{
+//		Collider[0]->Velocity.X = -1.0f / 100;
+//	}
+//	else if (GetKeyState('D') < 0)
+//	{
+//		Collider[0]->Velocity.X = 1.0f / 100;
+//	}
+//	else
+//	{
+//		Collider[0]->Velocity.X = 0.0f;
+//	}
 }
 
 void ACharacter::CameraManagement()

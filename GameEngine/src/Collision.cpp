@@ -113,32 +113,32 @@ void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollisio
 	float eps = 0.000001;
 	float inf = 50000;
 
-	// поиск мировых координат родителей вершин
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	Vec2D pos_parent_triangle = find_parent_position(OtherTriangle);
 	Vec2D pos_parent_my = find_parent_position(this);
 
-	// Перевод вершин в мировые координаты
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	Vec2D world_pos_v1 = OtherTriangle->v1 + pos_parent_triangle;
 	Vec2D world_pos_v2 = OtherTriangle->v2 + pos_parent_triangle;
 	Vec2D world_pos_v3 = OtherTriangle->v3 + pos_parent_triangle;
 	Vec2D world_pos_circle = Position + pos_parent_my;
 
-	// составление векторов-сторон треугольника
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	Vec2D vec12 = world_pos_v2 - world_pos_v1;
 	Vec2D vec13 = world_pos_v3 - world_pos_v1;
 	Vec2D vec23 = world_pos_v3 - world_pos_v2;
 
-	// составление векторо от каждой точки до центра окружности
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	Vec2D vec10 = world_pos_circle - world_pos_v1;
 	Vec2D vec20 = world_pos_circle - world_pos_v2;
 	Vec2D vec30 = world_pos_circle - world_pos_v3;
 
-	// Расстояние от точики O до каждой из сторон треугольника
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ O пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	float h_12 = vec10.Length() * fabs(vec12.FindSin(vec10));
 	float h_13 = vec10.Length() * fabs(vec13.FindSin(vec10));
 	float h_23 = vec20.Length() * fabs(vec23.FindSin(vec20));
 
-	// Координаты точки O, спроецированной на соответствующую сторону треугольника
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ O, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	Vec2D p_12 = world_pos_v1 + vec12.Normalize() * vec10.Length() * vec12.FindCos(vec10);
 	Vec2D p_13 = world_pos_v1 + vec13.Normalize() * vec10.Length() * vec13.FindCos(vec10);
 	Vec2D p_23 = world_pos_v2 + vec23.Normalize() * vec20.Length() * vec23.FindCos(vec20);
@@ -148,28 +148,28 @@ void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollisio
 	float b = (p_13 - world_pos_circle).Length();
 	float c = (p_23 - world_pos_circle).Length();
 
-	// Поиск стороны, до которой расстояние минимально (при учете, что точка лежит на отрезке или отходит 
-	// от его краев не больше, чем на R)
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
+	// пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅ R)
 
-	float min_h = inf; //минимальное расстояние до стороны
-	Vec2D min_line = {0, 0}; //минимальная сторона
-	Vec2D min_dist_to_center = {0, 0}; //минимальное расстояние до центра окружности
+	float min_h = inf; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	Vec2D min_line = {0, 0}; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	Vec2D min_dist_to_center = {0, 0}; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	
 
-	float offset = (world_pos_v1 - p_12).Length(); //смещение окружности относительно края отрезка
+	float offset = (world_pos_v1 - p_12).Length(); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	if ((world_pos_v2 - p_12).Length() < offset)
 		offset = (world_pos_v2 - p_12).Length();
 
-	if (h_12 < min_h &&  // расстояние меньше, чем уже найденное
-		((fabs((p_12 - world_pos_v1).Length() + (p_12 - world_pos_v2).Length() - (vec12.Length())) < eps) || //точка лежит на стороне
-			(vec10.Length() < Radius || vec20.Length() < Radius))) //или окружность может натолкнуться краешком на сторону
+	if (h_12 < min_h &&  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		((fabs((p_12 - world_pos_v1).Length() + (p_12 - world_pos_v2).Length() - (vec12.Length())) < eps) || //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			(vec10.Length() < Radius || vec20.Length() < Radius))) //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	{
 		min_h = h_12;
 		min_line = vec12;
 		min_dist_to_center = vec10;
 	}
 
-	offset = (world_pos_v1 - p_13).Length(); //смещение окружности относительно края отрезка
+	offset = (world_pos_v1 - p_13).Length(); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	if ((world_pos_v3 - p_13).Length() < offset)
 		offset = (world_pos_v3 - p_13).Length();
 
@@ -194,7 +194,7 @@ void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollisio
 
 	float h_12 = fabs(sqrt(pow(vec10.Length(), 2) - pow(cos_012 * vec10.Length(),2)));
 	float h_13 = fabs(sqrt(pow(vec10.Length(), 2) - pow(cos_013 * vec10.Length(),2)));
-	float h_23 = fabs(sqrt(pow(vec20.Length(), 2) - pow(cos_023 * vec20.Length(),2))); код пупсика*/
+	float h_23 = fabs(sqrt(pow(vec20.Length(), 2) - pow(cos_023 * vec20.Length(),2))); пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ*/
 
 	/*(bool does_hit = false;
 
@@ -219,7 +219,7 @@ void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollisio
 		}
 	} */
 	
-	offset = (world_pos_v2 - p_23).Length(); //смещение окружности относительно края отрезка
+	offset = (world_pos_v2 - p_23).Length(); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	if ((world_pos_v3 - p_23).Length() < offset)
 		offset = (world_pos_v3 - p_23).Length();
 
@@ -236,7 +236,7 @@ void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollisio
 
 			//does_hit = true;
 	}
-	/*if (does_hit && min_h < Radius) Код пупсика
+	/*if (does_hit && min_h < Radius) пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	{
 		Vec2D n = (min_line.Cross(min_line.Cross(min_dist_to_center))).Normalize();*/
 
@@ -249,7 +249,7 @@ void CollisionSphere::CollisionDetection_SphereTriangle(Collision* OtherCollisio
 		/*//Vec2D new_velocity = {cos(alpha_double) * Velocity.X - sin(alpha_double) * Velocity.Y,
 		//					  sin(alpha_double) * Velocity.X + cos(alpha_double) * Velocity.Y};
 		Vec2D new_velocity = { 1, 1 };
-		Velocity = new_velocity; код пупска */
+		Velocity = new_velocity; пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ */
 		
 		//Velocity = new_velocity;
 		Velocity = { 0, 0 };

@@ -1,7 +1,7 @@
 #ifndef _H_MATERIAL_
 #define _H_MATERIAL_
 
-#include <glad/glad.h>
+#include "../lib/glad/include/glad/gl.h"
 
 class Material
 {
