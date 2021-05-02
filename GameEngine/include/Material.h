@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../lib/glad/include/glad/glad.h"
+#include <SFML/System.hpp>
 
 class Material
 {
@@ -8,5 +8,5 @@ public:
 	void InitShaders(const char* filename);
 	void SetProgram();
 	void ResetProgram();
-	GLuint prog;
+	sf::Uint32 prog;
 };

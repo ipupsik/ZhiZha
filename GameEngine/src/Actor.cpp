@@ -1,6 +1,6 @@
 #include "Actor.h"
 
-#include <glad/glad.h>
+//FIXME glfw -> sfml
 
 Actor::Actor() : Location({0, 0}), Rotation({0, 0}), Scale({0, 0}) {
     Mesh = nullptr;
@@ -37,19 +37,19 @@ void Actor::InitMaterialShader(const char *filename) {
 }
 
 void Actor::Draw() {
-    Mat->SetProgram();
-    glPushMatrix();
-    {
-        glTranslatef(Location.X, Location.Y, 0);
-
-        glScalef(Scale.X, Scale.Y, 1);
-        glRotatef(Rotation.X, 1, 0, 0);
-        glRotatef(Rotation.Y, 0, 1, 0);
-
-        Mesh->Draw();
-    }
-    glPopMatrix();
-    Mat->ResetProgram();
+//    Mat->SetProgram();
+//    glPushMatrix();
+//    {
+//        glTranslatef(Location.X, Location.Y, 0);
+//
+//        glScalef(Scale.X, Scale.Y, 1);
+//        glRotatef(Rotation.X, 1, 0, 0);
+//        glRotatef(Rotation.Y, 0, 1, 0);
+//
+//        Mesh->Draw();
+//    }
+//    glPopMatrix();
+//    Mat->ResetProgram();
 }
 
 void Actor::MakeComplexCollision() {

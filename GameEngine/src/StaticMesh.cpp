@@ -3,40 +3,41 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <glad/glad.h>
+
+//FIXME glfw -> sfml
 
 using namespace std;
 
 void StaticMesh::Init()
 {
-	glGenBuffers(1, &IndexVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, IndexVBO);
-	{
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec2D) * vertices.size(), &*vertices.begin(), GL_STATIC_DRAW);
-	}
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glGenBuffers(1, &IndexEBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexEBO);
-	{
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(face) * faces.size(), &*faces.begin(), GL_STATIC_DRAW);
-	}
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+//	glGenBuffers(1, &IndexVBO);
+//	glBindBuffer(GL_ARRAY_BUFFER, IndexVBO);
+//	{
+//		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec2D) * vertices.size(), &*vertices.begin(), GL_STATIC_DRAW);
+//	}
+//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+//
+//	glGenBuffers(1, &IndexEBO);
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexEBO);
+//	{
+//		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(face) * faces.size(), &*faces.begin(), GL_STATIC_DRAW);
+//	}
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void StaticMesh::Draw()
 { 
-	glBindBuffer(GL_ARRAY_BUFFER, IndexVBO);
-	{
-		glVertexPointer(2, GL_FLOAT, 0, NULL);
-	}
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexEBO);
-	{
-		glDrawElements(GL_TRIANGLES, 3 * faces.size(), GL_UNSIGNED_INT, NULL);
-	}
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+//	glBindBuffer(GL_ARRAY_BUFFER, IndexVBO);
+//	{
+//		glVertexPointer(2, GL_FLOAT, 0, NULL);
+//	}
+//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+//
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexEBO);
+//	{
+//		glDrawElements(GL_TRIANGLES, 3 * faces.size(), GL_UNSIGNED_INT, NULL);
+//	}
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void StaticMesh::ReadFile(const char* filename)
