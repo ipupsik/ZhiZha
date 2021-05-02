@@ -11,4 +11,4 @@
 
 #endif
 
-_Ex GlobalWorld* World;
+static GlobalWorld* World = new GlobalWorld();
