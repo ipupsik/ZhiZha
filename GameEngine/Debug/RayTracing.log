@@ -1,8 +1,0 @@
-﻿E:\Programms\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: промежуточный каталог (Debug\) содержит файлы, которые используются совместно с другим проектом (RayTracing.vcxproj).  Это может привести к ошибкам очистки и перестроения.
-  ZhiZha.cpp
-E:\REPOSITORII\Zhizha\zhizha\RayTracing\ZhiZha.cpp(73,20): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-E:\REPOSITORII\Zhizha\zhizha\RayTracing\ZhiZha.cpp(81,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-E:\REPOSITORII\Zhizha\zhizha\RayTracing\ZhiZha.cpp(110,74): warning C4305: аргумент: усечение из "double" в "float"
-E:\REPOSITORII\Zhizha\zhizha\RayTracing\ZhiZha.cpp(111,55): warning C4305: =: усечение из "double" в "float"
-E:\REPOSITORII\Zhizha\zhizha\RayTracing\ZhiZha.cpp(146,25): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-  RayTracing.vcxproj -> E:\REPOSITORII\Zhizha\zhizha\Debug\ZhiZha.exe
