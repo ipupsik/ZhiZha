@@ -31,24 +31,24 @@ CollisionTriangle::CollisionTriangle(Vec2D _Position_v1,
     v3 = _Position_v3;
 }
 
-void CollisionTriangle::CollisionDetection_SphereSphere(std::unique_ptr<Collision> OtherCollision,
+void CollisionTriangle::CollisionDetection_SphereSphere(std::shared_ptr<Collision> OtherCollision,
                                                         HitResult &OutputHitResult) {
 }
 
-void CollisionTriangle::CollisionDetection_SphereTriangle(std::unique_ptr<Collision> OtherCollision,
+void CollisionTriangle::CollisionDetection_SphereTriangle(std::shared_ptr<Collision> OtherCollision,
                                                           HitResult &OutputHitResult) {
 }
 
 void CollisionTriangle::UpdatePhysicState(float DeltaSeconds) {
 }
 
-void Collision::CollisionDetection(std::unique_ptr<Collision> OtherCollision,
+void Collision::CollisionDetection(std::shared_ptr<Collision> OtherCollision,
                                    HitResult &OutputHitResult) {
     if (ShapeType == CollisionShape::Sphere) {
         if (OtherCollision->ShapeType == CollisionShape::Sphere) {
-            CollisionDetection_SphereSphere(std::move(OtherCollision), OutputHitResult);
+            CollisionDetection_SphereSphere(OtherCollision, OutputHitResult);
         } else if (OtherCollision->ShapeType == CollisionShape::Triangle) {
-            CollisionDetection_SphereTriangle(std::move(OtherCollision), OutputHitResult);
+            CollisionDetection_SphereTriangle(OtherCollision, OutputHitResult);
         }
     }
 }
@@ -61,7 +61,7 @@ void CollisionSphere::UpdatePhysicState(float DeltaSeconds) {
     Velocity.Y += Acceleration.Y * DeltaSeconds;
 }
 
-void CollisionSphere::CollisionDetection_SphereSphere(std::unique_ptr<Collision> OtherCollision,
+void CollisionSphere::CollisionDetection_SphereSphere(std::shared_ptr<Collision> OtherCollision,
                                                       HitResult &OutputHitResult) {
     auto Other = dynamic_cast<CollisionSphere*>(OtherCollision.get());
 
@@ -87,18 +87,18 @@ void CollisionSphere::CollisionDetection_SphereSphere(std::unique_ptr<Collision>
 
 Vec2D find_parent_position(Collision *Collision) {
     auto parent = Collision->Parent.lock();
-    Vec2D pos = {0, 0};
+    sf::Vector2f pos = {0, 0};
 
     while (parent) {
-        pos = pos + parent->Location;
+        pos += parent->Transform()->Location;
 
-        parent = parent->Parent.lock();
+        parent = parent->GetParent().lock();
     }
 
-    return pos;
+    return {pos.x, pos.y};
 }
 
-void CollisionSphere::CollisionDetection_SphereTriangle(std::unique_ptr<Collision> OtherCollision,
+void CollisionSphere::CollisionDetection_SphereTriangle(std::shared_ptr<Collision> OtherCollision,
                                                         HitResult &OutputHitResult) {
     auto OtherTriangle = dynamic_cast<CollisionTriangle *>(OtherCollision.get());
 

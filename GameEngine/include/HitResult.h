@@ -1,11 +1,12 @@
 #pragma once
 
-struct HitResult
-{
-	bool DoesHit;
-	struct
-	{
-		float x, y, z;
-	} HitLocation;
-	class Actor* HitActor;
+struct HitResult {
+  class Actor;
+
+  bool DoesHit;
+  struct {
+    float x, y, z;
+  } HitLocation;
+
+  Actor *HitActor;
 };
