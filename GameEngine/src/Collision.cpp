@@ -68,7 +68,7 @@ void CollisionSphere::CollisionDetection_SphereSphere(std::shared_ptr<Collision>
     float Dist = sqrt((Position.X - Other->Position.X) * (Position.X - Other->Position.X) + (Position.Y - Other->Position.Y) * (Position.Y - Other->Position.Y));
     if (Dist <= Radius + Other->Radius) {
         float Scalar = (Velocity.X - Other->Velocity.X) * (Position.X - Other->Position.X) + (Velocity.Y - Other->Velocity.Y) * (Position.Y - Other->Position.Y);
-        float Koeff = 2.0 * Other->Mas / (Mas + Other->Mas) * Scalar / (Dist * Dist);
+        float Koeff = 2.0f * Other->Mas / (Mas + Other->Mas) * Scalar / (Dist * Dist);
         float newV1_x = Velocity.X - Koeff * (Position.X - Other->Position.X);
         float newV1_y = Velocity.Y - Koeff * (Position.Y - Other->Position.Y);
 
@@ -102,7 +102,7 @@ void CollisionSphere::CollisionDetection_SphereTriangle(std::shared_ptr<Collisio
                                                         HitResult &OutputHitResult) {
     auto OtherTriangle = dynamic_cast<CollisionTriangle *>(OtherCollision.get());
 
-    float eps = 0.000001;
+    float eps = 0.000001f;
     float inf = 50000;
 
     // ����� ������� ��������� ��������� ������
