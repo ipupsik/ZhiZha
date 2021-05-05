@@ -1,8 +1,8 @@
 #pragma once
 
-struct HitResult {
-  class Actor;
+#include "Actor.h"
 
+struct HitResult {
   bool DoesHit;
   struct {
     float x, y, z;

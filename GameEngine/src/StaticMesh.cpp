@@ -8,48 +8,43 @@
 
 using namespace std;
 
-void StaticMesh::Init()
-{
-//	glGenBuffers(1, &IndexVBO);
-//	glBindBuffer(GL_ARRAY_BUFFER, IndexVBO);
-//	{
-//		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec2D) * vertices.size(), &*vertices.begin(), GL_STATIC_DRAW);
-//	}
-//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-//
-//	glGenBuffers(1, &IndexEBO);
-//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexEBO);
-//	{
-//		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(face) * faces.size(), &*faces.begin(), GL_STATIC_DRAW);
-//	}
-//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+void StaticMesh::Init() {
+	//	glGenBuffers(1, &IndexVBO);
+	//	glBindBuffer(GL_ARRAY_BUFFER, IndexVBO);
+	//	{
+	//		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec2D) * vertices.size(), &*vertices.begin(), GL_STATIC_DRAW);
+	//	}
+	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//
+	//	glGenBuffers(1, &IndexEBO);
+	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexEBO);
+	//	{
+	//		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(face) * faces.size(), &*faces.begin(), GL_STATIC_DRAW);
+	//	}
+	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void StaticMesh::Draw()
-{ 
-//	glBindBuffer(GL_ARRAY_BUFFER, IndexVBO);
-//	{
-//		glVertexPointer(2, GL_FLOAT, 0, NULL);
-//	}
-//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-//
-//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexEBO);
-//	{
-//		glDrawElements(GL_TRIANGLES, 3 * faces.size(), GL_UNSIGNED_INT, NULL);
-//	}
-//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+void StaticMesh::Draw() {
+	//	glBindBuffer(GL_ARRAY_BUFFER, IndexVBO);
+	//	{
+	//		glVertexPointer(2, GL_FLOAT, 0, NULL);
+	//	}
+	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//
+	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexEBO);
+	//	{
+	//		glDrawElements(GL_TRIANGLES, 3 * faces.size(), GL_UNSIGNED_INT, NULL);
+	//	}
+	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void StaticMesh::ReadFile(const sf::String &filename)
-{
+void StaticMesh::ReadFile(const sf::String& filename) {
 	string s;
-	ifstream fin(filename);
+	ifstream fin(filename.toAnsiString());
 	if (!fin)
 		return;
-	while (fin >> s)
-	{
-		if (s == "v")
-		{
+	while (fin >> s) {
+		if (s == "v") {
 			Vec2D v;
 			fin >> v.X >> v.Y;
 
@@ -58,8 +53,7 @@ void StaticMesh::ReadFile(const sf::String &filename)
 
 			vertices.push_back(v);
 		}
-		else if (s == "f")
-		{
+		else if (s == "f") {
 			char symbol;
 			face f, n, uv;
 
@@ -89,8 +83,7 @@ void StaticMesh::ReadFile(const sf::String &filename)
 			faces_normal.push_back(n);
 			faces_tex_coord.push_back(uv);
 		}
-		else if (s == "vn")
-		{
+		else if (s == "vn") {
 			Vec2D vn;
 			fin >> vn.X >> vn.Y;
 
@@ -99,14 +92,12 @@ void StaticMesh::ReadFile(const sf::String &filename)
 
 			normals.push_back(vn);
 		}
-		else if (s == "vt")
-		{
+		else if (s == "vt") {
 			Vec2D vt;
 			fin >> vt.X >> vt.Y;
 			uvs.push_back(vt);
 		}
-		else
-		{
+		else {
 			string tmp;
 			getline(fin, tmp);
 		}

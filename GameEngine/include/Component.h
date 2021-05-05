@@ -24,3 +24,11 @@ struct TestComponent: public Component {
 
   size_t Type() override;
 };
+
+struct NameComponent: public Component {
+	const std::string Name;
+
+	explicit NameComponent(std::string name);
+
+	size_t Type() override;
+};
