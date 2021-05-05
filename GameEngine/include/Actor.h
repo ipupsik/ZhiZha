@@ -4,15 +4,10 @@
 #include <memory>
 #include <SFML/System/String.hpp>
 #include <unordered_set>
+#include <unordered_map>
 #include <typeinfo>
 
-#include "StaticMesh.h"
-#include "Material.h"
-#include "Collision.h"
-#include "ActorManager.h"
 #include "Component.h"
-
-class Collision;
 
 class Actor {
   friend class ActorManager;

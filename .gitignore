@@ -33,4 +33,4 @@
 .vs
 .idea
 cmake-build-*/
-*/Debug/
+Debug/

@@ -73,7 +73,7 @@ void CollisionSphere::CollisionDetection_SphereSphere(std::shared_ptr<Collision>
         float newV1_y = Velocity.Y - Koeff * (Position.Y - Other->Position.Y);
 
         Scalar = (Other->Velocity.X - Velocity.X) * (Other->Position.X - Position.X) + (Other->Velocity.Y - Velocity.Y) * (Other->Position.Y - Position.Y);
-        Koeff = 2.0 * Mas / (Mas + Other->Mas) * Scalar / (Dist * Dist);
+        Koeff = 2.0f * Mas / (Mas + Other->Mas) * Scalar / (Dist * Dist);
         float newV2_x = Other->Velocity.X - Koeff * (Other->Position.X - Position.X);
         float newV2_y = Other->Velocity.Y - Koeff * (Other->Position.Y - Position.Y);
 
