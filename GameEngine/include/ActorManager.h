@@ -2,77 +2,82 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <memory>
-#include <ranges>
-#include <iostream>
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
 
 #include "Actor.h"
+#include "ActorArchetype.h"
 #include "Component.h"
 
 class ActorManager {
-	using Actor_p = std::shared_ptr<Actor>;
+  std::unordered_map<size_t, std::unordered_set<Actor>> _actors;
 
-	std::unordered_map<size_t, std::unordered_set<Actor_p>> _actors;
+  ActorManager();
 
-	ActorManager();
+  template<std::derived_from<Component> T, typename ...Args>
+  std::shared_ptr<T> addComponent(Actor &actor, Args &&...args) {
+      auto component = std::make_shared<T>(std::forward<Args>(args)...);
+      _actors.try_emplace(component->Type());
+      _actors[component->Type()].emplace(actor);
+      actor._components[component->Type()] = component;
+      return std::dynamic_pointer_cast<T>(component);
+  }
 
-	template<std::derived_from<Component> T, typename ...Args>
-	std::shared_ptr<T> AddComponent(const Actor_p& actor, Args &&...args) {
-		const auto& cmp = std::make_shared<T>(std::forward<Args>(args)...);
-		_actors.try_emplace(cmp->Type(), std::unordered_set<std::shared_ptr<Actor>>());
-		_actors[cmp->Type()].emplace(actor);
-		actor->_components[cmp->Type()] = cmp;
-		return cmp;
-	}
+ public:
+  std::unordered_set<Actor> GetActors() const;
 
-public:
-	std::vector<Actor_p> GetActors();
+  template<std::derived_from<Component> Component>
+  auto GetActorsBy() const {
+      if (_actors.contains(typeid(Component).hash_code()))
+          return _actors.at(typeid(Component).hash_code());
+      return std::unordered_set<Actor>();
+  }
 
-	template<std::derived_from<Component> Component>
-	auto GetActorsBy() {
-		if (_actors.contains(typeid(Component).hash_code()))
-			return _actors[typeid(Component).hash_code()];
-		return std::unordered_set<Actor_p>();
-	}
+  Actor CreateActor();
 
-	std::shared_ptr<Actor> CreateActor();
+  Actor Instantiate(const Actor &parent);
 
-	std::shared_ptr<Actor> Instantiate(const Actor_p& parent);
+  Actor Instantiate(const Actor &parent, sf::Vector2f position);
 
-	std::shared_ptr<Actor> Instantiate(const Actor_p& parent, sf::Vector2f position);
+  Actor FromArchetype(ActorArchetype &&archetype);
 
-	template<std::derived_from<Component> T>
-	std::shared_ptr<T> GetComponent(const Actor_p& actor) {
-		if (!_actors.contains(typeid(T).hash_code()))
-			return nullptr;
-		return std::dynamic_pointer_cast<T>(actor->_components[typeid(T).hash_code()]);
-	}
+  template<std::derived_from<Component> T>
+  std::shared_ptr<T> GetComponent(const Actor &actor) const {
+      if (!actor._components.contains(typeid(T).hash_code()))
+          return nullptr;
+      else
+          return std::dynamic_pointer_cast<T>(actor._components.at(typeid(T).hash_code()));
+  }
 
-	template<std::derived_from<Component> T, std::convertible_to<std::function<T()>> Func>
-	std::shared_ptr<T> GetOrAddComponent(const Actor_p& actor, Func f) {
-		auto cmp = GetComponent<T>(actor);
-		if (!cmp)
-			return AddComponent<T>(actor, f());
-		return cmp;
-	}
+  template<std::derived_from<Component> T, std::convertible_to<std::function<T()>> Func>
+  std::shared_ptr<T> GetOrAddComponent(Actor &actor, Func f) {
+      auto cmp = GetComponent<T>(actor);
+      if (!cmp)
+          return addComponent<T>(actor, f());
+      return cmp;
+  }
 
-	template<std::derived_from<Component> T>
-	std::shared_ptr<T> GetOrAddComponent(const Actor_p& actor, T cmp) {
-		return GetOrAddComponent<T>(actor, [&] {
-			return cmp;
-			});
-	}
+  template<std::derived_from<Component> T>
+  std::shared_ptr<T> GetOrAddComponent(Actor &actor, T cmp) {
+      return GetOrAddComponent<T>(actor, [&] {
+        return cmp;
+      });
+  }
 
-	template<std::derived_from<Component> T>
-	bool RemoveComponent(const Actor_p& actor) {
-		auto cmp = GetComponent<T>(actor);
-		if (!cmp) return false;
-		_actors[typeid(T).hash_code()].erase(actor);
-		actor->_components.erase(cmp->Type());
-		return true;
-	}
+  template<std::derived_from<Component> T>
+  bool RemoveComponent(Actor &actor) {
+      auto cmp = GetComponent<T>(actor);
+      if (!cmp) return false;
+      _actors[typeid(T).hash_code()].erase(actor);
+      actor._components.erase(cmp->Type());
+      return true;
+  }
 
-	static ActorManager Current;
+  template<std::derived_from<Component> T>
+  bool HasComponent(const Actor &actor) const {
+      return GetComponent<T>(actor) != nullptr;
+  }
+
+  static ActorManager Current;
 };

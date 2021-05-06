@@ -29,7 +29,7 @@ public:
 	std::weak_ptr<Actor> Parent;
 };
 
-class CollisionSphere : public Collision {
+class CollisionSphere : public Collision, private std::enable_shared_from_this<CollisionSphere> {
 public:
 	CollisionSphere(sf::Vector2f _Position, float _Radius, std::weak_ptr<Actor> parent);
 

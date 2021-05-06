@@ -2,34 +2,42 @@
 
 ActorManager ActorManager::Current = ActorManager();
 
-std::shared_ptr<Actor> ActorManager::Instantiate(const std::shared_ptr<Actor>& parent,
-                                                 const sf::Vector2f position) {
-	auto copy = std::make_shared<Actor>(Actor(*parent));
-	
-	copy->Transform()->Location = position;
-	copy->_parent = parent;
-	for (const auto& component : copy->_components | std::views::values) {
-		std::cout << component->Type() << std::endl;
-		_actors.try_emplace(component->Type(), std::unordered_set<decltype(copy)>());
-		_actors[component->Type()].emplace(copy);
+Actor ActorManager::Instantiate(const Actor& parent, const sf::Vector2f position) {
+	auto copy = parent.copy();
+
+	copy.Transform()->Location = position;
+	for (const auto& [type, component] : copy._components) {
+		_actors.try_emplace(type);
+		_actors[type].emplace(copy);
 	}
-	return copy;
+	return std::forward<Actor>(copy);
 }
 
-std::shared_ptr<Actor> ActorManager::Instantiate(const std::shared_ptr<Actor>& parent) {
-	return Instantiate(parent, parent->Transform()->Location);
+Actor ActorManager::FromArchetype(ActorArchetype&& archetype) {
+	auto actor = CreateActor();
+
+	for (const auto& component : archetype.GetComponents()) {
+		_actors.try_emplace(component->Type());
+		_actors[component->Type()].emplace(actor);
+		actor._components.emplace(component->Type(), component->Copy());
+	}
+	return actor;
 }
 
-std::shared_ptr<Actor> ActorManager::CreateActor() {
-	const auto basic = std::make_shared<Actor>();
-	basic->_transform = AddComponent<TransformComponent>(basic, TransformComponent({ 0, 0 }, { 0, 0 }, { 1, 1 }));
+Actor ActorManager::Instantiate(const Actor& parent) {
+	return Instantiate(parent, parent.Transform()->Location);
+}
+
+Actor ActorManager::CreateActor() {
+	auto basic = Actor();
+	addComponent<TransformComponent>(basic, TransformComponent({0, 0}, {0, 0}, {1, 1}));
 	return basic;
 }
 
-std::vector<std::shared_ptr<Actor>> ActorManager::GetActors() {
+std::unordered_set<Actor> ActorManager::GetActors() const {
 	decltype(GetActors()) result;
-	for (const auto& v : _actors | std::views::values)
-		result.insert(result.end(), v.begin(), v.end());
+	for (const auto& [k, v] : _actors)
+		result.insert(v.begin(), v.end());
 	return result;
 }
 

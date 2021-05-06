@@ -21,14 +21,14 @@ namespace sf::Extensions::Vector2 {
 
 	template <typename T>
 	constexpr auto Dot(const sf::Vector2<T>& other) {
-		return [&](const sf::Vector2<T>& vector) {
+		return [&](const sf::Vector2<T>& vector) -> T {
 			return vector.x * other.y - vector.y * other.x;
 		};
 	}
 
 	template <typename T>
 	constexpr auto Cross(const sf::Vector2<T>& other) {
-		return [&](const sf::Vector2<T>& vector) {
+		return [&](const sf::Vector2<T>& vector) -> T {
 			return vector.x * other.x - vector.y * other.y;
 		};
 	}
@@ -49,21 +49,21 @@ namespace sf::Extensions::Vector2 {
 
 	template <typename T = float>
 	constexpr auto Normal() {
-		return [](const sf::Vector2<T>& vector) {
+		return [](const sf::Vector2<T>& vector)-> sf::Vector2<T> {
 			return sf::Vector2<T>{vector.y, -vector.x};
 		};
 	}
 
 	template <typename T>
 	constexpr auto SqrMagnitude(const sf::Vector2<T>& other) {
-		return [&](const sf::Vector2<T>& vector) {
+		return [&](const sf::Vector2<T>& vector)-> T {
 			return (vector.x - other.x) * (vector.x - other.x) + (vector.y - other.y) * (vector.y - other.y);
 		};
 	}
 
 	template <typename T>
 	constexpr auto Magnitude(const sf::Vector2<T>& other) {
-		return [&](const sf::Vector2<T>& vector) {
+		return [&](const sf::Vector2<T>& vector)-> float {
 			return std::sqrt(vector->*SqrMagnitude(other));
 		};
 	}
@@ -76,6 +76,6 @@ concept ExtensionObj = requires(const For& primary, const Ext& extension) {
 
 template <typename T, typename E>
 	requires ExtensionObj<E, T>
-auto operator ->*(const T& primary, const E& extension) -> decltype(extension(primary)) {
+auto operator ->*(T primary, E extension) -> decltype(extension(primary)) {
 	return extension(primary);
 }

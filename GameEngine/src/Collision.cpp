@@ -88,14 +88,14 @@ void CollisionSphere::CollisionDetection_SphereSphere(std::shared_ptr<Collision>
 	}
 }
 
-sf::Vector2f find_parent_position(Collision* Collision) {
+sf::Vector2f find_parent_position(std::shared_ptr<Collision> Collision) {
 	auto parent = Collision->Parent.lock();
 	sf::Vector2f pos = {0, 0};
 
 	while (parent) {
 		pos += parent->Transform()->Location;
 
-		parent = parent->GetParent().lock();
+		parent = std::make_shared<Actor>(*parent->GetParent());
 	}
 
 	return {pos.x, pos.y};
@@ -103,13 +103,13 @@ sf::Vector2f find_parent_position(Collision* Collision) {
 
 void CollisionSphere::CollisionDetection_SphereTriangle(std::shared_ptr<Collision> otherCollision,
                                                         HitResult& outputHitResult) {
-	const auto otherTriangle = dynamic_cast<CollisionTriangle*>(otherCollision.get());
+	const auto otherTriangle = std::dynamic_pointer_cast<CollisionTriangle>(otherCollision);
 
 	const float eps = 0.000001f;
 	const float inf = 50000;
 
 	const sf::Vector2f posParentTriangle = find_parent_position(otherTriangle);
-	const sf::Vector2f posParentMy = find_parent_position(this);
+	const sf::Vector2f posParentMy = find_parent_position(shared_from_this());
 
 	const sf::Vector2f worldPosV1 = otherTriangle->v1 + posParentTriangle;
 	const sf::Vector2f worldPosV2 = otherTriangle->v2 + posParentTriangle;
