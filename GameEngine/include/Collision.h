@@ -4,24 +4,24 @@
 
 #include "HitResult.h"
 #include "PupsyaEnums.h"
-#include "PupsyaTypes.h"
 
 class Actor;
 
-class Collision
-{
+class Collision {
 public:
 	Collision();
 	Collision(std::weak_ptr<Actor> parent);
 
 	void CollisionDetection(std::shared_ptr<Collision> OtherCollision, HitResult& OutputHitResult);
 
-	virtual void CollisionDetection_SphereSphere(std::shared_ptr<Collision> OtherCollision, HitResult& OutputHitResult) = 0;
-	virtual void CollisionDetection_SphereTriangle(std::shared_ptr<Collision> OtherCollision, HitResult& OutputHitResult) = 0;
+	virtual void CollisionDetection_SphereSphere(std::shared_ptr<Collision> OtherCollision, HitResult& OutputHitResult)
+	= 0;
+	virtual void CollisionDetection_SphereTriangle(std::shared_ptr<Collision> OtherCollision,
+	                                               HitResult& OutputHitResult) = 0;
 
 	virtual void UpdatePhysicState(float DeltaSeconds) = 0;
 
-	Vec2D Velocity, Acceleration;
+	sf::Vector2f Velocity, Acceleration;
 
 	float Mas;
 
@@ -29,29 +29,32 @@ public:
 	std::weak_ptr<Actor> Parent;
 };
 
-class CollisionSphere : public Collision
-{
+class CollisionSphere : public Collision {
 public:
-	CollisionSphere(Vec2D _Position, float _Radius, std::weak_ptr<Actor> parent);
+	CollisionSphere(sf::Vector2f _Position, float _Radius, std::weak_ptr<Actor> parent);
 
-	void CollisionDetection_SphereSphere(std::shared_ptr<Collision> OtherCollision, HitResult& OutputHitResult) override;
-	void CollisionDetection_SphereTriangle(std::shared_ptr<Collision> OtherCollision, HitResult& OutputHitResult) override;
+	void CollisionDetection_SphereSphere(std::shared_ptr<Collision> OtherCollision,
+	                                     HitResult& OutputHitResult) override;
+	void CollisionDetection_SphereTriangle(std::shared_ptr<Collision> otherCollision,
+	                                       HitResult& outputHitResult) override;
 
 	void UpdatePhysicState(float DeltaSeconds) override;
 
-	Vec2D Position;
+	sf::Vector2f Position;
 	float Radius;
 };
 
-class CollisionTriangle : public Collision
-{
+class CollisionTriangle : public Collision {
 public:
-	CollisionTriangle(Vec2D _Position_v1, Vec2D _Position_v2, Vec2D _Position_v3, std::weak_ptr<Actor> parent);
+	CollisionTriangle(sf::Vector2f _Position_v1, sf::Vector2f _Position_v2, sf::Vector2f _Position_v3,
+	                  std::weak_ptr<Actor> parent);
 
-	void CollisionDetection_SphereSphere(std::shared_ptr<Collision> OtherCollision, HitResult& OutputHitResult) override;
-	void CollisionDetection_SphereTriangle(std::shared_ptr<Collision> OtherCollision, HitResult& OutputHitResult) override;
+	void CollisionDetection_SphereSphere(std::shared_ptr<Collision> OtherCollision,
+	                                     HitResult& OutputHitResult) override;
+	void CollisionDetection_SphereTriangle(std::shared_ptr<Collision> OtherCollision,
+	                                       HitResult& OutputHitResult) override;
 
 	void UpdatePhysicState(float DeltaSeconds) override;
 
-	Vec2D v1, v2, v3;
+	sf::Vector2f v1, v2, v3;
 };

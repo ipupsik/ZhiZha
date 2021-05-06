@@ -45,8 +45,8 @@ void StaticMesh::ReadFile(const sf::String& filename) {
 		return;
 	while (fin >> s) {
 		if (s == "v") {
-			Vec2D v;
-			fin >> v.X >> v.Y;
+			sf::Vector2f v;
+			fin >> v.x >> v.y;
 
 			float tmp;
 			fin >> tmp;
@@ -84,8 +84,8 @@ void StaticMesh::ReadFile(const sf::String& filename) {
 			faces_tex_coord.push_back(uv);
 		}
 		else if (s == "vn") {
-			Vec2D vn;
-			fin >> vn.X >> vn.Y;
+			sf::Vector2f vn;
+			fin >> vn.x >> vn.y;
 
 			float tmp;
 			fin >> tmp;
@@ -93,8 +93,8 @@ void StaticMesh::ReadFile(const sf::String& filename) {
 			normals.push_back(vn);
 		}
 		else if (s == "vt") {
-			Vec2D vt;
-			fin >> vt.X >> vt.Y;
+			sf::Vector2f vt;
+			fin >> vt.x >> vt.y;
 			uvs.push_back(vt);
 		}
 		else {

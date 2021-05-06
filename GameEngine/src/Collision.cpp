@@ -1,247 +1,239 @@
 #include "Collision.h"
 #include <cmath>
 #include "Actor.h"
+#include "utils.h"
 
-Collision::Collision() {
+using namespace sf::Extensions::Vector2;
 
-}
+Collision::Collision() {}
 
 Collision::Collision(std::weak_ptr<Actor> parent) {
-    Parent = parent;
+	Parent = parent;
 }
 
-CollisionSphere::CollisionSphere(Vec2D _Position, float _Radius, std::weak_ptr<Actor> parent)
-    : Collision(parent) {
-    ShapeType = CollisionShape::Sphere;
+CollisionSphere::CollisionSphere(sf::Vector2f _Position, float _Radius, std::weak_ptr<Actor> parent)
+	: Collision(parent) {
+	ShapeType = CollisionShape::Sphere;
 
-    Velocity = {0, 0};
-    Acceleration = {0, 0};
-    Position = _Position;
-    Radius = _Radius;
+	Velocity = {0, 0};
+	Acceleration = {0, 0};
+	Position = _Position;
+	Radius = _Radius;
 }
 
-CollisionTriangle::CollisionTriangle(Vec2D _Position_v1,
-                                     Vec2D _Position_v2,
-                                     Vec2D _Position_v3,
+CollisionTriangle::CollisionTriangle(sf::Vector2f _Position_v1,
+                                     sf::Vector2f _Position_v2,
+                                     sf::Vector2f _Position_v3,
                                      std::weak_ptr<Actor> parent) : Collision(parent) {
-    ShapeType = CollisionShape::Triangle;
+	ShapeType = CollisionShape::Triangle;
 
-    v1 = _Position_v1;
-    v2 = _Position_v2;
-    v3 = _Position_v3;
+	v1 = _Position_v1;
+	v2 = _Position_v2;
+	v3 = _Position_v3;
 }
 
 void CollisionTriangle::CollisionDetection_SphereSphere(std::shared_ptr<Collision> OtherCollision,
-                                                        HitResult &OutputHitResult) {
-}
+                                                        HitResult& OutputHitResult) {}
 
 void CollisionTriangle::CollisionDetection_SphereTriangle(std::shared_ptr<Collision> OtherCollision,
-                                                          HitResult &OutputHitResult) {
-}
+                                                          HitResult& OutputHitResult) {}
 
-void CollisionTriangle::UpdatePhysicState(float DeltaSeconds) {
-}
+void CollisionTriangle::UpdatePhysicState(float DeltaSeconds) {}
 
 void Collision::CollisionDetection(std::shared_ptr<Collision> OtherCollision,
-                                   HitResult &OutputHitResult) {
-    if (ShapeType == CollisionShape::Sphere) {
-        if (OtherCollision->ShapeType == CollisionShape::Sphere) {
-            CollisionDetection_SphereSphere(OtherCollision, OutputHitResult);
-        } else if (OtherCollision->ShapeType == CollisionShape::Triangle) {
-            CollisionDetection_SphereTriangle(OtherCollision, OutputHitResult);
-        }
-    }
+                                   HitResult& OutputHitResult) {
+	if (ShapeType == CollisionShape::Sphere) {
+		if (OtherCollision->ShapeType == CollisionShape::Sphere) {
+			CollisionDetection_SphereSphere(OtherCollision, OutputHitResult);
+		}
+		else if (OtherCollision->ShapeType == CollisionShape::Triangle) {
+			CollisionDetection_SphereTriangle(OtherCollision, OutputHitResult);
+		}
+	}
 }
 
 void CollisionSphere::UpdatePhysicState(float DeltaSeconds) {
-    Position.X += Velocity.X + Acceleration.X * DeltaSeconds * DeltaSeconds / 2;
-    Position.Y += Velocity.Y + Acceleration.Y * DeltaSeconds * DeltaSeconds / 2;
+	Position.x += Velocity.x + Acceleration.x * DeltaSeconds * DeltaSeconds / 2;
+	Position.y += Velocity.y + Acceleration.y * DeltaSeconds * DeltaSeconds / 2;
 
-    Velocity.X += Acceleration.X * DeltaSeconds;
-    Velocity.Y += Acceleration.Y * DeltaSeconds;
+	Velocity.x += Acceleration.x * DeltaSeconds;
+	Velocity.y += Acceleration.y * DeltaSeconds;
 }
 
 void CollisionSphere::CollisionDetection_SphereSphere(std::shared_ptr<Collision> OtherCollision,
-                                                      HitResult &OutputHitResult) {
-    auto Other = dynamic_cast<CollisionSphere*>(OtherCollision.get());
+                                                      HitResult& OutputHitResult) {
+	auto Other = dynamic_cast<CollisionSphere*>(OtherCollision.get());
 
-    float Dist = sqrt((Position.X - Other->Position.X) * (Position.X - Other->Position.X) + (Position.Y - Other->Position.Y) * (Position.Y - Other->Position.Y));
-    if (Dist <= Radius + Other->Radius) {
-        float Scalar = (Velocity.X - Other->Velocity.X) * (Position.X - Other->Position.X) + (Velocity.Y - Other->Velocity.Y) * (Position.Y - Other->Position.Y);
-        float Koeff = 2.0f * Other->Mas / (Mas + Other->Mas) * Scalar / (Dist * Dist);
-        float newV1_x = Velocity.X - Koeff * (Position.X - Other->Position.X);
-        float newV1_y = Velocity.Y - Koeff * (Position.Y - Other->Position.Y);
+	float Dist = sqrt(
+		(Position.x - Other->Position.x) * (Position.x - Other->Position.x) + (Position.y - Other->Position.y) * (
+			Position.y - Other->Position.y));
+	if (Dist <= Radius + Other->Radius) {
+		float Scalar = (Velocity.x - Other->Velocity.x) * (Position.x - Other->Position.x) + (Velocity.y - Other->
+			Velocity.y) * (Position.y - Other->Position.y);
+		float Koeff = 2.0f * Other->Mas / (Mas + Other->Mas) * Scalar / (Dist * Dist);
+		float newV1_x = Velocity.x - Koeff * (Position.x - Other->Position.x);
+		float newV1_y = Velocity.y - Koeff * (Position.y - Other->Position.y);
 
-        Scalar = (Other->Velocity.X - Velocity.X) * (Other->Position.X - Position.X) + (Other->Velocity.Y - Velocity.Y) * (Other->Position.Y - Position.Y);
-        Koeff = 2.0f * Mas / (Mas + Other->Mas) * Scalar / (Dist * Dist);
-        float newV2_x = Other->Velocity.X - Koeff * (Other->Position.X - Position.X);
-        float newV2_y = Other->Velocity.Y - Koeff * (Other->Position.Y - Position.Y);
+		Scalar = (Other->Velocity.x - Velocity.x) * (Other->Position.x - Position.x) + (Other->Velocity.y - Velocity.y)
+			* (Other->Position.y - Position.y);
+		Koeff = 2.0f * Mas / (Mas + Other->Mas) * Scalar / (Dist * Dist);
+		float newV2_x = Other->Velocity.x - Koeff * (Other->Position.x - Position.x);
+		float newV2_y = Other->Velocity.y - Koeff * (Other->Position.y - Position.y);
 
-        Velocity.X = newV1_x;
-        Velocity.Y = newV1_y;
+		Velocity.x = newV1_x;
+		Velocity.y = newV1_y;
 
-        Other->Velocity.X = newV2_x;
-        Other->Velocity.Y = newV2_y;
-    }
+		Other->Velocity.x = newV2_x;
+		Other->Velocity.y = newV2_y;
+	}
 }
 
-Vec2D find_parent_position(Collision *Collision) {
-    auto parent = Collision->Parent.lock();
-    sf::Vector2f pos = {0, 0};
+sf::Vector2f find_parent_position(Collision* Collision) {
+	auto parent = Collision->Parent.lock();
+	sf::Vector2f pos = {0, 0};
 
-    while (parent) {
-        pos += parent->Transform()->Location;
+	while (parent) {
+		pos += parent->Transform()->Location;
 
-        parent = parent->GetParent().lock();
-    }
+		parent = parent->GetParent().lock();
+	}
 
-    return {pos.x, pos.y};
+	return {pos.x, pos.y};
 }
 
-void CollisionSphere::CollisionDetection_SphereTriangle(std::shared_ptr<Collision> OtherCollision,
-                                                        HitResult &OutputHitResult) {
-    auto OtherTriangle = dynamic_cast<CollisionTriangle *>(OtherCollision.get());
+void CollisionSphere::CollisionDetection_SphereTriangle(std::shared_ptr<Collision> otherCollision,
+                                                        HitResult& outputHitResult) {
+	const auto otherTriangle = dynamic_cast<CollisionTriangle*>(otherCollision.get());
 
-    float eps = 0.000001f;
-    float inf = 50000;
+	const float eps = 0.000001f;
+	const float inf = 50000;
 
-    // ����� ������� ��������� ��������� ������
-    Vec2D pos_parent_triangle = find_parent_position(OtherTriangle);
-    Vec2D pos_parent_my = find_parent_position(this);
+	const sf::Vector2f posParentTriangle = find_parent_position(otherTriangle);
+	const sf::Vector2f posParentMy = find_parent_position(this);
 
-    // ������� ������ � ������� ����������
-    Vec2D world_pos_v1 = OtherTriangle->v1 + pos_parent_triangle;
-    Vec2D world_pos_v2 = OtherTriangle->v2 + pos_parent_triangle;
-    Vec2D world_pos_v3 = OtherTriangle->v3 + pos_parent_triangle;
-    Vec2D world_pos_circle = Position + pos_parent_my;
+	const sf::Vector2f worldPosV1 = otherTriangle->v1 + posParentTriangle;
+	const sf::Vector2f worldPosV2 = otherTriangle->v2 + posParentTriangle;
+	const sf::Vector2f worldPosV3 = otherTriangle->v3 + posParentTriangle;
+	const sf::Vector2f worldPosCircle = Position + posParentMy;
 
-    // ����������� ��������-������ ������������
-    Vec2D vec12 = world_pos_v2 - world_pos_v1;
-    Vec2D vec13 = world_pos_v3 - world_pos_v1;
-    Vec2D vec23 = world_pos_v3 - world_pos_v2;
+	sf::Vector2f vec12 = worldPosV2 - worldPosV1;
+	sf::Vector2f vec13 = worldPosV3 - worldPosV1;
+	sf::Vector2f vec23 = worldPosV3 - worldPosV2;
 
-    // ����������� ������� �� ������ ����� �� ������ ����������
-    Vec2D vec10 = world_pos_circle - world_pos_v1;
-    Vec2D vec20 = world_pos_circle - world_pos_v2;
-    Vec2D vec30 = world_pos_circle - world_pos_v3;
+	const sf::Vector2f vec10 = worldPosCircle - worldPosV1;
+	const sf::Vector2f vec20 = worldPosCircle - worldPosV2;
+	const sf::Vector2f vec30 = worldPosCircle - worldPosV3;
 
-    // ���������� �� ������ O �� ������ �� ������ ������������
-    float h_12 = vec10.Length() * fabs(vec12.FindSin(vec10));
-    float h_13 = vec10.Length() * fabs(vec13.FindSin(vec10));
-    float h_23 = vec20.Length() * fabs(vec23.FindSin(vec20));
+	const float h12 = vec10->*Length<float>() * fabs(vec12->*Sin(vec10));
+	const float h13 = vec10->*Length<float>() * fabs(vec13->*Sin(vec10));
+	const float h23 = vec20->*Length<float>() * fabs(vec23->*Sin(vec20));
 
-    // ���������� ����� O, ��������������� �� ��������������� ������� ������������
-    Vec2D p_12 = world_pos_v1 + vec12.Normalize() * vec10.Length() * vec12.FindCos(vec10);
-    Vec2D p_13 = world_pos_v1 + vec13.Normalize() * vec10.Length() * vec13.FindCos(vec10);
-    Vec2D p_23 = world_pos_v2 + vec23.Normalize() * vec20.Length() * vec23.FindCos(vec20);
+	const sf::Vector2f p12 = worldPosV1 + vec10->*Normalize<float>() * vec10->*Length<float>() * vec12->*Cos(vec10);
+	const sf::Vector2f p13 = worldPosV1 + vec13->*Normalize<float>() * vec10->*Length<float>() * vec13->*Cos(vec10);
+	const sf::Vector2f p23 = worldPosV2 + vec23->*Normalize<float>() * vec20->*Length<float>() * vec23->*Cos(vec20);
 
-    //Debug
-    float a = (p_12 - world_pos_circle).Length();
-    float b = (p_13 - world_pos_circle).Length();
-    float c = (p_23 - world_pos_circle).Length();
+	float a = p12->*Magnitude(worldPosCircle);
+	float b = p13->*Magnitude(worldPosCircle);
+	float c = p23->*Magnitude(worldPosCircle);
 
-    // ����� �������, �� ������� ���������� ���������� (��� �����, ��� ����� ����� �� ������� ��� �������
-    // �� ��� ����� �� ������, ��� �� R)
-
-    float min_h = inf; //����������� ���������� �� �������
-    Vec2D min_line = {0, 0}; //����������� �������
-    Vec2D min_dist_to_center = {0, 0}; //����������� ���������� �� ������ ����������
+	float min_h = inf;
+	sf::Vector2f min_line = {0, 0};
+	sf::Vector2f min_dist_to_center = {0, 0};
 
 
-    float offset = (world_pos_v1 - p_12).Length(); //�������� ���������� ������������ ���� �������
-    if ((world_pos_v2 - p_12).Length() < offset)
-        offset = (world_pos_v2 - p_12).Length();
+	float offset = worldPosV1->*Magnitude(p12);
+	if (worldPosV2->*Magnitude(p12) < offset)
+		offset = worldPosV2->*Magnitude(p12);
 
-    if (h_12 < min_h &&  // ���������� ������, ��� ��� ���������
-        ((fabs((p_12 - world_pos_v1).Length() + (p_12 - world_pos_v2).Length() - (vec12.Length())) < eps) || //����� ����� �� �������
-            (vec10.Length() < Radius || vec20.Length() < Radius))) //��� ���������� ����� ������������ �������� �� �������
-    {
-        min_h = h_12;
-        min_line = vec12;
-        min_dist_to_center = vec10;
-    }
+	if (h12 < min_h
+		&& (fabs(worldPosV1->*Magnitude(p12) + worldPosV2->*Magnitude(p12) - vec12->*Length<float>()) < eps
+			|| (vec10->*Length<float>() < Radius || vec20->*Length<float>() < Radius))) {
+		min_h = h12;
+		min_line = vec12;
+		min_dist_to_center = vec10;
+	}
 
-    offset = (world_pos_v1 - p_13).Length(); //�������� ���������� ������������ ���� �������
-    if ((world_pos_v3 - p_13).Length() < offset)
-        offset = (world_pos_v3 - p_13).Length();
+	offset = worldPosV1->*Magnitude(p13);
+	if (worldPosV3->*Magnitude(p13) < offset)
+		offset = worldPosV3->*Magnitude(p13);
 
-    if (h_13 < min_h &&
-        ((fabs((p_13 - world_pos_v1).Length() + (p_13 - world_pos_v3).Length() - (vec13.Length())) < eps) ||
-            (vec10.Length() < Radius || vec30.Length() < Radius))) {
-        min_h = h_13;
-        min_line = vec13;
-        min_dist_to_center = vec10;
+	if (h13 < min_h &&
+		(fabs(worldPosV1->*Magnitude(p13) + worldPosV3->*Magnitude(p13) - (vec13->*Length<float>())) < eps || (
+			vec10->*Length<float>() < Radius || vec30->*Length<float>() < Radius))) {
+		min_h = h13;
+		min_line = vec13;
+		min_dist_to_center = vec10;
 
-        //does_hit = true;
-    }
-    /*float cos_012 = vec12.Dot(vec10) / vec12.Length() / vec10.Length();
-    float cos_021 = (vec12 * -1).Dot(vec20) / vec12.Length() / vec20.Length();
+		//does_hit = true;
+	}
+	/*float cos_012 = vec12.Dot(vec10) / vec12.Length<float>() / vec10.Length<float>();
+	float cos_021 = (vec12 * -1).Dot(vec20) / vec12.Length<float>() / vec20.Length<float>();
 
-    float cos_013 = vec13.Dot(vec10) / vec13.Length() / vec10.Length();
-    float cos_031 = (vec13 * -1).Dot(vec30) / vec13.Length() / vec30.Length();
+	float cos_013 = vec13.Dot(vec10) / vec13.Length<float>() / vec10.Length<float>();
+	float cos_031 = (vec13 * -1).Dot(vec30) / vec13.Length<float>() / vec30.Length<float>();
 
-    float cos_023 = vec23.Dot(vec20) / vec23.Length() / vec20.Length();
-    float cos_032 = (vec23 * -1).Dot(vec30) / vec23.Length() / vec30.Length();
+	float cos_023 = vec23.Dot(vec20) / vec23.Length<float>() / vec20.Length<float>();
+	float cos_032 = (vec23 * -1).Dot(vec30) / vec23.Length<float>() / vec30.Length<float>();
 
-    float h_12 = fabs(sqrt(pow(vec10.Length(), 2) - pow(cos_012 * vec10.Length(),2)));
-    float h_13 = fabs(sqrt(pow(vec10.Length(), 2) - pow(cos_013 * vec10.Length(),2)));
-    float h_23 = fabs(sqrt(pow(vec20.Length(), 2) - pow(cos_023 * vec20.Length(),2))); ��� �������*/
+	float h_12 = fabs(sqrt(pow(vec10.Length<float>(), 2) - pow(cos_012 * vec10.Length<float>(),2)));
+	float h_13 = fabs(sqrt(pow(vec10.Length<float>(), 2) - pow(cos_013 * vec10.Length<float>(),2)));
+	float h_23 = fabs(sqrt(pow(vec20.Length<float>(), 2) - pow(cos_023 * vec20.Length<float>(),2))); ��� �������*/
 
-    /*(bool does_hit = false;
+	/*(bool does_hit = false;
 
-    if (cos_012 >= 0 && cos_021 >= 0)
-    {
-        min_h = h_12;
-        min_line = vec12;
-        min_dist_to_center = vec10;
+	if (cos_012 >= 0 && cos_021 >= 0)
+	{
+	    min_h = h_12;
+	    min_line = vec12;
+	    min_dist_to_center = vec10;
 
-        does_hit = true;
-    }
+	    does_hit = true;
+	}
 
-    if (cos_013 >= 0 && cos_031 >= 0)
-    {
-        if (!does_hit || h_13 < min_h)
-        {
-            min_h = h_13;
-            min_line = vec13;
-            min_dist_to_center = vec10;
+	if (cos_013 >= 0 && cos_031 >= 0)
+	{
+	    if (!does_hit || h_13 < min_h)
+	    {
+	        min_h = h_13;
+	        min_line = vec13;
+	        min_dist_to_center = vec10;
 
-            does_hit = true;
-        }
-    } */
+	        does_hit = true;
+	    }
+	} */
 
-    offset = (world_pos_v2 - p_23).Length(); //�������� ���������� ������������ ���� �������
-    if ((world_pos_v3 - p_23).Length() < offset)
-        offset = (world_pos_v3 - p_23).Length();
+	offset = worldPosV2->*Magnitude(p23);
+	if (worldPosV3->*Magnitude(p23) < offset)
+		offset = worldPosV3->*Magnitude(p23);
 
-    if (h_23 < min_h &&
-        ((fabs((p_23 - world_pos_v2).Length() + (p_23 - world_pos_v3).Length() - (vec23.Length())) < eps) ||
-            (vec20.Length() < Radius || vec30.Length() < Radius)))
+	if (h23 < min_h && ((fabs(
+		worldPosV2->*Magnitude(p23) + worldPosV3->*Magnitude(p23) - (vec23->*Length<float>())) < eps) || (vec20->*
+		Length<float>() < Radius || vec30->*Length<float>() < Radius)))
 
-        //if (cos_023 >= 0 && cos_032 >= 0)
-    {
-        //if (!does_hit || h_23 < min_h)
-        min_h = h_23;
-        min_line = vec23;
-        min_dist_to_center = vec20;
+		//if (cos_023 >= 0 && cos_032 >= 0)
+	{
+		//if (!does_hit || h_23 < min_h)
+		min_h = h23;
+		min_line = vec23;
+		min_dist_to_center = vec20;
 
-        //does_hit = true;
-    }
-    /*if (does_hit && min_h < Radius) ��� �������
-    {
-        Vec2D n = (min_line.Cross(min_line.Cross(min_dist_to_center))).Normalize();*/
+		//does_hit = true;
+	}
+	/*if (does_hit && min_h < Radius) ��� �������
+	{
+	    Vec2D n = (min_line.Cross(min_line.Cross(min_dist_to_center))).Normalize();*/
 
-    if (min_h != inf && min_h < Radius) {
-        //Vec2D n = (min_line.Cross(min_line.Cross(min_dist_to_center))).Normalize();
+	if (min_h != inf && min_h < Radius) {
+		//Vec2D n = (min_line.Cross(min_line.Cross(min_dist_to_center))).Normalize();
 
-        //float alpha_double = 2 * acos(min_line.Dot(n) / n.Length() / min_line.Length());
+		//float alpha_double = 2 * acos(min_line.Dot(n) / n.Length<float>() / min_line.Length<float>());
 
-        /*//Vec2D new_velocity = {cos(alpha_double) * Velocity.X - sin(alpha_double) * Velocity.Y,
-        //					  sin(alpha_double) * Velocity.X + cos(alpha_double) * Velocity.Y};
-        Vec2D new_velocity = { 1, 1 };
-        Velocity = new_velocity; ��� ������ */
+		/*//Vec2D new_velocity = {cos(alpha_double) * Velocity.X - sin(alpha_double) * Velocity.Y,
+		//					  sin(alpha_double) * Velocity.X + cos(alpha_double) * Velocity.Y};
+		Vec2D new_velocity = { 1, 1 };
+		Velocity = new_velocity; ��� ������ */
 
-        //Velocity = new_velocity;
-        Velocity = {0, 0};
-    }
+		//Velocity = new_velocity;
+		Velocity = {0, 0};
+	}
 }
