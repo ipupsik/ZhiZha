@@ -13,22 +13,11 @@ Entity EntityManager::Instantiate(const Entity& parent, const sf::Vector2f posit
 	return std::forward<Entity>(copy);
 }
 
-Entity EntityManager::FromArchetype(EntityArchetype&& archetype) {
-	auto actor = CreateActor();
-
-	for (const auto& component : archetype.GetComponents()) {
-		_actors.try_emplace(component->Type());
-		_actors[component->Type()].emplace(actor);
-		actor._components.emplace(component->Type(), component->Copy());
-	}
-	return actor;
-}
-
 Entity EntityManager::Instantiate(const Entity& parent) {
 	return Instantiate(parent, parent.Transform()->Location);
 }
 
-Entity EntityManager::CreateActor() {
+Entity EntityManager::CreateEntity() {
 	auto basic = Entity();
 	addComponent<TransformComponent>(basic, TransformComponent({0, 0}, {0, 0}, {1, 1}));
 	return basic;
