@@ -4,35 +4,44 @@
 #include <string>
 #include <memory>
 
+#include "TypeFamily.h"
+
 class Component {
 public:
-	virtual size_t Type() = 0;
 	virtual std::shared_ptr<Component> Copy() = 0;
+
+	void operator delete(void*) = delete;
+	void operator delete[](void*) = delete;
 };
 
-struct TransformComponent : public Component {
+template <typename T>
+struct ComponentData : public Component {
+	static std::size_t Type;
+};
+
+template <typename T>
+std::size_t ComponentData<T>::Type = TypeFamily<Component>::Type<T>();
+
+struct TransformComponent : public ComponentData<TransformComponent> {
 	sf::Vector2f Location, Rotation, Scale;
 
 	TransformComponent(sf::Vector2f location, sf::Vector2f rotation, sf::Vector2f scale);
 
-	size_t Type() override;
 	std::shared_ptr<Component> Copy() override;
 };
 
-struct TestComponent : public Component {
+struct TestComponent : public ComponentData<TestComponent> {
 	int Data;
 
 	explicit TestComponent(int data);
 
-	size_t Type() override;
 	std::shared_ptr<Component> Copy() override;
 };
 
-struct NameComponent : public Component {
+struct NameComponent : public ComponentData<NameComponent> {
 	std::string Name;
 
 	explicit NameComponent(std::string name);
 
-	size_t Type() override;
 	std::shared_ptr<Component> Copy() override;
 };
