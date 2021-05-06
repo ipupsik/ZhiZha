@@ -2,19 +2,18 @@
 
 #include <vector>
 #include <SFML/System/String.hpp>
+#include <SFML/System/Vector2.hpp>
 
-#include "PupsyaTypes.h"
-
-class StaticMesh
-{
+class StaticMesh {
 public:
 	struct face {
 		unsigned int v1, v2, v3;
 	};
+
 	// raw data
-	std::vector<Vec2D> vertices;
-	std::vector<Vec2D> normals;
-	std::vector<Vec2D> uvs;
+	std::vector<sf::Vector2f> vertices;
+	std::vector<sf::Vector2f> normals;
+	std::vector<sf::Vector2f> uvs;
 
 	// elements data
 	std::vector<face> faces;
@@ -24,7 +23,7 @@ public:
 	unsigned int IndexEBO, IndexVBO;
 
 public:
-	void ReadFile(const sf::String &filename);
+	void ReadFile(const sf::String& filename);
 	void Init();
 	void Draw();
 };

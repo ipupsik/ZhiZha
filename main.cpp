@@ -2,8 +2,17 @@
 #include <cassert>
 
 #include "ActorManager.h"
+#include "utils.h"
+
+using namespace sf::Extensions::Vector2;
 
 int main() {
+	const auto& foo = sf::Vector2f{0, 1};
+	const auto& baz = sf::Vector2f{1, 0};
+	const auto& bam = sf::Vector2i{1, 1};
+
+	const auto& bar = bam->*Length<int>();
+
 	const auto ch = ActorManager::Current.CreateActor();
 	ActorManager::Current.GetOrAddComponent<NameComponent>(ch, NameComponent("ch"));
 	const auto ch2 = ActorManager::Current.Instantiate(ch);
@@ -21,4 +30,7 @@ int main() {
 	assert(ch3.size() == 1);
 	ActorManager::Current.RemoveComponent<TestComponent>(*ch3.begin());
 	assert(!ActorManager::Current.GetComponent<TestComponent>(*ch3.begin()));
+    assert(!ActorManager::Current.RemoveComponent<TestComponent>(*ch3.begin()));
+
+	sleep(sf::seconds(10));
 }
