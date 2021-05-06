@@ -6,17 +6,17 @@
 #include <unordered_set>
 #include <functional>
 
-#include "Actor.h"
-#include "ActorArchetype.h"
+#include "Entity.h"
+#include "EntityArchetype.h"
 #include "Component.h"
 
-class ActorManager {
-  std::unordered_map<size_t, std::unordered_set<Actor>> _actors;
+class EntityManager {
+  std::unordered_map<size_t, std::unordered_set<Entity>> _actors;
 
-  ActorManager();
+  EntityManager();
 
   template<std::derived_from<Component> T, typename ...Args>
-  std::shared_ptr<T> addComponent(Actor &actor, Args &&...args) {
+  std::shared_ptr<T> addComponent(Entity &actor, Args &&...args) {
       auto component = std::make_shared<T>(std::forward<Args>(args)...);
       _actors.try_emplace(component->Type());
       _actors[component->Type()].emplace(actor);
@@ -25,25 +25,25 @@ class ActorManager {
   }
 
  public:
-  std::unordered_set<Actor> GetActors() const;
+  std::unordered_set<Entity> GetActors() const;
 
   template<std::derived_from<Component> Component>
   auto GetActorsBy() const {
       if (_actors.contains(typeid(Component).hash_code()))
           return _actors.at(typeid(Component).hash_code());
-      return std::unordered_set<Actor>();
+      return std::unordered_set<Entity>();
   }
 
-  Actor CreateActor();
+  Entity CreateActor();
 
-  Actor Instantiate(const Actor &parent);
+  Entity Instantiate(const Entity &parent);
 
-  Actor Instantiate(const Actor &parent, sf::Vector2f position);
+  Entity Instantiate(const Entity &parent, sf::Vector2f position);
 
-  Actor FromArchetype(ActorArchetype &&archetype);
+  Entity FromArchetype(EntityArchetype &&archetype);
 
   template<std::derived_from<Component> T>
-  std::shared_ptr<T> GetComponent(const Actor &actor) const {
+  std::shared_ptr<T> GetComponent(const Entity &actor) const {
       if (!actor._components.contains(typeid(T).hash_code()))
           return nullptr;
       else
@@ -51,7 +51,7 @@ class ActorManager {
   }
 
   template<std::derived_from<Component> T, std::convertible_to<std::function<T()>> Func>
-  std::shared_ptr<T> GetOrAddComponent(Actor &actor, Func f) {
+  std::shared_ptr<T> GetOrAddComponent(Entity &actor, Func f) {
       auto cmp = GetComponent<T>(actor);
       if (!cmp)
           return addComponent<T>(actor, f());
@@ -59,14 +59,14 @@ class ActorManager {
   }
 
   template<std::derived_from<Component> T>
-  std::shared_ptr<T> GetOrAddComponent(Actor &actor, T cmp) {
+  std::shared_ptr<T> GetOrAddComponent(Entity &actor, T cmp) {
       return GetOrAddComponent<T>(actor, [&] {
         return cmp;
       });
   }
 
   template<std::derived_from<Component> T>
-  bool RemoveComponent(Actor &actor) {
+  bool RemoveComponent(Entity &actor) {
       auto cmp = GetComponent<T>(actor);
       if (!cmp) return false;
       _actors[typeid(T).hash_code()].erase(actor);
@@ -75,9 +75,9 @@ class ActorManager {
   }
 
   template<std::derived_from<Component> T>
-  bool HasComponent(const Actor &actor) const {
+  bool HasComponent(const Entity &actor) const {
       return GetComponent<T>(actor) != nullptr;
   }
 
-  static ActorManager Current;
+  static EntityManager Current;
 };

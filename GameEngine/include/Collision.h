@@ -5,12 +5,12 @@
 #include "HitResult.h"
 #include "PupsyaEnums.h"
 
-class Actor;
+class Entity;
 
 class Collision {
 public:
 	Collision();
-	Collision(std::weak_ptr<Actor> parent);
+	Collision(std::weak_ptr<Entity> parent);
 
 	void CollisionDetection(std::shared_ptr<Collision> OtherCollision, HitResult& OutputHitResult);
 
@@ -26,12 +26,12 @@ public:
 	float Mas;
 
 	CollisionShape ShapeType;
-	std::weak_ptr<Actor> Parent;
+	std::weak_ptr<Entity> Parent;
 };
 
 class CollisionSphere : public Collision, private std::enable_shared_from_this<CollisionSphere> {
 public:
-	CollisionSphere(sf::Vector2f _Position, float _Radius, std::weak_ptr<Actor> parent);
+	CollisionSphere(sf::Vector2f _Position, float _Radius, std::weak_ptr<Entity> parent);
 
 	void CollisionDetection_SphereSphere(std::shared_ptr<Collision> OtherCollision,
 	                                     HitResult& OutputHitResult) override;
@@ -47,7 +47,7 @@ public:
 class CollisionTriangle : public Collision {
 public:
 	CollisionTriangle(sf::Vector2f _Position_v1, sf::Vector2f _Position_v2, sf::Vector2f _Position_v3,
-	                  std::weak_ptr<Actor> parent);
+	                  std::weak_ptr<Entity> parent);
 
 	void CollisionDetection_SphereSphere(std::shared_ptr<Collision> OtherCollision,
 	                                     HitResult& OutputHitResult) override;

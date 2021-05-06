@@ -1,8 +1,8 @@
-#include "ActorManager.h"
+#include "EntityManager.h"
 
-ActorManager ActorManager::Current = ActorManager();
+EntityManager EntityManager::Current = EntityManager();
 
-Actor ActorManager::Instantiate(const Actor& parent, const sf::Vector2f position) {
+Entity EntityManager::Instantiate(const Entity& parent, const sf::Vector2f position) {
 	auto copy = parent.copy();
 
 	copy.Transform()->Location = position;
@@ -10,10 +10,10 @@ Actor ActorManager::Instantiate(const Actor& parent, const sf::Vector2f position
 		_actors.try_emplace(type);
 		_actors[type].emplace(copy);
 	}
-	return std::forward<Actor>(copy);
+	return std::forward<Entity>(copy);
 }
 
-Actor ActorManager::FromArchetype(ActorArchetype&& archetype) {
+Entity EntityManager::FromArchetype(EntityArchetype&& archetype) {
 	auto actor = CreateActor();
 
 	for (const auto& component : archetype.GetComponents()) {
@@ -24,21 +24,21 @@ Actor ActorManager::FromArchetype(ActorArchetype&& archetype) {
 	return actor;
 }
 
-Actor ActorManager::Instantiate(const Actor& parent) {
+Entity EntityManager::Instantiate(const Entity& parent) {
 	return Instantiate(parent, parent.Transform()->Location);
 }
 
-Actor ActorManager::CreateActor() {
-	auto basic = Actor();
+Entity EntityManager::CreateActor() {
+	auto basic = Entity();
 	addComponent<TransformComponent>(basic, TransformComponent({0, 0}, {0, 0}, {1, 1}));
 	return basic;
 }
 
-std::unordered_set<Actor> ActorManager::GetActors() const {
+std::unordered_set<Entity> EntityManager::GetActors() const {
 	decltype(GetActors()) result;
 	for (const auto& [k, v] : _actors)
 		result.insert(v.begin(), v.end());
 	return result;
 }
 
-ActorManager::ActorManager() = default;
+EntityManager::EntityManager() = default;
