@@ -1,17 +1,17 @@
 #include "Collision.h"
 #include <cmath>
-#include "Actor.h"
+#include "Entity.h"
 #include "utils.h"
 
 using namespace sf::Extensions::Vector2;
 
 Collision::Collision() {}
 
-Collision::Collision(std::weak_ptr<Actor> parent) {
+Collision::Collision(std::weak_ptr<Entity> parent) {
 	Parent = parent;
 }
 
-CollisionSphere::CollisionSphere(sf::Vector2f _Position, float _Radius, std::weak_ptr<Actor> parent)
+CollisionSphere::CollisionSphere(sf::Vector2f _Position, float _Radius, std::weak_ptr<Entity> parent)
 	: Collision(parent) {
 	ShapeType = CollisionShape::Sphere;
 
@@ -24,7 +24,7 @@ CollisionSphere::CollisionSphere(sf::Vector2f _Position, float _Radius, std::wea
 CollisionTriangle::CollisionTriangle(sf::Vector2f _Position_v1,
                                      sf::Vector2f _Position_v2,
                                      sf::Vector2f _Position_v3,
-                                     std::weak_ptr<Actor> parent) : Collision(parent) {
+                                     std::weak_ptr<Entity> parent) : Collision(parent) {
 	ShapeType = CollisionShape::Triangle;
 
 	v1 = _Position_v1;
@@ -95,7 +95,7 @@ sf::Vector2f find_parent_position(std::shared_ptr<Collision> Collision) {
 	while (parent) {
 		pos += parent->Transform()->Location;
 
-		parent = std::make_shared<Actor>(*parent->GetParent());
+		parent = std::make_shared<Entity>(*parent->GetParent());
 	}
 
 	return {pos.x, pos.y};

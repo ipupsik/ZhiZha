@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Actor.h"
+#include "Entity.h"
 
 struct HitResult {
   bool DoesHit;
@@ -8,5 +8,5 @@ struct HitResult {
     float x, y, z;
   } HitLocation;
 
-  Actor *HitActor;
+  Entity *HitActor;
 };

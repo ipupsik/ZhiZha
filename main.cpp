@@ -1,14 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include <cassert>
 
-#include "ActorManager.h"
+#include "EntityManager.h"
 #include "utils.h"
 
 using namespace sf::Extensions::Vector2;
 
 int main() {
-    auto manager = ActorManager::Current;
-    auto archetype = ActorArchetype({
+    auto manager = EntityManager::Current;
+    auto archetype = EntityArchetype({
         new TestComponent(4)
     });
 

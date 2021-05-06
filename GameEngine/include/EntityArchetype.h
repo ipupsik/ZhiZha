@@ -4,11 +4,11 @@
 
 #include "Component.h"
 
-class ActorArchetype {
+class EntityArchetype {
 	std::vector<std::unique_ptr<Component>> _components;
 
 public:
 	[[nodiscard]] const std::vector<std::unique_ptr<Component>>& GetComponents() const { return _components; }
 
-	explicit ActorArchetype(const std::vector<Component*>&  components);
+	explicit EntityArchetype(const std::vector<Component*>&  components);
 };
