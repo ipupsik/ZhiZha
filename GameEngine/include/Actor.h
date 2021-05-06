@@ -1,29 +1,43 @@
 #pragma once
 
-#include <vector>
 #include <memory>
-#include <SFML/System/String.hpp>
-#include <unordered_set>
 #include <unordered_map>
-#include <typeinfo>
 
 #include "Component.h"
 
 class Actor {
-  friend class ActorManager;
+	friend class ActorManager;
+	friend struct std::hash<Actor>;
+	friend struct std::equal_to<Actor>;
 
- private:
-  std::unordered_map<size_t, std::shared_ptr<Component>> _components;
+private:
+	std::unordered_map<size_t, std::shared_ptr<Component>> _components;
 
-  std::weak_ptr<Actor> _parent;
+	const Actor* _parent;
 
-  std::shared_ptr<TransformComponent> _transform;
+	Actor copy() const;
 
- public:
-  Actor();
+public:
+	Actor();
 
-  [[nodiscard]] std::shared_ptr<TransformComponent> Transform() const;
+	friend bool operator==(const Actor& lhs, const Actor& rhs) {
+		return lhs._components == rhs._components
+			&& lhs._parent == rhs._parent;
+	}
 
-  [[nodiscard]] const std::weak_ptr<Actor> &GetParent() const;
+	[[nodiscard]] std::shared_ptr<TransformComponent> Transform() const;
+
+	[[nodiscard]] const Actor* GetParent() const;
 };
 
+template <>
+struct std::hash<Actor> {
+	size_t operator()(const Actor& actor) const noexcept {
+		std::size_t hash = std::hash<const Actor*>{}(actor._parent);
+		int i = 1;
+		for (const auto& element : actor._components)
+			hash ^= std::hash<std::shared_ptr<Component>>{}(element.second) << i++;
+
+		return hash;
+	}
+};

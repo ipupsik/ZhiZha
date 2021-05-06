@@ -7,30 +7,43 @@
 using namespace sf::Extensions::Vector2;
 
 int main() {
-	const auto& foo = sf::Vector2f{0, 1};
-	const auto& baz = sf::Vector2f{1, 0};
-	const auto& bam = sf::Vector2i{1, 1};
+    auto manager = ActorManager::Current;
+    auto archetype = ActorArchetype({
+        new TestComponent(4)
+    });
 
-	const auto& bar = bam->*Length<int>();
+	auto ch = manager.FromArchetype(std::move(archetype));
+	auto ch2 = manager.Instantiate(ch);
 
-	const auto ch = ActorManager::Current.CreateActor();
-	ActorManager::Current.GetOrAddComponent<NameComponent>(ch, NameComponent("ch"));
-	const auto ch2 = ActorManager::Current.Instantiate(ch);
-	ActorManager::Current.GetOrAddComponent<NameComponent>(ch2, NameComponent("ch2"));
-	const auto some = ActorManager::Current.GetActorsBy<TransformComponent>();
+    assert(ch2.GetParent() == &ch);
 
-	assert(some.size() == 2);
-	assert(ch2 != ch);
-	assert(ch2->GetParent().lock() == ch);
-	assert((ch->Transform()->Scale == sf::Vector2f{1, 1}));
+	assert(manager.HasComponent<TestComponent>(ch));
+    assert(manager.HasComponent<TestComponent>(ch2));
 
-	ActorManager::Current.GetOrAddComponent<TestComponent>(ch2, TestComponent(1));
-	assert(ActorManager::Current.GetOrAddComponent<TestComponent>(ch2, TestComponent(2))->Data == 1);
-	const auto ch3 = ActorManager::Current.GetActorsBy<TestComponent>();
-	assert(ch3.size() == 1);
-	ActorManager::Current.RemoveComponent<TestComponent>(*ch3.begin());
-	assert(!ActorManager::Current.GetComponent<TestComponent>(*ch3.begin()));
-    assert(!ActorManager::Current.RemoveComponent<TestComponent>(*ch3.begin()));
+    manager.GetComponent<TestComponent>(ch)->Data = 3;
 
-	sleep(sf::seconds(10));
+    assert(manager.GetComponent<TestComponent>(ch)->Data == 3);
+    assert(manager.GetComponent<TestComponent>(ch2)->Data == 4);
+
+    manager.GetOrAddComponent<NameComponent>(ch2, NameComponent("ch2"));
+
+    assert(!manager.HasComponent<NameComponent>(ch));
+    assert(manager.HasComponent<NameComponent>(ch2));
+
+    manager.GetOrAddComponent(ch2, NameComponent("hmm"));
+
+    assert(manager.GetComponent<NameComponent>(ch2)->Name == "ch2");
+
+    manager.RemoveComponent<NameComponent>(ch2);
+
+    assert(!manager.HasComponent<NameComponent>(ch2));
+
+    auto named = manager.GetActorsBy<NameComponent>();
+
+    assert(named.size() == 1);
+    assert(named.contains(ch2));
+
+    auto all = manager.GetActors();
+
+    assert(all.size() == 3);
 }
