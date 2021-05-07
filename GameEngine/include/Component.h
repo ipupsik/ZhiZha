@@ -8,6 +8,7 @@
 
 class Component {
 public:
+	virtual ~Component() = default;
 	virtual std::shared_ptr<Component> Copy() = 0;
 
 	void operator delete(void*) = delete;
@@ -26,22 +27,6 @@ struct TransformComponent : public ComponentData<TransformComponent> {
 	sf::Vector2f Location, Rotation, Scale;
 
 	TransformComponent(sf::Vector2f location, sf::Vector2f rotation, sf::Vector2f scale);
-
-	std::shared_ptr<Component> Copy() override;
-};
-
-struct TestComponent : public ComponentData<TestComponent> {
-	int Data;
-
-	explicit TestComponent(int data);
-
-	std::shared_ptr<Component> Copy() override;
-};
-
-struct NameComponent : public ComponentData<NameComponent> {
-	std::string Name;
-
-	explicit NameComponent(std::string name);
 
 	std::shared_ptr<Component> Copy() override;
 };
