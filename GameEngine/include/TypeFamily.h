@@ -1,8 +1,10 @@
 #pragma once
 
+#include <atomic>
+
 template <typename T>
 class TypeFamily {
-	static std::atomic<std::size_t> _idCount;
+	static std::atomic_size_t _idCount;
 
 public:
 	template <std::derived_from<T> U>
@@ -13,4 +15,4 @@ public:
 };
 
 template <typename T>
-std::atomic<std::size_t> TypeFamily<T>::_idCount = std::atomic<std::size_t>(0);
+std::atomic_size_t TypeFamily<T>::_idCount = std::atomic_size_t(0);
