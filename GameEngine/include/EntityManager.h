@@ -22,7 +22,8 @@ class EntityManager {
 		component->EntityId = entity._id;
 		++entity._componentsCount;
 		_componentsTable.try_emplace(T::Type);
-		_componentsTable[T::Type].resize(Entity::_count, nullptr);
+		if (_componentsTable[T::Type].size() <= entity._id)
+			_componentsTable[T::Type].resize(Entity::_count, nullptr);
 		_componentsTable[T::Type][entity._id] = component;
 		return *component;
 	}
