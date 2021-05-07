@@ -2,32 +2,36 @@
 
 EntityManager EntityManager::Current = EntityManager();
 
-Entity EntityManager::Instantiate(const Entity& parent, const sf::Vector2f position) {
-	auto copy = parent.copy();
-
-	copy.Transform()->Location = position;
-	for (const auto& [type, component] : copy._components) {
-		_actors.try_emplace(type);
-		_actors[type].emplace(copy);
-	}
-	return std::forward<Entity>(copy);
-}
-
 Entity EntityManager::Instantiate(const Entity& parent) {
-	return Instantiate(parent, parent.Transform()->Location);
+	auto copy = parent.copy();
+	_entities.resize(Entity::_count);
+	_entities[copy->_id] = copy;
+
+	for (auto& [_, v] : _componentsTable) {
+		v.resize(Entity::_count, nullptr);
+		if (v[parent._id] != nullptr)
+			v[copy->_id] = v[parent._id]->Copy();
+	}
+	return std::forward<const Entity&>(*copy);
 }
 
 Entity EntityManager::CreateEntity() {
-	auto basic = Entity();
-	addComponent<TransformComponent>(basic, TransformComponent({0, 0}, {0, 0}, {1, 1}));
-	return basic;
+	const auto basic = new Entity();
+	_entities.resize(Entity::_count);
+	_entities[basic->_id] = basic;
+	return std::forward<const Entity&>(*basic);
 }
 
-std::unordered_set<Entity> EntityManager::GetActors() const {
-	decltype(GetActors()) result;
-	for (const auto& [k, v] : _actors)
-		result.insert(v.begin(), v.end());
-	return result;
+EntityManager::~EntityManager() {	
+	for (const auto& [_, v] : _componentsTable)
+		for (auto component : v)
+			delete component;
+	for (const auto& entity : _entities)
+		delete entity;
+}
+
+const std::vector<Entity*>& EntityManager::GetEntities() const {
+	return _entities;
 }
 
 EntityManager::EntityManager() = default;
