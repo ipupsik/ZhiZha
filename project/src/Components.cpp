@@ -1,14 +1,15 @@
 #include "Components.h"
 
 #include <memory>
-TestComponent::TestComponent(int data) : Data(data) {}
 
-std::shared_ptr<Component> TestComponent::Copy() {
-	return std::make_shared<TestComponent>(*this);
+Component* TestComponent::Copy() {
+	return new TestComponent(*this);
 }
 
-NameComponent::NameComponent(std::string name) : Name(std::move(name)) {}
+Component* NameComponent::Copy() {
+	return new NameComponent(*this);
+}
 
-std::shared_ptr<Component> NameComponent::Copy() {
-	return std::make_shared<NameComponent>(*this);
+Component* TransformComponent::Copy() {
+	return new TransformComponent(*this);
 }

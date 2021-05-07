@@ -3,6 +3,7 @@ project(zhizha CXX)
 set(CMAKE_CXX_STANDARD 20)
 
 file(GLOB_RECURSE SOURCE_FILES project/src/*.cpp)
+file(GLOB_RECURSE HEADER_FILES project/include/*.h)
 
 if (UNIX)
 	set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/Lib/Linux)
@@ -15,5 +16,5 @@ add_subdirectory(GameEngine)
 include_directories(GameEngine/include)
 include_directories(project/include)
 
-add_executable(main ${SOURCE_FILES})
+add_executable(main ${SOURCE_FILES} ${HEADER_FILES})
 target_link_libraries(main PUBLIC GameEngine)

@@ -1,78 +1,104 @@
 #pragma once
 
-#include <SFML/System/Vector2.hpp>
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
+#include <optional>
 
 #include "Entity.h"
 #include "Component.h"
 
 class EntityManager {
-	std::unordered_map<size_t, std::unordered_set<Entity>> _actors;
+	std::vector<Entity*> _entities;
+	std::unordered_map<Component::Id, std::vector<Component*>> _componentsTable;
 
 	EntityManager();
 
-	template <std::derived_from<Component> T, typename ...Args>
-	std::shared_ptr<T> addComponent(Entity& actor, Args&&...args) {
-		auto component = std::make_shared<T>(std::forward<Args>(args)...);
-		_actors.try_emplace(T::Type);
-		_actors[T::Type].emplace(actor);
-		actor._components[T::Type] = component;
-		return std::dynamic_pointer_cast<T>(component);
+	template <typename T, typename ...Args>
+		requires std::derived_from<T, ComponentData<T>>
+	T& addComponent(Entity& entity, Args&&...args) {
+		T* component = new T(std::forward<Args>(args)...);
+		component->EntityId = entity._id;
+		++entity._componentsCount;
+		_componentsTable.try_emplace(T::Type);
+		_componentsTable[T::Type].resize(Entity::_count, nullptr);
+		_componentsTable[T::Type][entity._id] = component;
+		return *component;
 	}
 
 public:
-	[[nodiscard]] std::unordered_set<Entity> GetActors() const;
+	~EntityManager();
+	
+	[[nodiscard]] const std::vector<Entity*>& GetEntities() const;
 
-	template <std::derived_from<Component> T>
-	auto GetActorsBy() const {
-		if (_actors.contains(TypeFamily<Component>::Type<T>()))
-			return _actors.at(TypeFamily<Component>::Type<T>());
-		return std::unordered_set<Entity>();
+	template <typename T>
+		requires std::derived_from<T, ComponentData<T>>
+	auto GetEntitiesBy() const {
+		std::vector<Entity> result;
+		if (!_componentsTable.contains(T::Type))
+			return std::vector<Entity>();
+
+		for (const auto& component : _componentsTable.at(T::Type)) {
+			if (component != nullptr)
+				result.emplace_back(*_entities.at(component->EntityId));
+		}
+		return result;
 	}
 
 	Entity CreateEntity();
 
 	Entity Instantiate(const Entity& parent);
 
-	Entity Instantiate(const Entity& parent, sf::Vector2f position);
-
-	template <std::derived_from<Component> T>
-	std::shared_ptr<T> GetComponent(const Entity& actor) const {
-		if (!actor._components.contains(TypeFamily<Component>::Type<T>()))
-			return nullptr;
-		return std::dynamic_pointer_cast<T>(actor._components.at(TypeFamily<Component>::Type<T>()));
+	template <typename T>
+		requires std::derived_from<T, ComponentData<T>>
+	std::optional<std::reference_wrapper<T>> GetComponent(const Entity& entity) const {
+		if (!_componentsTable.contains(T::Type))
+			return {};
+		const auto& components = _componentsTable.at(T::Type);
+		if (components.size() < entity._id || components.at(entity._id) == nullptr)
+			return {};
+		return *dynamic_cast<T*>(components.at(entity._id));
 	}
 
-	template <std::derived_from<Component> T, std::convertible_to<std::function<T()>> Func>
-	std::shared_ptr<T> GetOrAddComponent(Entity& actor, Func f) {
+	template <typename T, std::convertible_to<std::function<T()>> Func>
+		requires std::derived_from<T, ComponentData<T>>
+	T& GetOrAddComponent(Entity& actor, Func f) {
 		auto cmp = GetComponent<T>(actor);
 		if (!cmp)
 			return addComponent<T>(actor, f());
-		return cmp;
+		return *cmp;
 	}
 
-	template <std::derived_from<Component> T>
-	std::shared_ptr<T> GetOrAddComponent(Entity& actor, T cmp) {
+	template <typename T>
+		requires std::derived_from<T, ComponentData<T>>
+	T& GetOrAddComponent(Entity& actor, T cmp) {
 		return GetOrAddComponent<T>(actor, [&] {
 			return cmp;
 		});
 	}
 
-	template <std::derived_from<Component> T>
-	bool RemoveComponent(Entity& actor) {
-		auto cmp = GetComponent<T>(actor);
-		if (!cmp) return false;
-		_actors[TypeFamily<Component>::Type<T>()].erase(actor);
-		actor._components.erase(T::Type);
+	template <typename T>
+		requires std::derived_from<T, ComponentData<T>>
+	bool RemoveComponent(Entity& entity) {
+		if (!HasComponent<T>(entity)) return false;
+		delete _componentsTable[T::Type][entity._id];
+		_componentsTable[T::Type][entity._id] = nullptr;
+
+		--entity._componentsCount;
 		return true;
 	}
 
-	template <std::derived_from<Component> T>
-	[[nodiscard]] bool HasComponent(const Entity& actor) const {
-		return GetComponent<T>(actor) != nullptr;
+	template <typename T>
+		requires std::derived_from<T, ComponentData<T>>
+	[[nodiscard]] bool HasComponent(const Entity& entity) const {
+		return GetComponent<T>(entity) != std::nullopt;
+	}
+
+	template<typename T, typename ...Args>
+	requires std::derived_from<T, ComponentData<T>>
+	T& ReplaceComponent(Entity& entity, Args&&... args) {
+		return RemoveComponent<T>(entity) ? addComponent<T>(entity, args...) : GetComponent<T>(entity)->get();
 	}
 
 	static EntityManager Current;

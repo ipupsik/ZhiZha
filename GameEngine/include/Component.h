@@ -1,32 +1,23 @@
 #pragma once
 
-#include <SFML/System/Vector2.hpp>
-#include <string>
 #include <memory>
 
+#include "Entity.h"
 #include "TypeFamily.h"
 
-class Component {
-public:
-	virtual ~Component() = default;
-	virtual std::shared_ptr<Component> Copy() = 0;
+struct Component {
+	using Id = std::size_t;
 
-	void operator delete(void*) = delete;
-	void operator delete[](void*) = delete;
+	Entity::Id EntityId;
+
+	virtual ~Component() = default;
+	virtual Component* Copy() = 0;
 };
 
 template <typename T>
 struct ComponentData : public Component {
-	static std::size_t Type;
+	static Id Type;
 };
 
 template <typename T>
 std::size_t ComponentData<T>::Type = TypeFamily<Component>::Type<T>();
-
-struct TransformComponent : public ComponentData<TransformComponent> {
-	sf::Vector2f Location, Rotation, Scale;
-
-	TransformComponent(sf::Vector2f location, sf::Vector2f rotation, sf::Vector2f scale);
-
-	std::shared_ptr<Component> Copy() override;
-};

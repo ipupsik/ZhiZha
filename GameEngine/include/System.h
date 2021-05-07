@@ -1,17 +1,25 @@
 ﻿#pragma once
 
-#include <string>
-
 #include "TypeFamily.h"
 
-class SystemBase {
-protected:
-	virtual void onUpdate() {}
-	
-	virtual void onFixedUpdate() {}
-
-public:
+struct SystemBase {
 	virtual ~SystemBase() = default;
+};
+
+struct UpdateSystem: SystemBase {
+	virtual void OnUpdate() = 0;
+};
+
+struct PostInitSystem: SystemBase {
+	virtual void OnPostInit() = 0;
+};
+
+struct FixedUpdateSystem: SystemBase {
+	virtual void OnFixedUpdate() = 0;
+};
+
+struct PostUpdateSystem: SystemBase {
+	virtual void OnPostUpdate() = 0;
 };
 
 template <typename T>

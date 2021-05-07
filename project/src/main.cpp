@@ -11,38 +11,47 @@ int main() {
 	auto manager = EntityManager::Current;
 
 	auto ch = manager.CreateEntity();
-	manager.GetOrAddComponent(ch, TestComponent(4));
+	auto test = TestComponent();
+	test.Data = 4;
+	manager.GetOrAddComponent(ch, test);
 	auto ch2 = manager.Instantiate(ch);
 
-	assert(ch2.GetParent() == &ch);
+	assert(ch2.GetParent() == ch);
 
 	assert(manager.HasComponent<TestComponent>(ch));
 	assert(manager.HasComponent<TestComponent>(ch2));
 
-	manager.GetComponent<TestComponent>(ch)->Data = 3;
+	manager.GetComponent<TestComponent>(ch)->get().Data = 3;
 
-	assert(manager.GetComponent<TestComponent>(ch)->Data == 3);
-	assert(manager.GetComponent<TestComponent>(ch2)->Data == 4);
+	assert(manager.GetComponent<TestComponent>(ch)->get().Data == 3);
+	assert(manager.GetComponent<TestComponent>(ch2)->get().Data == 4);
 
-	manager.GetOrAddComponent(ch2, NameComponent("ch2"));
+	auto name = NameComponent();
+	name.Name = "ch2";
+	manager.GetOrAddComponent(ch2, name);
 
 	assert(!manager.HasComponent<NameComponent>(ch));
 	assert(manager.HasComponent<NameComponent>(ch2));
 
-	manager.GetOrAddComponent(ch2, NameComponent("hmm"));
+	manager.GetOrAddComponent(ch2, NameComponent());
 
-	assert(manager.GetComponent<NameComponent>(ch2)->Name == "ch2");
+	assert(manager.GetComponent<NameComponent>(ch2)->get().Name == "ch2");
+
+	name.Name = "test";
+
+	manager.ReplaceComponent<NameComponent>(ch2, name);
+
+	assert(manager.GetComponent<NameComponent>(ch2)->get().Name == "test");
+
+	const auto named = manager.GetEntitiesBy<NameComponent>();
+
+	assert(named.size() == 1);
 
 	manager.RemoveComponent<NameComponent>(ch2);
 
 	assert(!manager.HasComponent<NameComponent>(ch2));
 
-	auto named = manager.GetActorsBy<NameComponent>();
+	const auto all = manager.GetEntities();
 
-	assert(named.size() == 1);
-	assert(named.contains(ch2));
-
-	auto all = manager.GetActors();
-
-	assert(all.size() == 3);
+	assert(all.size() == 2);
 }
