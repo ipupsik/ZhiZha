@@ -1,29 +1,36 @@
 ﻿#pragma once
 
+#include <bitset>
+
 #include "TypeFamily.h"
 
 struct SystemBase {
+	friend struct UpdateSystem;
+	friend struct FixedUpdateSystem;
+	friend struct PostInitSystem;
+	friend struct PostUpdateSystem;
+	
 	virtual ~SystemBase() = default;
 };
 
-struct UpdateSystem: SystemBase {
+struct UpdateSystem : virtual SystemBase {
 	virtual void OnUpdate() = 0;
 };
 
-struct PostInitSystem: SystemBase {
+struct PostInitSystem : virtual SystemBase {
 	virtual void OnPostInit() = 0;
 };
 
-struct FixedUpdateSystem: SystemBase {
+struct FixedUpdateSystem : virtual SystemBase {
 	virtual void OnFixedUpdate() = 0;
 };
 
-struct PostUpdateSystem: SystemBase {
+struct PostUpdateSystem : virtual SystemBase {
 	virtual void OnPostUpdate() = 0;
 };
 
 template <typename T>
-struct System: public SystemBase {
+struct System : public virtual SystemBase {
 	static std::size_t Type;
 };
 

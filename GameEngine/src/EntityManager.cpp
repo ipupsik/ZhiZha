@@ -29,7 +29,7 @@ EntityManager::~EntityManager() {
 	for (const auto& [_, v] : _componentsTable)
 		for (auto component : v)
 			delete component;
-	for (const auto& entity : _entities)
+	for (auto entity : _entities)
 		delete entity;
 }
 
