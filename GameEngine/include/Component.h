@@ -11,12 +11,21 @@ struct Component {
 	Entity::Id EntityId;
 
 	virtual ~Component() = default;
-	virtual Component* Copy() = 0;
+	[[nodiscard]] virtual Component* Copy() const = 0;
 };
 
 template <typename T>
 struct ComponentData : public Component {
 	static Id Type;
+
+	Component* Copy() const final {
+		return new T(static_cast<T const&>(*this));
+	}
+
+protected:
+	ComponentData() = default;
+	ComponentData(const ComponentData&) = default;
+	ComponentData(ComponentData&&) = default;
 };
 
 template <typename T>

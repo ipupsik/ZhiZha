@@ -59,24 +59,40 @@ public:
 		const auto& components = _componentsTable.at(T::Type);
 		if (components.size() < entity._id || components.at(entity._id) == nullptr)
 			return {};
-		return *dynamic_cast<T*>(components.at(entity._id));
+		return static_cast<T&>(*components.at(entity._id));
 	}
 
-	template <typename T, std::convertible_to<std::function<T()>> Func>
+	template <typename T>
 		requires std::derived_from<T, ComponentData<T>>
-	T& GetOrAddComponent(Entity& actor, Func f) {
+	T& GetOrAddComponent(Entity& actor, std::function<T()> f) {
 		auto cmp = GetComponent<T>(actor);
 		if (!cmp)
 			return addComponent<T>(actor, f());
 		return *cmp;
 	}
 
-	template <typename T>
-		requires std::derived_from<T, ComponentData<T>>
-	T& GetOrAddComponent(Entity& actor, T cmp) {
-		return GetOrAddComponent<T>(actor, [&] {
-			return cmp;
+	template <typename T, typename ...Args>
+		requires std::derived_from<T, ComponentData<T>> && (!std::is_default_constructible_v<T>)
+	T& GetOrAddComponent(Entity& actor, Args&&... args) {
+		return GetOrAddComponent<T>(actor, [&args] {
+			return T(std::forward<Args>(args)...);
 		});
+	}
+
+	template <typename T>
+		requires std::derived_from<T, ComponentData<T>> && std::is_default_constructible_v<T>
+	T& GetOrAddComponent(Entity& entity, std::function<void(T&)> f) {
+		return GetOrAddComponent<T>(entity, [f] {
+			auto component = T();
+			f(component);
+			return component;
+		});
+	}
+
+	template <typename T>
+		requires std::derived_from<T, ComponentData<T>> && std::is_default_constructible_v<T>
+	T& GetOrAddComponent(Entity& entity) {
+		return GetOrAddComponent<T>(entity, [] { return T(); });
 	}
 
 	template <typename T>

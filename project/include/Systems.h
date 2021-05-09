@@ -21,9 +21,11 @@ public:
 
 class RenderSystem : public virtual System<RenderSystem>, public virtual PostUpdateSystem {
 	sf::RenderWindow& _window;
+	sf::Uint8 _step;
+	sf::Color _latestColor = sf::Color::White;
 
 public:
-	explicit RenderSystem(sf::RenderWindow& window): _window(window) {
+	explicit RenderSystem(sf::RenderWindow& window, sf::Uint8 step): _window(window), _step(step) {
 		srand(time(nullptr));
 	}
 
