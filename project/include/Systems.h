@@ -10,13 +10,13 @@ public:
 	void OnPostInit() override;
 };
 
-class EventSystem : public virtual System<EventSystem>, public virtual UpdateSystem {
+class EventSystem : public virtual System<EventSystem>, public virtual PostInitSystem {
 	sf::RenderWindow& _window;
 
 public:
-	EventSystem(sf::RenderWindow& window) : _window(window) {}
+	explicit EventSystem(sf::RenderWindow& window): _window(window) {}
 
-	void OnUpdate() override;
+	void OnPostInit() override;
 };
 
 class RenderSystem : public virtual System<RenderSystem>, public virtual PostUpdateSystem {
@@ -25,7 +25,7 @@ class RenderSystem : public virtual System<RenderSystem>, public virtual PostUpd
 	sf::Color _latestColor = sf::Color::White;
 
 public:
-	explicit RenderSystem(sf::RenderWindow& window, sf::Uint8 step): _window(window), _step(step) {
+	explicit RenderSystem(sf::RenderWindow& window, const sf::Uint8 step): _window(window), _step(step) {
 		srand(time(nullptr));
 	}
 

@@ -12,11 +12,12 @@ void TestSystem::OnPostInit() {
 	std::cout << "Hello!" << std::endl;
 }
 
-void EventSystem::OnUpdate() {
+void EventSystem::OnPostInit() {
 	sf::Event event{};
-	while (_window.pollEvent(event)) {
-		if (event.type == sf::Event::Closed)
-			_window.close();
+	
+	while (_window.isOpen()) {
+		while (_window.pollEvent(event))
+			if (event.type == sf::Event::Closed) _window.close();
 	}
 }
 
