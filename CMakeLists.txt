@@ -7,6 +7,7 @@ file(GLOB_RECURSE HEADER_FILES project/include/*.h)
 
 if (UNIX)
 	set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/Lib/Linux)
+	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread -ltbb")
 elseif (WIN32)
 	set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/Lib/Windows)
 	set(SFML_STATIC_LIBRARIES TRUE)

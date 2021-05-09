@@ -74,7 +74,7 @@ public:
 	template <typename T, typename ...Args>
 		requires std::derived_from<T, ComponentData<T>> && (!std::is_default_constructible_v<T>)
 	T& GetOrAddComponent(Entity& actor, Args&&... args) {
-		return GetOrAddComponent<T>(actor, [&args] {
+		return GetOrAddComponent<T>(actor, [&args...] {
 			return T(std::forward<Args>(args)...);
 		});
 	}
