@@ -21,8 +21,10 @@ void EventSystem::OnUpdate() {
 }
 
 void RenderSystem::OnPostUpdate() {
-	_window.clear(sf::Color{
-		static_cast<sf::Uint8>(rand() % 256), static_cast<sf::Uint8>(rand() % 256), static_cast<sf::Uint8>(rand() % 256)
-	});
+	_latestColor.r = (_latestColor.r + static_cast<sf::Uint8>(-(_step / 2) + rand() % _step)) % 256;
+	_latestColor.b = (_latestColor.b + static_cast<sf::Uint8>(-(_step / 2) + rand() % _step)) % 256;
+	_latestColor.g = (_latestColor.g + static_cast<sf::Uint8>(-(_step / 2) + rand() % _step)) % 256;
+	
+	_window.clear(_latestColor);
 	_window.display();
 }

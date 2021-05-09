@@ -1,3 +1,7 @@
+#include <iostream>
+
+#include "Components.h"
+#include "EntityManager.h"
 #include "utils.h"
 #include "SystemManager.h"
 #include "Systems.h"
@@ -10,16 +14,18 @@ int main() {
 
 	auto& sys = SystemManager::Current
 	            .RegisterSystem<EventSystem>(window)
-	            .RegisterSystem<RenderSystem>(window)
-	            .RegisterSystem<TestSystem>(TestSystem());
+	            .RegisterSystem<RenderSystem>(window, 4)
+	            .RegisterSystem<TestSystem>();
 
+	sf::Clock clock{};
+
+	window.setVerticalSyncEnabled(true);
 	sys.PostInit();
 	while (window.isOpen()) {
 		sys.Update();
 
-		sf::Clock clock;
-		window.setFramerateLimit(60);
-		const auto& time = clock.getElapsedTime();
 		sys.PostUpdate();
+		std::cout << "FPS: " << 1 / clock.restart().asSeconds() << "\r";
 	}
+	std::cout << std::endl;
 }
