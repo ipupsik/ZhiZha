@@ -1,7 +1,6 @@
 ﻿#pragma once
 
-#include <bitset>
-
+#include "EntityManager.h"
 #include "TypeFamily.h"
 
 struct SystemBase {
@@ -11,6 +10,9 @@ struct SystemBase {
 	friend struct PostUpdateSystem;
 	
 	virtual ~SystemBase() = default;
+
+protected:
+	EntityManager& _entities = EntityManager::Current;
 };
 
 struct UpdateSystem : virtual SystemBase {

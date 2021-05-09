@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <string>
+#include <SFML/Graphics/Color.hpp>
 
 #include "Component.h"
 #include "SFML/System/Vector2.hpp"
@@ -15,4 +16,8 @@ struct NameComponent : public ComponentData<NameComponent> {
 
 struct TransformComponent : public ComponentData<TransformComponent> {
 	sf::Vector2f Location, Rotation, Scale;
+};
+
+struct RenderComponent : public ComponentData<RenderComponent> {
+  sf::Color color;
 };
