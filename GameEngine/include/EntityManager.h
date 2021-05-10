@@ -8,6 +8,7 @@
 
 #include "Entity.h"
 #include "Component.h"
+#include "ComponentHandle.h"
 
 class EntityManager {
 	std::vector<Entity*> _entities;
@@ -33,19 +34,16 @@ public:
 
 	[[nodiscard]] const std::vector<Entity*>& GetEntities() const;
 
-	template <typename T>
-		requires std::derived_from<T, ComponentData<T>>
-	auto GetEntitiesBy() const {
-		std::vector<Entity> result;
-		if (!_componentsTable.contains(T::Type))
-			return std::vector<Entity>();
-
-		for (const auto& component : _componentsTable.at(T::Type)) {
-			if (component != nullptr)
-				result.emplace_back(*_entities.at(component->EntityId));
-		}
-		return result;
-	}
+  template<typename T>
+  requires std::derived_from<T, ComponentData<T>>
+  auto GetEntitiesBy() {
+      _componentsTable.try_emplace(T::Type);
+      return _componentsTable.at(T::Type) | std::ranges::views::filter([](Component *component) {
+        return component != nullptr;
+      }) | std::ranges::views::transform([this](Component *component) {
+        return *_entities.at(component->EntityId);
+      });
+  }
 
 	Entity CreateEntity();
 
@@ -53,12 +51,12 @@ public:
 
 	template <typename T>
 		requires std::derived_from<T, ComponentData<T>>
-	std::optional<std::reference_wrapper<T>> GetComponent(const Entity& entity) const {
+	ComponentHandle<T> GetComponent(const Entity& entity) const {
 		if (!_componentsTable.contains(T::Type))
-			return {};
+			return nullptr;
 		const auto& components = _componentsTable.at(T::Type);
 		if (components.size() < entity._id || components.at(entity._id) == nullptr)
-			return {};
+			return nullptr;
 		return static_cast<T&>(*components.at(entity._id));
 	}
 
@@ -109,7 +107,7 @@ public:
 	template <typename T>
 		requires std::derived_from<T, ComponentData<T>>
 	[[nodiscard]] bool HasComponent(const Entity& entity) const {
-		return GetComponent<T>(entity) != std::nullopt;
+		return GetComponent<T>(entity) != nullptr;
 	}
 
 	template <typename T, typename ...Args>
