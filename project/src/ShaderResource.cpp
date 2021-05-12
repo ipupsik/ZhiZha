@@ -19,7 +19,7 @@ GLuint LoadShader(std::string&& filename, GLuint type)
     std::string shader = LoadFile(std::move(filename));
     const char* txt = shader.c_str();
     GLuint Shader = glCreateShader(type);
-    glShaderSource(Shader, 1, &txt, NULL);
+    glShaderSource(Shader, 1, &txt, nullptr);
     glCompileShader(Shader);
 
     return Shader;
@@ -27,14 +27,12 @@ GLuint LoadShader(std::string&& filename, GLuint type)
 
 ShaderResource::ShaderResource(std::string&& filename)
 {
-    std::string FragShaderName = "../../../../project/resources/Shaders/";
-    FragShaderName += filename;
+    std::string FragShaderName = filename;
     FragShaderName += ".frag";
-    std::string VertShaderName = "../../../../project/resources/Shaders/";
-    VertShaderName += filename;
+    std::string VertShaderName = filename;
     VertShaderName += ".vert";
-    GLuint FragShader = LoadShader(FragShaderName.c_str(), GL_FRAGMENT_SHADER);
-    GLuint VertShader = LoadShader(VertShaderName.c_str(), GL_VERTEX_SHADER);
+    GLuint FragShader = LoadShader(std::move(FragShaderName), GL_FRAGMENT_SHADER);
+    GLuint VertShader = LoadShader(std::move(VertShaderName), GL_VERTEX_SHADER);
 
     GLint ok;
     GLchar log[2000];
@@ -45,7 +43,7 @@ ShaderResource::ShaderResource(std::string&& filename)
     glGetProgramiv(ShaderID, GL_LINK_STATUS, &ok);
     if (!ok)
     {
-        glGetProgramInfoLog(ShaderID, 2000, NULL, log);
+        glGetProgramInfoLog(ShaderID, 2000, nullptr, log);
         printf("\n");
     }
 }

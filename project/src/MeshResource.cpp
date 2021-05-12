@@ -5,7 +5,7 @@
 
 void MeshResource::readFile(std::string&& filename) {
     std::string s;
-    std::ifstream fin("../../../../project/resources/meshes/" + filename + ".obj");
+    std::ifstream fin(filename + ".obj");
     if (!fin)
         return;
     while (fin >> s)
