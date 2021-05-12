@@ -20,5 +20,5 @@ include_directories(GameEngine/include)
 include_directories(Lib/Windows/glad/include)
 include_directories(project/include)
 
-add_executable(main ${SOURCE_FILES} ${HEADER_FILES} Lib/Windows/glad/src/glad.c)
-target_link_libraries(main PUBLIC GameEngine opengl32 glad)
+add_executable(main Lib/Windows/glad/src/glad.c ${SOURCE_FILES} ${HEADER_FILES})
+target_link_libraries(main PUBLIC GameEngine opengl32)
