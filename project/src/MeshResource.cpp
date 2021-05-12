@@ -5,7 +5,7 @@
 
 void MeshResource::readFile(std::string&& filename) {
     std::string s;
-    std::ifstream fin(filename);
+    std::ifstream fin("../../../../project/resources/meshes/" + filename + ".obj");
     if (!fin)
         return;
     while (fin >> s)
@@ -77,7 +77,6 @@ void MeshResource::readFile(std::string&& filename) {
             getline(fin, tmp);
         }
     }
-    std::cout << s;
     _uvs.resize(_uvsInit.size());
     for (int i = 0; i < _faces.size(); i++)
     {
