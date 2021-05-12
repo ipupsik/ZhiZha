@@ -13,9 +13,12 @@ elseif (WIN32)
 	set(SFML_STATIC_LIBRARIES TRUE)
 endif()
 
+find_package(OpenGL REQUIRED)
+
 add_subdirectory(GameEngine)
 include_directories(GameEngine/include)
+include_directories(Lib/Windows/glad/include)
 include_directories(project/include)
 
-add_executable(main ${SOURCE_FILES} ${HEADER_FILES})
-target_link_libraries(main PUBLIC GameEngine)
+add_executable(main ${SOURCE_FILES} ${HEADER_FILES} Lib/Windows/glad/src/glad.c)
+target_link_libraries(main PUBLIC GameEngine opengl32 glad)
