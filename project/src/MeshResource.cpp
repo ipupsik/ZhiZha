@@ -3,14 +3,9 @@
 #include <fstream>
 #include <iostream>
 
-#include "glad/glad.h"
-
 void MeshResource::readFile(std::string&& filename) {
     std::string s;
-    s = "Static Meshes/";
-    s += filename;
-    s += ".obj";
-    std::ifstream fin(s);
+    std::ifstream fin(filename);
     if (!fin)
         return;
     while (fin >> s)
@@ -96,21 +91,21 @@ void MeshResource::initMesh() {
     glGenBuffers(1, &_indexVBO);
     glBindBuffer(GL_ARRAY_BUFFER, _indexVBO);
     {
-        glBufferData(GL_ARRAY_BUFFER, sizeof(sf::Vector2f) * _vertices.size(), _vertices.begin()._Ptr, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(sf::Vector2f) * _vertices.size(), &*_vertices.begin(), GL_STATIC_DRAW);
     }
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glGenBuffers(1, &_indexTexVBO);
     glBindBuffer(GL_ARRAY_BUFFER, _indexTexVBO);
     {
-        glBufferData(GL_ARRAY_BUFFER, sizeof(sf::Vector2f) * _uvs.size(), _uvs.begin()._Ptr, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(sf::Vector2f) * _uvs.size(), &*_uvs.begin(), GL_STATIC_DRAW);
     }
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glGenBuffers(1, &_indexEBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexEBO);
     {
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Face) * _faces.size(), _faces.begin()._Ptr, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Face) * _faces.size(), &*_faces.begin(), GL_STATIC_DRAW);
     }
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 

@@ -1,14 +1,18 @@
 #include "Systems.h"
-
 #include "SFML/Window/Event.hpp"
 
-constexpr auto M_PI = 3.141592653589793238462643383279502884;
+#ifdef linux
+#include <cmath>
+constexpr auto PI = M_PI;
+#elif defined(_WIN32) || defined(WIN32) || defined(__WIN32)
+constexpr auto PI = 3.141592653589793238462643383279502884;
+#endif
 
 void TestSystem::OnFixedUpdate() {
 	sf::Color color{};
 	color.r = 256 * std::abs(sin(_x += _step));
-	color.g = 256 * std::abs(sin((_x += _step) + M_PI / 3));
-	color.b = 256 * std::abs(sin((_x += _step) + 2 * M_PI / 3));
+	color.g = 256 * std::abs(sin((_x += _step) + PI / 3));
+	color.b = 256 * std::abs(sin((_x += _step) + 2 * PI / 3));
 	
 	_entities.GetComponent<RenderComponent>(_canvas)->color = color;
 
