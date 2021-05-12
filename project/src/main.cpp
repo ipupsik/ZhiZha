@@ -1,10 +1,9 @@
+#include "GL/glew.h"
 #include "MeshResource.h"
-#include "utils.h"
-#include "glad/glad.h"
-
-using namespace sf::Extensions::Vector2;
+#include "SFML/Window/Window.hpp"
 
 int main() {
-	gladLoadGL();
-	MeshResource res("Circle");
+	sf::Window window(sf::VideoMode(800, 600), "Sample");
+	glewInit();
+	MeshResource res("Circle.obj");
 }
