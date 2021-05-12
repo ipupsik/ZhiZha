@@ -11,15 +11,16 @@ using namespace sf::Extensions::Vector2;
 
 int main() {
 	auto window = sf::RenderWindow(sf::VideoMode(800, 600), "Sample");
+	float delta = 0;
 
 	auto& sys = SystemManager::Current
 		.RegisterSystem<RenderSystem>(window)
-		.RegisterSystem<TestSystem>(4)
+		.RegisterSystem<TestSystem>(0.016)
 		.RegisterSystem<EventSystem>(window);
 
 	window.setActive(false);
 
-	auto render = std::thread([&window, &sys] {
+	auto render = std::thread([&window, &sys, &delta] {
 		sf::Clock clock{};
 		window.setActive(true);
 
@@ -28,13 +29,13 @@ int main() {
 
 			sys.PostUpdate();
 			
-			std::cout << "FPS: " << 1 / clock.restart().asSeconds() << "\r";
+			delta = 1 / clock.restart().asSeconds();
 		}
 		std::cout << std::endl;
 		window.setActive(false);
 	});
 
-	auto physic = std::thread([&window, &sys] {
+	auto physic = std::thread([&window, &sys, &delta] {
 		sf::Clock deltaClock;
 		const sf::Time fixedDelta = sf::seconds(1.0f / 60);
 		sf::Time sinceUpdate = sf::Time::Zero;
@@ -45,10 +46,11 @@ int main() {
 			if (sinceUpdate > fixedDelta) {
 				sinceUpdate -= fixedDelta;
 				sys.FixedUpdate();
+				std::cout << "FPS: " << delta << "\r";
 			}
 		}
 	});
-
+	
 	sys.PostInit();
 	render.join();
 	window.setActive(true);
