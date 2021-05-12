@@ -3,13 +3,12 @@
 #include "SFML/Graphics/RenderWindow.hpp"
 
 class TestSystem : public virtual System<TestSystem>, public virtual FixedUpdateSystem {
-	sf::Uint8 _step;
-	sf::Color _latestColor = sf::Color::White;
+	double _step;
+	double _x = 0;
 	Entity _canvas;
 
 public:
-	TestSystem(const sf::Uint8 step): _step(step),
-	                                                            _canvas(_entities.CreateEntity()) {
+	TestSystem(const double step): _step(step), _canvas(_entities.CreateEntity()) {
 		_entities.GetOrAddComponent<RenderComponent>(_canvas);
 		_entities.GetOrAddComponent<NameComponent>(_canvas, [](NameComponent& item) {
 			item.Name = "Canvas";

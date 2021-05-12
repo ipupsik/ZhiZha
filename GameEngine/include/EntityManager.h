@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
-#include <optional>
+#include <ranges>
 
 #include "Entity.h"
 #include "Component.h"
