@@ -3,7 +3,7 @@
 
 TextureResource::TextureResource(std::string&& filename) : TextureID(-1)
 {
-    std::string name  = ("../../../../project/resources/Textures/" + filename + ".png");
+    std::string name  = (filename + ".png");
     sf::Image newImage;
     newImage.loadFromFile(name);
     if (newImage.getPixelsPtr())
@@ -20,6 +20,5 @@ TextureResource::TextureResource(std::string&& filename) : TextureID(-1)
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         glBindTexture(GL_TEXTURE_2D, 0);
-        newImage.~Image();
     }
 }

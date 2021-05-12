@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include <glad/glad.h>
+#include "glad/glad.h"
 #include "TextureResource.h"
 
 #include "SFML/System/Vector2.hpp"
