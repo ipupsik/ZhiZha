@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include "glad/glad.h"
-#include "SFML/OpenGL.hpp"
 
 void MeshResource::readFile(std::string&& filename) {
     std::string s;
