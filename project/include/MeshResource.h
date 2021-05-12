@@ -2,8 +2,8 @@
 
 #include <string>
 #include <vector>
+#include <glad/glad.h>
 
-#include "GL/glew.h"
 #include "SFML/System/Vector2.hpp"
 
 class MeshResource {
