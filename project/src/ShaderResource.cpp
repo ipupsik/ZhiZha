@@ -1,49 +1,32 @@
 #include "ShaderResource.h"
 #include <fstream>
+#include <string>
 
-std::string LoadFile(std::string&& filename)
-{
-    std::ifstream ifile(filename, std::ifstream::binary);
-    std::string filetext;
+GLuint LoadShader(ResourceFile& resource, GLuint type) {
+	const std::string& shaderProgram = resource.LoadContent();
+	const char* text = shaderProgram.c_str();
+	const GLuint shader = glCreateShader(type);
+	glShaderSource(shader, 1, &text, nullptr);
+	glCompileShader(shader);
 
-    while (ifile.good()) {
-        std::string line;
-        std::getline(ifile, line);
-        filetext.append(line + "\n");
-    }
-    return filetext;
+	return shader;
 }
 
-GLuint LoadShader(std::string&& filename, GLuint type)
-{
-    std::string shader = LoadFile(std::move(filename));
-    const char* txt = shader.c_str();
-    GLuint Shader = glCreateShader(type);
-    glShaderSource(Shader, 1, &txt, nullptr);
-    glCompileShader(Shader);
+ShaderResource::ShaderResource(std::string&& shaderName) {
+	ResourceFile fragmentShader(shaderName + ".frag");
+	ResourceFile vertexShader(shaderName + ".vert");
+	GLuint fragShader = LoadShader(fragmentShader, GL_FRAGMENT_SHADER);
+	GLuint vertShader = LoadShader(vertexShader, GL_VERTEX_SHADER);
 
-    return Shader;
-}
-
-ShaderResource::ShaderResource(std::string&& filename)
-{
-    std::string FragShaderName = filename;
-    FragShaderName += ".frag";
-    std::string VertShaderName = filename;
-    VertShaderName += ".vert";
-    GLuint FragShader = LoadShader(std::move(FragShaderName), GL_FRAGMENT_SHADER);
-    GLuint VertShader = LoadShader(std::move(VertShaderName), GL_VERTEX_SHADER);
-
-    GLint ok;
-    GLchar log[2000];
-    ShaderID = glCreateProgram();
-    glAttachShader(ShaderID, FragShader);
-    glAttachShader(ShaderID, VertShader);
-    glLinkProgram(ShaderID);
-    glGetProgramiv(ShaderID, GL_LINK_STATUS, &ok);
-    if (!ok)
-    {
-        glGetProgramInfoLog(ShaderID, 2000, nullptr, log);
-        printf("\n");
-    }
+	GLint ok;
+	GLchar log[2000] = {};
+	_shaderId = glCreateProgram();
+	glAttachShader(_shaderId, fragShader);
+	glAttachShader(_shaderId, vertShader);
+	glLinkProgram(_shaderId);
+	glGetProgramiv(_shaderId, GL_LINK_STATUS, &ok);
+	if (!ok) {
+		glGetProgramInfoLog(_shaderId, 2000, nullptr, log);
+		printf("\n");
+	}
 }

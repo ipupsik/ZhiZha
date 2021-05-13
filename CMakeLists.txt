@@ -8,11 +8,12 @@ file(GLOB_RECURSE RESOURCES project/resources/*)
 
 if (UNIX)
 	set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/Lib/Linux)
-	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread -ltbb -ldl")
 elseif (WIN32)
 	set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/Lib/Windows)
 	set(SFML_STATIC_LIBRARIES TRUE)
 endif()
+
+find_package(Threads REQUIRED)
 
 add_subdirectory(ECS)
 add_subdirectory(glad)
@@ -21,10 +22,18 @@ include_directories(ECS/include)
 include_directories(project/include)
 
 add_executable(main ${SOURCE_FILES} ${HEADER_FILES})
-target_link_libraries(main PUBLIC ECS)
-target_link_libraries(main PUBLIC glad)
+target_link_libraries(main PRIVATE ECS)
+target_link_libraries(main PRIVATE glad)
+target_link_libraries(main PRIVATE ${CMAKE_DL_LIBS})
 
-# Move resources to build dir
-foreach (item ${RESOURCES})
-	configure_file(${item} ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
-endforeach ()
+install(FILES ${RESOURCES}
+		TYPE DATA)
+install(TARGETS main
+		TYPE RUNTIME)
+
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/share/)
+foreach(item IN LISTS RESOURCES)
+	configure_file(${item} ${CMAKE_BINARY_DIR}/share/ COPYONLY)
+endforeach()
+
+set(WORKING_DIRECTORY $<IF:BUILD_INTERFACE,${CMAKE_BINARY_DIR},<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}>/share/)
