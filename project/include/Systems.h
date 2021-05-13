@@ -19,10 +19,10 @@ public:
 };
 
 class EventSystem : public virtual System<EventSystem>, public virtual PostInitSystem {
-	sf::RenderWindow& _window;
+	sf::Window& _window;
 
 public:
-	explicit EventSystem(sf::RenderWindow& window): _window(window) {}
+	explicit EventSystem(sf::Window& window): _window(window) {}
 
 	void OnPostInit() override;
 };
