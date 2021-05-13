@@ -1,10 +1,24 @@
-#include "Engine.h"
-#include "TextureResource.h"
-#include "SFML/Window/Window.hpp"
+#include <iostream>
+
+#include "Graph.h"
 
 int main() {
-	sf::Window window(sf::VideoMode(800, 600), "Sample");
-	gladLoadGL();
-	
-	Engine(std::move(window)).Start();
+	Graph<int> graph;
+	Node a(2);
+	Node b(3);
+	Node foo(5);
+	Node bar(6);
+	Node baz(7);
+
+	graph.Just(a)
+	     .Just(b)
+	     .Depends(foo, bar)
+	     .Depends(foo, baz)
+	     .Depends(baz, bar)
+	     .Depends(a, bar);
+	auto stack = graph.TopSort();
+	while (!stack.empty()) {
+		std::cout << stack.top() << std::endl;
+		stack.pop();
+	}
 }

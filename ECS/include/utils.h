@@ -2,6 +2,11 @@
 #pragma once
 
 #include <cmath>
+#include <functional>
+#include <stack>
+#include <unordered_set>
+#include <vector>
+#include <boost/functional/hash.hpp>
 #include <SFML/System/Vector2.hpp>
 
 namespace sf::Extensions::Vector2 {
