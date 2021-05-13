@@ -1,14 +1,12 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <glad/glad.h>
 
-#include "SFML/System/Vector2.hpp"
+#include "ResourceFile.h"
 
 class TextureResource
 {
-	GLuint TextureID;
+	GLuint _textureId;
 public:
-	explicit TextureResource(std::string&& filename);
+	explicit TextureResource(ResourceFile&& filename);
 };

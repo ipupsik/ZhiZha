@@ -1,19 +1,11 @@
 #pragma once
 
-#include <string>
-#include <vector>
+#include "ResourceFile.h"
 #include "glad/glad.h"
-#include "TextureResource.h"
-
-#include "SFML/System/Vector2.hpp"
 
 class ShaderResource {
-	void SetProgram();
-	void ResetProgram();
-	void BindTexture();
-
-	GLuint ShaderID;
+	GLuint _shaderId;
 
 public:
-	explicit ShaderResource(std::string&& filename);
+	explicit ShaderResource(std::string&& shaderName);
 };

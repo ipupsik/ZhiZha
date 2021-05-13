@@ -4,6 +4,7 @@
 #include <vector>
 #include <glad/glad.h>
 
+#include "ResourceFile.h"
 #include "SFML/System/Vector2.hpp"
 
 class MeshResource {
@@ -22,10 +23,10 @@ class MeshResource {
 
 	GLuint _indexEBO = 0, _indexVBO = 0, _indexTexVBO = 0, _indexVAO = 0;
 
-	void readFile(std::string&& filename);
+	void readFile(ResourceFile&& res);
 
 	void initMesh();
 
 public:
-	explicit MeshResource(std::string&& filename);
+	explicit MeshResource(ResourceFile&& filename);
 };
