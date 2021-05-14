@@ -1,3 +1,5 @@
+#include <thread>
+
 #include "Engine.h"
 
 void Engine::initRenderThread() {
