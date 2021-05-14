@@ -24,7 +24,7 @@ public:
 	[[nodiscard]] EntityManager& GetEntityManager() const { return _entityManager; }
 
 	template <typename T, typename ...Args>
-		requires std::derived_from<T, System<T>>
+		requires std::derived_from<T, System>
 	Engine& RegisterSystem(Args&&... args) {
 		_systemManager.RegisterSystem<T>(std::forward<Args>(args)...);
 		return *this;

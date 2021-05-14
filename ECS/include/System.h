@@ -3,14 +3,8 @@
 #include "EntityManager.h"
 #include "TypeFamily.h"
 
-struct SystemBase {
-    // TODO remove friend statements
-	friend struct UpdateSystem;
-	friend struct FixedUpdateSystem;
-	friend struct PostInitSystem;
-	friend struct PostUpdateSystem;
-	
-	virtual ~SystemBase() = default;
+struct System {
+	virtual ~System() = default;
 
 protected:
 	EntityManager& _entities = EntityManager::Current;
@@ -19,7 +13,7 @@ protected:
 /**
  * Система, которая вызывается каждое начало кадра.
  */
-struct UpdateSystem : virtual SystemBase {
+struct UpdateSystem : virtual System {
 	virtual void OnUpdate() = 0;
 };
 
@@ -28,7 +22,7 @@ struct UpdateSystem : virtual SystemBase {
  *
  * Note: нельзя вызывать ресурсозатратные методы
  */
-struct PostInitSystem : virtual SystemBase {
+struct PostInitSystem : virtual System {
 	virtual void OnPostInit() = 0;
 };
 
@@ -37,22 +31,13 @@ struct PostInitSystem : virtual SystemBase {
  *
  * Note: В этой системе нельзя использовать OpenGL
  */
-struct FixedUpdateSystem : virtual SystemBase {
+struct FixedUpdateSystem : virtual System {
 	virtual void OnFixedUpdate() = 0;
 };
 
 /**
  * Система, которая вызывается после отрисовки кадра
  */
-struct PostUpdateSystem : virtual SystemBase {
+struct PostUpdateSystem : virtual System {
 	virtual void OnPostUpdate() = 0;
 };
-
-// TODO delete
-template <typename T>
-struct System : public virtual SystemBase {
-	static std::size_t Type;
-};
-
-template <typename T>
-std::size_t System<T>::Type = TypeFamily<SystemBase>::Type<T>();
