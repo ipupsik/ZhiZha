@@ -3,7 +3,7 @@
 SystemManager SystemManager::Current = SystemManager();
 
 void SystemManager::PostInit() const {
-	const auto type = TypeFamily<SystemBase>::Type<PostInitSystem>();
+	const auto type = TypeFamily<System>::Type<PostInitSystem>();
 	
 	if (!_systemsTable.contains(type))
 		return;
@@ -13,7 +13,7 @@ void SystemManager::PostInit() const {
 }
 
 void SystemManager::Update() const {
-	const auto type = TypeFamily<SystemBase>::Type<UpdateSystem>();
+	const auto type = TypeFamily<System>::Type<UpdateSystem>();
 
 	if (!_systemsTable.contains(type))
 		return;
@@ -23,7 +23,7 @@ void SystemManager::Update() const {
 }
 
 void SystemManager::FixedUpdate() const {
-	const auto type = TypeFamily<SystemBase>::Type<FixedUpdateSystem>();
+	const auto type = TypeFamily<System>::Type<FixedUpdateSystem>();
 
 	if (!_systemsTable.contains(type))
 		return;
@@ -33,7 +33,7 @@ void SystemManager::FixedUpdate() const {
 }
 
 void SystemManager::PostUpdate() const {
-	const auto type = TypeFamily<SystemBase>::Type<PostUpdateSystem>();
+	const auto type = TypeFamily<System>::Type<PostUpdateSystem>();
 
 	if (!_systemsTable.contains(type))
 		return;

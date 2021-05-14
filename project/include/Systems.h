@@ -2,7 +2,7 @@
 #include "System.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
-class TestSystem : public virtual System<TestSystem>, public virtual FixedUpdateSystem {
+class TestSystem : public virtual FixedUpdateSystem {
 	double _step;
 	double _x = 0;
 	Entity _canvas;
@@ -19,10 +19,10 @@ public:
 };
 
 /**
- * Эта система используется для обработки, связанных с окном: передвинули мышку, растянули окно или
+ * Эта система используется для обработки связанной с окном: передвинули мышку, растянули окно или
  * нажали кнопку.
  */
-class EventSystem : public virtual System<EventSystem>, public virtual PostInitSystem {
+class EventSystem : public virtual PostInitSystem {
 	sf::Window& _window;
 
 public:
@@ -31,7 +31,7 @@ public:
 	void OnPostInit() override;
 };
 
-class RenderSystem : public virtual System<RenderSystem>, public virtual PostUpdateSystem {
+class RenderSystem : public virtual PostUpdateSystem {
 	sf::RenderWindow& _window;
 
 public:

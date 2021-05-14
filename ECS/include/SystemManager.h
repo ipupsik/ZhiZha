@@ -9,11 +9,11 @@
 class SystemManager {
 	SystemManager() = default;
 	
-	std::unordered_map<std::size_t, std::vector<std::shared_ptr<SystemBase>>> _systemsTable;
+	std::unordered_map<std::size_t, std::vector<std::shared_ptr<System>>> _systemsTable;
 
 	template<typename S, typename T>
 	void tryInsertAs(std::shared_ptr<T> system) {
-		const auto& type = TypeFamily<SystemBase>::Type<S>();
+		const auto& type = TypeFamily<System>::Type<S>();
 		
 		if constexpr (std::is_base_of_v<S, T>) {
 			_systemsTable.try_emplace(type);
@@ -30,7 +30,7 @@ public:
 	SystemManager& operator=(SystemManager&&) = delete;
 
 	template <typename T, typename ...Args>
-		requires std::derived_from<T, System<T>>
+		requires std::derived_from<T, System>
 	SystemManager& RegisterSystem(Args&&... args) {
 		auto system = std::make_shared<T>(std::forward<Args>(args)...);
 
