@@ -8,6 +8,7 @@ file(GLOB_RECURSE RESOURCES project/resources/*)
 
 if (UNIX)
 	set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/Lib/Linux)
+	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread -ltbb -lX11")
 elseif (WIN32)
 	set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/Lib/Windows)
 	set(SFML_STATIC_LIBRARIES TRUE)

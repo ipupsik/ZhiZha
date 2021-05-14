@@ -4,7 +4,7 @@ const Entity& Entity::GetParent() const {
 	return *_parent;
 }
 
-Entity::Entity(): _parent(nullptr), _id(_count++), _componentsCount(0) {
+Entity::Entity(): _parent(nullptr), _id(_count++) {
 }
 
 Entity* Entity::copy() const {

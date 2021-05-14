@@ -21,7 +21,7 @@ public:
 		RegisterSystem<EventSystem>(EventSystem(window));
 	}
 
-	[[nodiscard]] EntityManager& EntityManager() const { return _entityManager; }
+	[[nodiscard]] EntityManager& GetEntityManager() const { return _entityManager; }
 
 	template <typename T, typename ...Args>
 		requires std::derived_from<T, System<T>>

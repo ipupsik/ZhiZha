@@ -11,11 +11,9 @@ public:
 private:
 	friend class EntityManager;
 	friend struct std::hash<Entity>;
-	friend struct std::equal_to<Entity>;
 
 	const Entity* _parent;
 	const Id _id;
-	int _componentsCount;
 
 	static std::atomic_size_t _count;
 
