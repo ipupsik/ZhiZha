@@ -39,6 +39,9 @@ public:
 template <typename T>
 int Node<T>::ID = 0;
 
+/**
+ *
+ */
 template <typename T>
 class Graph {
 	std::vector<Node<T>*> _nodes;
@@ -66,6 +69,13 @@ class Graph {
 public:
 	Graph() : _nodes() {}
 
+	/**
+	 * Метод Depends создает связь между родительским элементом primary и дочерним элементом
+	 * dependent
+	 * @param primary Родительский элемент, к которому присоединяется дочерний элемент dependent
+	 * @param dependent Дочерний элемент, который присоединяется к родительскому
+	 * @return ссылка на тот же граф
+	 */
 	Graph& Depends(Node<T>& primary, Node<T>& dependent) {
 		if (primary.GetId() >= _nodes.size() || dependent.GetId() >= _nodes.size())
 			_nodes.resize(Node<T>::Count());
@@ -75,6 +85,11 @@ public:
 		return *this;
 	}
 
+	/**
+	 * Метод Just используется для добавления отдельного элемента, независящего от других.
+	 * @param node Ссылка на добавляемый элемент
+	 * @return Ссылка на этот же граф.
+	 */
 	Graph& Just(Node<T>& node) {
 		if (node.GetId() >= _nodes.size())
 			_nodes.resize(Node<T>::Count());

@@ -18,6 +18,10 @@ public:
 	void OnFixedUpdate() override;
 };
 
+/**
+ * Эта система используется для обработки, связанных с окном: передвинули мышку, растянули окно или
+ * нажали кнопку.
+ */
 class EventSystem : public virtual System<EventSystem>, public virtual PostInitSystem {
 	sf::Window& _window;
 
