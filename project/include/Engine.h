@@ -17,7 +17,7 @@ public:
 	Engine(const Engine&) = delete;
 	Engine& operator=(const Engine&) = delete;
 
-	explicit Engine(sf::Window&& window): _window(window) {
+	explicit Engine(sf::Window& window): _window(window) {
 		RegisterSystem<EventSystem>(EventSystem(window));
 	}
 
