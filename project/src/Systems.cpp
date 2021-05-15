@@ -34,32 +34,32 @@ void EventSystem::OnPostInit() {
 
 void RenderSystem::OnPostUpdate() {
     auto entities = _entities.GetEntitiesBy<RenderComponent>();
-    const Entity *canvas = nullptr;
+    const RenderComponent *canvas = nullptr;
 
     for (const auto& item : entities)
-        if (_entities.HasComponent<NameComponent>(item) &&
-            _entities.GetComponent<NameComponent>(item)->Name == "Canvas")
-            canvas = &item.get();
+        if (_entities.HasComponent<NameComponent>(item->GetEntity()) &&
+            _entities.GetComponent<NameComponent>(item->GetEntity())->Name == "Canvas")
+            canvas = item;
 
     if (canvas == nullptr)
         return;
 
-    _window.clear(_entities.GetComponent<RenderComponent>(*canvas)->color);
+    _window.clear(canvas->color);
     _window.display();
 }
 
 void HugeSystem::OnUpdate() {
 	auto test = _entities.GetEntitiesBy<HugeComponent>();
-	for (const Entity& entity: test) {
-		_entities.GetComponent<HugeComponent>(entity)->Index;
-	}
+	for (const auto& entity: test)
+		entity->Index;
 }
 
 void HugeSystem::OnInit() {
+	auto& parent = _entities.CreateEntity();
+	_entities.GetOrAddComponent<HugeComponent>(parent);
+
 	for (std::size_t i = 0; i < _count; i++) {
-		auto entity = _entities.CreateEntity();
-		_entities.GetOrAddComponent<HugeComponent>(entity, [&i](auto& it) {
-			it.Index = i;
-		});
+		auto& entity = _entities.Instantiate(parent);
+		_entities.GetComponent<HugeComponent>(entity)->Index = i;
 	}
 }

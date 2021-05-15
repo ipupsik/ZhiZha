@@ -2,7 +2,7 @@
 
 EntityManager EntityManager::Current = EntityManager();
 
-Entity EntityManager::Instantiate(const Entity& parent) {
+Entity& EntityManager::Instantiate(const Entity& parent) {
 	auto copy = parent.copy();
 	if (_entities.size() <= copy->_id)
 		_entities.resize(Entity::_count);
@@ -14,15 +14,15 @@ Entity EntityManager::Instantiate(const Entity& parent) {
 		if (v[parent._id] != nullptr)
 			v[copy->_id] = v[parent._id]->Copy();
 	}
-	return std::forward<const Entity&>(*copy);
+	return *copy;
 }
 
-Entity EntityManager::CreateEntity() {
+Entity& EntityManager::CreateEntity() {
 	const auto basic = new Entity();
 	if (_entities.size() <= basic->_id)
 		_entities.resize(Entity::_count);
 	_entities[basic->_id] = basic;
-	return std::forward<const Entity&>(*basic);
+	return *basic;
 }
 
 EntityManager::~EntityManager() {	
