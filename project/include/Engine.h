@@ -8,7 +8,7 @@ class Engine {
 	EntityManager& _entityManager = EntityManager::Current;
 	SystemManager& _systemManager = SystemManager::Current;
 	sf::Window& _window;
-	float _deltaTime = 0;
+	std::vector<float> _avgDeltaTimes;
 
 	void initRenderThread();
 	void initFixedUpdateThread() const;
@@ -17,9 +17,7 @@ public:
 	Engine(const Engine&) = delete;
 	Engine& operator=(const Engine&) = delete;
 
-	explicit Engine(sf::Window& window): _window(window) {
-		RegisterSystem<EventSystem>(EventSystem(window));
-	}
+	explicit Engine(sf::Window& window): _window(window) {}
 
 	[[nodiscard]] EntityManager& GetEntityManager() const { return _entityManager; }
 

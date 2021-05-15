@@ -41,3 +41,13 @@ void SystemManager::PostUpdate() const {
 	for (const auto& system : _systemsTable.at(type))
 		std::dynamic_pointer_cast<PostUpdateSystem>(system)->OnPostUpdate();
 }
+
+void SystemManager::Init() const {
+	const auto type = TypeFamily<System>::Type<InitSystem>();
+
+	if (!_systemsTable.contains(type))
+		return;
+
+	for (const auto& system : _systemsTable.at(type))
+		std::dynamic_pointer_cast<InitSystem>(system)->OnInit();
+}
