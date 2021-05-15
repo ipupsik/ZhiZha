@@ -21,6 +21,8 @@ private:
 
 public:
 	Entity();
+	Entity(const Entity&) = delete;
+	Entity& operator=(const Entity&) = delete;
 
 	friend bool operator==(const Entity& lhs, const Entity& rhs) {
 		return lhs._id == rhs._id;

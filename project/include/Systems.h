@@ -5,10 +5,10 @@
 class TestSystem : public virtual FixedUpdateSystem {
 	double _step;
 	double _x = 0;
-	Entity _canvas;
+	Entity&& _canvas;
 
 public:
-	TestSystem(const double step): _step(step), _canvas(_entities.CreateEntity()) {
+	explicit TestSystem(const double step): _step(step), _canvas(std::move(_entities.CreateEntity())) {
 		_entities.GetOrAddComponent<RenderComponent>(_canvas);
 		_entities.GetOrAddComponent<NameComponent>(_canvas, [](NameComponent& item) {
 			item.Name = "Canvas";

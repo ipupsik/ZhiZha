@@ -38,16 +38,16 @@ public:
 	requires std::derived_from<T, ComponentData<T>>
 	auto GetEntitiesBy() {
 		_componentsTable.try_emplace(T::Type);
-		std::vector<std::reference_wrapper<Entity>> result;
-		for (auto item: _componentsTable.at(T::Type))
+		std::vector<T*> result;
+		for (Component* item: _componentsTable.at(T::Type))
 			if (item != nullptr)
-				result.emplace_back(*item->_entity);
+				result.emplace_back(static_cast<T*>(item));
 		return result;
 	}
 
-	Entity CreateEntity();
+	Entity& CreateEntity();
 
-	Entity Instantiate(const Entity& parent);
+	Entity& Instantiate(const Entity& parent);
 
 	template <typename T>
 	requires std::derived_from<T, ComponentData<T>>
