@@ -16,7 +16,7 @@ int main() {
 	auto& engine = Engine(window)
 			.RegisterSystem<TestSystem>(0.01)
 			.RegisterSystem<RenderSystem>(window)
-			.RegisterSystem<HugeSystem>(10000000)
+			.RegisterSystem<HugeSystem>(1000000)
 			.RegisterSystem<EventSystem>(window);
 
 	engine.Start();
