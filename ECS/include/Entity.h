@@ -28,6 +28,8 @@ public:
 		return lhs._id == rhs._id;
 	}
 
+	bool operator<(const Entity& rhs) const;
+
 	[[nodiscard]] const Entity& GetParent() const;
 };
 

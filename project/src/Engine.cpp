@@ -17,7 +17,7 @@ void Engine::initRenderThread() {
 	_window.setActive(false);
 }
 
-void Engine::initFixedUpdateThread() const {
+void Engine::initFixedUpdateThread() {
 	const sf::Time fixedTime = sf::seconds(1 / 30.0f);
 	sf::Clock deltaClock{};
 	sf::Time sinceUpdate = sf::Time::Zero;
@@ -28,7 +28,8 @@ void Engine::initFixedUpdateThread() const {
 		if (sinceUpdate > fixedTime) {
 			sinceUpdate -= fixedTime;
 			std::cout << "FPS: " << 1 / std::accumulate(_avgDeltaTimes.begin(), _avgDeltaTimes
-					.end(), 0.0f) * _avgDeltaTimes.size() << '\r';
+					.end(), 0.01f) * _avgDeltaTimes.size() << '\r';
+			_avgDeltaTimes.clear();
 			_systemManager.FixedUpdate();
 		}
 	}

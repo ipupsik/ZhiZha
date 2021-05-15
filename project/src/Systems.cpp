@@ -33,13 +33,14 @@ void EventSystem::OnPostInit() {
 }
 
 void RenderSystem::OnPostUpdate() {
-    auto entities = _entities.GetEntitiesBy<RenderComponent>();
+    auto entities = _entities.GetEntitiesBy<RenderComponent, NameComponent>();
     const RenderComponent *canvas = nullptr;
 
-    for (const auto& item : entities)
-        if (_entities.HasComponent<NameComponent>(item->GetEntity()) &&
-            _entities.GetComponent<NameComponent>(item->GetEntity())->Name == "Canvas")
-            canvas = item;
+    for (auto item : entities) {
+    	auto [render, name] = item.Components;
+		if (name->Name == "Canvas")
+			canvas = render;
+	}
 
     if (canvas == nullptr)
         return;
@@ -50,8 +51,10 @@ void RenderSystem::OnPostUpdate() {
 
 void HugeSystem::OnUpdate() {
 	auto test = _entities.GetEntitiesBy<HugeComponent>();
-	for (const auto& entity: test)
-		entity->Index;
+	for (const auto& entity: test) {
+		auto [huge] = entity.Components;
+		huge->Index;
+	}
 }
 
 void HugeSystem::OnInit() {
