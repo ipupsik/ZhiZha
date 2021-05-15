@@ -8,38 +8,37 @@
 
 class SystemManager {
 	SystemManager() = default;
-	
-	std::unordered_map<std::size_t, std::vector<std::shared_ptr<System>>> _systemsTable;
 
-	template<typename S, typename T>
-	void tryInsertAs(std::shared_ptr<T> system) {
-		const auto& type = TypeFamily<System>::Type<S>();
-		
-		if constexpr (std::is_base_of_v<S, T>) {
-			_systemsTable.try_emplace(type);
-			_systemsTable.at(type).emplace_back(system);
-		}
-	}
+	std::vector<UpdateSystem*> _updates;
+	std::vector<PostUpdateSystem*> _postUpdates;
+	std::vector<FixedUpdateSystem*> _fixedUpdates;
+	std::vector<InitSystem*> _inits;
+	std::vector<PostInitSystem*> _postInits;
 
 public:
 	static SystemManager Current;
-	
+
 	SystemManager(const SystemManager&) = delete;
 	SystemManager& operator=(const SystemManager&) = delete;
 	SystemManager(SystemManager&&) = delete;
 	SystemManager& operator=(SystemManager&&) = delete;
 
 	template <typename T, typename ...Args>
-		requires std::derived_from<T, System>
-	SystemManager& RegisterSystem(Args&&... args) {
-		auto system = std::make_shared<T>(std::forward<Args>(args)...);
+	requires std::derived_from<T, System>
+	SystemManager& RegisterSystem(Args&& ... args) {
+		T* system = new T(std::forward<Args>(args)...);
 
-		tryInsertAs<PostInitSystem>(system);
-		tryInsertAs<UpdateSystem>(system);
-		tryInsertAs<FixedUpdateSystem>(system);
-		tryInsertAs<PostUpdateSystem>(system);
-		tryInsertAs<InitSystem>(system);
-		
+		if constexpr (std::is_base_of_v<UpdateSystem, T>)
+			_updates.emplace_back(system);
+		if constexpr (std::is_base_of_v<PostUpdateSystem, T>)
+			_postUpdates.emplace_back(system);
+		if constexpr (std::is_base_of_v<FixedUpdateSystem, T>)
+			_fixedUpdates.emplace_back(system);
+		if constexpr(std::is_base_of_v<InitSystem, T>)
+			_inits.emplace_back(system);
+		if constexpr (std::is_base_of_v<PostInitSystem, T>)
+			_postInits.emplace_back(system);
+
 		return *this;
 	}
 
