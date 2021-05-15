@@ -10,6 +10,7 @@
 #include "Entity.h"
 #include "Component.h"
 #include "ComponentHandle.h"
+#include "utils.h"
 
 class EntityManager {
 	std::vector<Entity*> _entities;
@@ -34,14 +35,42 @@ public:
 
 	[[nodiscard]] const std::vector<Entity*>& GetEntities() const;
 
-	template <typename T>
-	requires std::derived_from<T, ComponentData<T>>
+	template <std::derived_from<Component> ...Args>
 	auto GetEntitiesBy() {
-		_componentsTable.try_emplace(T::Type);
-		std::vector<T*> result;
-		for (Component* item: _componentsTable.at(T::Type))
-			if (item != nullptr)
-				result.emplace_back(static_cast<T*>(item));
+		constexpr auto count = sizeof...(Args);
+		const auto types = std::make_tuple(Args::Type...);
+
+		std::vector<ComplexComponent<Args...>> result;
+		const auto first = std::get<0>(types);
+		if (!_componentsTable.contains(first)) return result;
+
+		for (Component* item: _componentsTable.at(first)) {
+			if (item == nullptr) continue;
+
+			ComplexComponent<Args...> complex;
+			bool consideredToAdd = true;
+
+			complex.Entity = &item->GetEntity();
+			foreach([&](const auto i) {
+				typename std::tuple_element<i, std::tuple<Args...>>::type T;
+				const auto type = std::get<i>(types);
+
+				if (!_componentsTable.contains(type)) {
+					consideredToAdd = false;
+				}
+				else {
+					const std::vector<Component*>& components = _componentsTable.at(type);
+					if ((components.size() <= complex.Entity->_id
+							|| components.at(complex.Entity->_id) == nullptr))
+						consideredToAdd = false;
+					std::get<i>(complex.Components) = static_cast<decltype(T)*>(components
+							.at(complex.Entity->_id));
+				}
+			}, std::make_integer_sequence<const std::size_t, count>());
+
+			if (consideredToAdd)
+				result.push_back(complex);
+		}
 		return result;
 	}
 

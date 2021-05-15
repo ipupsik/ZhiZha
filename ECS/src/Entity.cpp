@@ -14,3 +14,7 @@ Entity* Entity::copy() const {
 }
 
 std::atomic_size_t Entity::_count = 0;
+
+bool Entity::operator<(const Entity& rhs) const {
+	return _id < rhs._id;
+}

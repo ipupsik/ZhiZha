@@ -18,6 +18,5 @@ int main() {
 			.RegisterSystem<RenderSystem>(window)
 			.RegisterSystem<HugeSystem>(10000000)
 			.RegisterSystem<EventSystem>(window);
-
 	engine.Start();
 }

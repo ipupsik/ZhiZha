@@ -13,7 +13,7 @@ private:
 	Entity* _entity = nullptr;
 
 public:
-	const Entity& GetEntity() { return *_entity; }
+	Entity& GetEntity() { return *_entity; }
 	virtual ~Component() = default;
 	[[nodiscard]] virtual Component* Copy() const = 0;
 };
@@ -30,6 +30,14 @@ protected:
 	ComponentData() = default;
 	ComponentData(const ComponentData&) = default;
 	ComponentData(ComponentData&&) noexcept = default;
+};
+
+template <typename ...Args>
+struct ComplexComponent {
+	std::tuple<Args*...> Components;
+	Entity* Entity{};
+
+	ComplexComponent() = default;;
 };
 
 template <typename T>

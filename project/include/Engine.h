@@ -11,7 +11,7 @@ class Engine {
 	std::vector<float> _avgDeltaTimes;
 
 	void initRenderThread();
-	void initFixedUpdateThread() const;
+	void initFixedUpdateThread();
 
 public:
 	Engine(const Engine&) = delete;
