@@ -4,6 +4,7 @@
 #ifdef linux
 
 #include <cmath>
+#include <iostream>
 
 constexpr auto PI = M_PI;
 #elif defined(_WIN32) || defined(WIN32) || defined(__WIN32)
@@ -38,11 +39,27 @@ void RenderSystem::OnPostUpdate() {
     for (const auto& item : entities)
         if (_entities.HasComponent<NameComponent>(item) &&
             _entities.GetComponent<NameComponent>(item)->Name == "Canvas")
-            canvas = &item;
+            canvas = &item.get();
 
     if (canvas == nullptr)
         return;
 
     _window.clear(_entities.GetComponent<RenderComponent>(*canvas)->color);
     _window.display();
+}
+
+void HugeSystem::OnUpdate() {
+	auto test = _entities.GetEntitiesBy<HugeComponent>();
+	for (const Entity& entity: test) {
+		_entities.GetComponent<HugeComponent>(entity)->Index;
+	}
+}
+
+void HugeSystem::OnInit() {
+	for (std::size_t i = 0; i < _count; i++) {
+		auto entity = _entities.CreateEntity();
+		_entities.GetOrAddComponent<HugeComponent>(entity, [&i](auto& it) {
+			it.Index = i;
+		});
+	}
 }

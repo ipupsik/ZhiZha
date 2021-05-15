@@ -21,3 +21,7 @@ struct TransformComponent : public ComponentData<TransformComponent> {
 struct RenderComponent : public ComponentData<RenderComponent> {
   sf::Color color;
 };
+
+struct HugeComponent: public ComponentData<HugeComponent> {
+	std::size_t Index;
+};

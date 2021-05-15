@@ -6,12 +6,13 @@
 #include "TypeFamily.h"
 
 struct Component {
+	using Id = std::size_t;
+
 private:
 	friend class EntityManager;
-	Entity* _entity;
+	Entity* _entity = nullptr;
 
 public:
-	using Id = std::size_t;
 	const Entity& GetEntity() { return *_entity; }
 	virtual ~Component() = default;
 	[[nodiscard]] virtual Component* Copy() const = 0;

@@ -39,3 +39,13 @@ public:
 
 	void OnPostUpdate() override;
 };
+
+class HugeSystem: public virtual InitSystem, public virtual UpdateSystem {
+	std::size_t _count;
+
+public:
+	explicit HugeSystem(std::size_t count): _count(count) {}
+
+	void OnUpdate() override;
+	void OnInit() override;
+};

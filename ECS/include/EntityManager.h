@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include <functional>
 #include <ranges>
+#include <tbb/concurrent_vector.h>
 
 #include "Entity.h"
 #include "Component.h"
@@ -36,13 +37,12 @@ public:
 	template <typename T>
 	requires std::derived_from<T, ComponentData<T>>
 	auto GetEntitiesBy() {
-		using namespace std::ranges::views;
-
 		_componentsTable.try_emplace(T::Type);
-		return _componentsTable.at(T::Type)
-				| filter(std::bind2nd(std::not_equal_to<Component*>(), nullptr))
-				| transform(std::mem_fun(&Component::GetEntity))
-				| common;
+		std::vector<std::reference_wrapper<Entity>> result;
+		for (auto item: _componentsTable.at(T::Type))
+			if (item != nullptr)
+				result.emplace_back(*item->_entity);
+		return result;
 	}
 
 	Entity CreateEntity();
@@ -55,7 +55,9 @@ public:
 		if (!_componentsTable.contains(T::Type))
 			return nullptr;
 		const auto& components = _componentsTable.at(T::Type);
-		if (components.size() < entity._id || components.at(entity._id) == nullptr)
+		if (components.size() <= entity._id)
+			return nullptr;
+		if (components.at(entity._id) == nullptr)
 			return nullptr;
 		return static_cast<T&>(*components.at(entity._id));
 	}

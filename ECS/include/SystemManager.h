@@ -38,6 +38,7 @@ public:
 		tryInsertAs<UpdateSystem>(system);
 		tryInsertAs<FixedUpdateSystem>(system);
 		tryInsertAs<PostUpdateSystem>(system);
+		tryInsertAs<InitSystem>(system);
 		
 		return *this;
 	}
@@ -49,4 +50,6 @@ public:
 	void FixedUpdate() const;
 
 	void PostUpdate() const;
+
+	void Init() const;
 };

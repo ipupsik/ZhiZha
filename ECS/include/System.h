@@ -41,3 +41,7 @@ struct FixedUpdateSystem : virtual System {
 struct PostUpdateSystem : virtual System {
 	virtual void OnPostUpdate() = 0;
 };
+
+struct InitSystem: virtual System {
+	virtual void OnInit() = 0;
+};
