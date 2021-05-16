@@ -9,7 +9,7 @@ void CreateComplexCollisionSystem::OnPostInit()
 
     for (auto& it : Entities)
     {
-		Collider = std::vector<Collision*>(0);
+		/*Collider = std::vector<Collision*>(0);
 
 		for (int i = 0; i < Mesh->faces.size(); i++)
 		{
@@ -25,6 +25,6 @@ void CreateComplexCollisionSystem::OnPostInit()
 			v3.Y = Mesh->vertices[Mesh->faces[i].v3].Y;
 
 			Collider.push_back(new CollisionTriangle(v1, v2, v3, this));
-		}
+		}*/
     }
 }
