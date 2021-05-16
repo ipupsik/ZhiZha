@@ -3,7 +3,7 @@
 #include "System.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
-class CreateComplexCollisionSystem : public virtual PostInitSystem {
+class CreateComplexCollisionSystem : public virtual InitSystem {
 	sf::Window& _window;
 
 public:
