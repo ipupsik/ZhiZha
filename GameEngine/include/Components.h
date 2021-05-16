@@ -18,6 +18,9 @@ struct TransformComponent : public ComponentData<TransformComponent> {
 	sf::Vector2f Location, Rotation, Scale;
 };
 
+struct ComplexCollision : public ComponentData<ComplexCollision> {
+};
+
 struct RenderComponent : public ComponentData<RenderComponent> {
 	sf::Color color;
 };
