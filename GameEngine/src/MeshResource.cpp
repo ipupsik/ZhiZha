@@ -1,18 +1,20 @@
 #include "MeshResource.h"
 
 #include <iostream>
+#include <fstream>
 
-#include "ResourceFile.h"
-
-void MeshResource::readFile(ResourceFile&& res) {
-	std::string s;
-	while (res >> s) {
+void MeshResource::readFile(std::string&& filename) {
+	std::string s = filename;
+	std::ifstream fin(s);
+	if (!fin)
+		return;
+	while (fin >> s) {
 		if (s == "v") {
 			sf::Vector2f v;
-			res >> v.x >> v.y;
+			fin >> v.x >> v.y;
 
 			float tmp;
-			res >> tmp;
+			fin >> tmp;
 
 			_vertices.push_back(v);
 		}
@@ -20,23 +22,23 @@ void MeshResource::readFile(ResourceFile&& res) {
 			char symbol;
 			Face f{}, n{}, uv{};
 
-			res >> f.v1;
-			res >> symbol;
-			res >> uv.v1;
-			res >> symbol;
-			res >> n.v1;
+			fin >> f.v1;
+			fin >> symbol;
+			fin >> uv.v1;
+			fin >> symbol;
+			fin >> n.v1;
 
-			res >> f.v2;
-			res >> symbol;
-			res >> uv.v2;
-			res >> symbol;
-			res >> n.v2;
+			fin >> f.v2;
+			fin >> symbol;
+			fin >> uv.v2;
+			fin >> symbol;
+			fin >> n.v2;
 
-			res >> f.v3;
-			res >> symbol;
-			res >> uv.v3;
-			res >> symbol;
-			res >> n.v3;
+			fin >> f.v3;
+			fin >> symbol;
+			fin >> uv.v3;
+			fin >> symbol;
+			fin >> n.v3;
 
 			f.v1--;
 			f.v2--;
@@ -52,21 +54,21 @@ void MeshResource::readFile(ResourceFile&& res) {
 		}
 		else if (s == "vn") {
 			sf::Vector2f vn;
-			res >> vn.x >> vn.y;
+			fin >> vn.x >> vn.y;
 
 			float tmp;
-			res >> tmp;
+			fin >> tmp;
 
 			_normals.push_back(vn);
 		}
 		else if (s == "vt") {
 			sf::Vector2f vt;
-			res >> vt.x >> vt.y;
+			fin >> vt.x >> vt.y;
 			_uvsInit.emplace_back(1.0f - vt.x, vt.y);
 		}
 		else {
 			std::string tmp;
-			std::getline(res, tmp);
+			std::getline(fin, tmp);
 		}
 	}
 	_uvs.resize(_uvsInit.size());
@@ -112,7 +114,13 @@ void MeshResource::initMesh() {
 	glBindVertexArray(0);
 }
 
-MeshResource::MeshResource(ResourceFile&& filename) {
-	readFile(std::move(filename));
+MeshResource::MeshResource(std::string&& filename) : ResourceFile(std::move(filename)) {
+
+	LoadContent();
+}
+
+void MeshResource::LoadContent()
+{
+	readFile(std::move(Name()));
 	initMesh();
 }

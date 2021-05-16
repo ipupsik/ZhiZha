@@ -1,9 +1,9 @@
 #include "TextureResource.h"
 #include "SFML/Graphics/Image.hpp"
 
-TextureResource::TextureResource(ResourceFile&& filename) : _textureId(-1) {
+TextureResource::TextureResource(std::string&& filename) : ResourceFile(std::move(filename)), _textureId(-1) {
 	sf::Image newImage;
-	newImage.loadFromFile(filename.Name());
+	newImage.loadFromFile(Name());
 	if (newImage.getPixelsPtr()) {
 		glGenTextures(1, &_textureId);
 		glBindTexture(GL_TEXTURE_2D, _textureId);

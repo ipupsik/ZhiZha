@@ -7,7 +7,7 @@
 #include "ResourceFile.h"
 #include "SFML/System/Vector2.hpp"
 
-class MeshResource {
+class MeshResource : public ResourceFile {
 	struct Face {
 		unsigned int v1, v2, v3;
 	};
@@ -23,10 +23,11 @@ class MeshResource {
 
 	GLuint _indexEBO = 0, _indexVBO = 0, _indexTexVBO = 0, _indexVAO = 0;
 
-	void readFile(ResourceFile&& res);
-
 	void initMesh();
+	void readFile(std::string&& filename);
 
 public:
-	explicit MeshResource(ResourceFile&& filename);
+	explicit MeshResource(std::string&& filename);
+
+	void LoadContent() final;
 };

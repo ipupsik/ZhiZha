@@ -4,7 +4,6 @@
 
 class ResourceFile: public std::basic_ifstream<char> {
 	std::string _filename;
-	std::string _content;
 	bool _isLoaded = false;
 
 public:
@@ -18,7 +17,7 @@ public:
 
 	std::string& Name();
 
-	const std::string& LoadContent();
+	virtual void LoadContent();
 
-	void UnloadContent();
+	virtual void UnloadContent();
 };
