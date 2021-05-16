@@ -6,11 +6,11 @@
 #include "SFML/Window/Window.hpp"
 
 class Engine {
-	EntityManager& _entityManager = EntityManager::Current;
-	SystemManager& _systemManager = SystemManager::Current;
+	EntityManager* _entityManager = new EntityManager();
+	SystemManager* _systemManager = new SystemManager();
 	ResourceManager* _resourceManager = new ResourceManager();
 	sf::Window& _window;
-	float _deltaTime;
+	float _deltaTime = 0.0f;
 
 	void initRenderThread();
 	void initFixedUpdateThread() const;
@@ -19,11 +19,12 @@ public:
 	Engine(const Engine&) = delete;
 	Engine& operator=(const Engine&) = delete;
 
-	~Engine() { delete _resourceManager; }
+	~Engine();
 
 	explicit Engine(sf::Window& window): _window(window) {}
 
-	[[nodiscard]] EntityManager& GetEntityManager() const { return _entityManager; }
+	[[nodiscard]] EntityManager& GetEntityManager() const { return *_entityManager; }
+	[[nodiscard]] SystemManager& GetSystemManager() const { return *_systemManager; }
 	[[nodiscard]] ResourceManager& GetResourceManager() const { return *_resourceManager; }
 
 	template <typename T, typename ...Args>
