@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "Entity.h"
 #include "TypeFamily.h"
 
@@ -13,7 +11,7 @@ private:
 	Entity* _entity = nullptr;
 
 public:
-	Entity& GetEntity() { return *_entity; }
+	[[nodiscard]] Entity& GetEntity() const { return *_entity; }
 	virtual ~Component() = default;
 	[[nodiscard]] virtual Component* Copy() const = 0;
 };
@@ -37,8 +35,8 @@ struct ComplexComponent {
 	std::tuple<Args*...> Components;
 	Entity* Entity{};
 
-	ComplexComponent() = default;;
+	ComplexComponent() = default;
 };
 
 template <typename T>
-std::size_t ComponentData<T>::Type = TypeFamily<Component>::Type<T>();
+std::size_t ComponentData<T>::Type = TypeFamily::Type<T>();
