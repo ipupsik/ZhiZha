@@ -14,9 +14,7 @@ int main() {
 	gladLoadGL();
 
 	auto& engine = Engine(window)
-			.RegisterSystem<TestSystem>(0.01)
 			.RegisterSystem<RenderSystem>(window)
-			.RegisterSystem<HugeSystem>(100000)
 			.RegisterSystem<EventSystem>(window);
 	engine.Start();
 }

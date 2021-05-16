@@ -5,7 +5,6 @@
 #include <unordered_set>
 #include <functional>
 #include <ranges>
-//#include <tbb/concurrent_vector.h>
 
 #include "Entity.h"
 #include "Component.h"
@@ -15,8 +14,6 @@
 class EntityManager {
 	std::vector<Entity*> _entities;
 	std::unordered_map<Component::Id, std::vector<Component*>> _componentsTable;
-
-	EntityManager();
 
 	template <typename T, typename ...Args>
 	requires std::derived_from<T, ComponentData<T>>
@@ -31,6 +28,8 @@ class EntityManager {
 	}
 
 public:
+	EntityManager() = default;
+	
 	~EntityManager();
 
 	[[nodiscard]] const std::vector<Entity*>& GetEntities() const;
@@ -147,6 +146,4 @@ public:
 		return RemoveComponent<T>(entity) ? addComponent<T>(entity,
 				args...) : GetComponent<T>(entity)->get();
 	}
-
-	static EntityManager Current;
 };

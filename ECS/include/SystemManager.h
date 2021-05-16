@@ -1,14 +1,11 @@
 #pragma once
 
 #include <concepts>
-#include <unordered_map>
 #include <execution>
 
 #include "System.h"
 
 class SystemManager {
-	SystemManager() = default;
-
 	std::vector<UpdateSystem*> _updates;
 	std::vector<PostUpdateSystem*> _postUpdates;
 	std::vector<FixedUpdateSystem*> _fixedUpdates;
@@ -16,12 +13,13 @@ class SystemManager {
 	std::vector<PostInitSystem*> _postInits;
 
 public:
-	static SystemManager Current;
-
+	SystemManager() = default;
+	
 	SystemManager(const SystemManager&) = delete;
 	SystemManager& operator=(const SystemManager&) = delete;
 	SystemManager(SystemManager&&) = delete;
 	SystemManager& operator=(SystemManager&&) = delete;
+	~SystemManager();
 
 	template <typename T, typename ...Args>
 	requires std::derived_from<T, System>

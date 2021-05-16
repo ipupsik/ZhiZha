@@ -2,6 +2,19 @@
 
 SystemManager SystemManager::Current = SystemManager();
 
+SystemManager::~SystemManager() {
+	for (auto item : _updates)
+		delete item;
+	for (auto item : _fixedUpdates)
+		delete item;
+	for (auto item : _inits)
+		delete item;
+	for (auto item : _postInits)
+		delete item;
+	for (auto item : _postUpdates)
+		delete item;
+}
+
 void SystemManager::PostInit() const {
 	for (const auto& system : _postInits)
 		system->OnPostInit();

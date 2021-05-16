@@ -1,13 +1,15 @@
 ﻿#pragma once
 
 #include "EntityManager.h"
-#include "TypeFamily.h"
 
 struct System {
+	friend class SystemManager;
+	
 	virtual ~System() = default;
 
 protected:
-	EntityManager& _entities = EntityManager::Current;
+	template<typename T>
+	T& inject(std::string&& hint = "");
 };
 
 /**

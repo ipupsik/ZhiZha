@@ -15,15 +15,15 @@ public:
 	ResourceManager& operator=(const ResourceManager&) = delete;
 	ResourceManager(ResourceManager&&) = delete;
 	ResourceManager& operator=(ResourceManager&&) = delete;
+	~ResourceManager();
 
-	ResourceFile& GetOrAddResource(std::string&& filename) {
-		if (_resourcesTable.find(filename) != _resourcesTable.end())
-			return *_resourcesTable[filename];
-		else
-		{
-			auto* newResource = new ResourceFile(std::move(filename));
-			_resourcesTable[newResource->Name()] = newResource;
-			return *newResource;
-		}
+	template<std::derived_from<ResourceFile> T>
+	T& GetOrAddResource(std::string&& filename) {
+		if (!_resourcesTable.contains(filename))
+			return static_cast<T*>(_resourcesTable[filename]);
+		
+		auto* newResource = new T(std::move(filename));
+		_resourcesTable[newResource->Name()] = newResource;
+		return *newResource;
 	}
 };
