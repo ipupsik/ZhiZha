@@ -14,6 +14,7 @@ elseif (WIN32)
 	set(SFML_STATIC_LIBRARIES TRUE)
 endif()
 
+find_package(SFML COMPONENTS system window graphics REQUIRED)
 find_package(Threads REQUIRED)
 
 add_subdirectory(ECS)
