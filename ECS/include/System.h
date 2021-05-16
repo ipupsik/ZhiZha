@@ -44,6 +44,9 @@ struct PostUpdateSystem : virtual System {
 	virtual void OnPostUpdate() = 0;
 };
 
+/**
+ * Система, которая вызывается перед первым кадром
+ */
 struct InitSystem: virtual System {
 	virtual void OnInit() = 0;
 };
