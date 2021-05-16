@@ -7,7 +7,7 @@ void MatInitSystem::OnPostInit()
 
 	for (auto& it : Entities)
 	{
-		MaterialComponent Material = _entities.GetComponent<MaterialComponent>(it);
+		/*MaterialComponent Material = _entities.GetComponent<MaterialComponent>(it);
 
         GLint ok;
         GLchar log[2000];
@@ -20,6 +20,6 @@ void MatInitSystem::OnPostInit()
         {
             glGetProgramInfoLog(Material._materialId, 2000, NULL, log);
             printf("\n");
-        }
+        }*/
 	}
 }
