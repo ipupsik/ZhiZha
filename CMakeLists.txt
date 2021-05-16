@@ -18,12 +18,15 @@ find_package(Threads REQUIRED)
 
 add_subdirectory(ECS)
 add_subdirectory(glad)
+add_subdirectory(GameEngine)
 include_directories(glad/include)
 include_directories(ECS/include)
+include_directories(GameEngine/include)
 include_directories(project/include)
 
 add_executable(main ${SOURCE_FILES} ${HEADER_FILES})
 target_link_libraries(main PRIVATE ECS)
+target_link_libraries(main PRIVATE GameEngine)
 target_link_libraries(main PRIVATE glad)
 target_link_libraries(main PRIVATE ${CMAKE_DL_LIBS})
 

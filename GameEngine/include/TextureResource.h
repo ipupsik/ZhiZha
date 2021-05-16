@@ -4,9 +4,9 @@
 
 #include "ResourceFile.h"
 
-class TextureResource
+class TextureResource : public ResourceFile
 {
 	GLuint _textureId;
 public:
-	explicit TextureResource(ResourceFile&& filename);
+	explicit TextureResource(std::string&& filename);
 };
