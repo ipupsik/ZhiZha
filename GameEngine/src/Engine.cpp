@@ -1,6 +1,6 @@
 #include <thread>
 #include <iostream>
-#include <algorithm>
+#include <iomanip>
 
 #include "Engine.h"
 
@@ -17,8 +17,8 @@ void Engine::initRenderThread() {
 	_window.setActive(false);
 }
 
-void Engine::initFixedUpdateThread() {
-	const sf::Time fixedTime = sf::seconds(1 / 30.0f);
+void Engine::initFixedUpdateThread() const {
+	const sf::Time fixedTime = sf::seconds(1 / 24.0f);
 	sf::Clock deltaClock{};
 	sf::Time sinceUpdate = sf::Time::Zero;
 
@@ -27,7 +27,7 @@ void Engine::initFixedUpdateThread() {
 
 		if (sinceUpdate > fixedTime) {
 			sinceUpdate -= fixedTime;
-			std::cout << "FPS: " << 1 / _deltaTime << '\r';
+			std::cout << std::setprecision(2) << "FPS: " << 1 / _deltaTime << '\r';
 			_systemManager.FixedUpdate();
 		}
 	}

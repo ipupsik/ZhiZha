@@ -13,7 +13,7 @@ class Engine {
 	float _deltaTime;
 
 	void initRenderThread();
-	void initFixedUpdateThread();
+	void initFixedUpdateThread() const;
 
 public:
 	Engine(const Engine&) = delete;
