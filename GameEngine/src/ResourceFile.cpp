@@ -1,4 +1,4 @@
-#include "ResourceFile.h"
+#include "../include/ResourceFile.h"
 
 #include <sstream>
 
