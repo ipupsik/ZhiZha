@@ -11,7 +11,7 @@ void Engine::initRenderThread() {
 	while (_window.isOpen()) {
 		_systemManager.Update();
 		_systemManager.PostUpdate();
-		_avgDeltaTimes.emplace_back(clock.restart().asSeconds());
+		_deltaTime = clock.restart().asSeconds();
 	}
 
 	_window.setActive(false);
@@ -27,9 +27,7 @@ void Engine::initFixedUpdateThread() {
 
 		if (sinceUpdate > fixedTime) {
 			sinceUpdate -= fixedTime;
-			std::cout << "FPS: " << 1 / std::accumulate(_avgDeltaTimes.begin(), _avgDeltaTimes
-					.end(), 0.01f) * _avgDeltaTimes.size() << '\r';
-			_avgDeltaTimes.clear();
+			std::cout << "FPS: " << 1 / _deltaTime << '\r';
 			_systemManager.FixedUpdate();
 		}
 	}
@@ -37,6 +35,7 @@ void Engine::initFixedUpdateThread() {
 
 void Engine::Start() {
 	_systemManager.Init();
+	_window.setActive(false);
 	std::thread update([&] { initRenderThread(); });
 	std::thread fixed([&] { initFixedUpdateThread(); });
 
