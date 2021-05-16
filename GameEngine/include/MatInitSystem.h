@@ -3,7 +3,7 @@
 #include "System.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
-class MatInitSystem : public virtual PostInitSystem {
+class MatInitSystem : public virtual InitSystem {
 	sf::Window& _window;
 
 public:
