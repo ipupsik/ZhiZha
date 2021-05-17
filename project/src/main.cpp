@@ -17,8 +17,8 @@ int main() {
 
 	auto engine = new Engine(window);
 	engine->RegisterSystem<CreateComplexCollisionSystem>(window)
-		.RegisterSystem<MatInitSystem>(window)
-		.RegisterSystem<RenderSystem>(window)
-		.RegisterSystem<EventSystem>(window);
+	      .RegisterSystem<MatInitSystem>(window)
+	      .RegisterSystem<RenderSystem>(window)
+	      .RegisterSystem<EventSystem>(window);
 	engine->Start();
 }
