@@ -27,7 +27,7 @@ void Engine::initFixedUpdateThread() const {
 
 		if (sinceUpdate > fixedTime) {
 			sinceUpdate -= fixedTime;
-			std::cout << "FPS: " << static_cast<int>(1 / _deltaTime) << '\r';
+			std::cout << "FPS: " << static_cast<long long>(1 / _deltaTime) << '\r';
 			_systemManager->FixedUpdate();
 		}
 	}
