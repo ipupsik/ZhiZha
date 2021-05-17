@@ -1,7 +1,5 @@
 #include "SystemManager.h"
 
-SystemManager SystemManager::Current = SystemManager();
-
 SystemManager::~SystemManager() {
 	for (auto item : _updates)
 		delete item;

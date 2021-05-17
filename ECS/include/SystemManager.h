@@ -11,9 +11,10 @@ class SystemManager {
 	std::vector<FixedUpdateSystem*> _fixedUpdates;
 	std::vector<InitSystem*> _inits;
 	std::vector<PostInitSystem*> _postInits;
+	EntityManager& _inner;
 
 public:
-	SystemManager() = default;
+	SystemManager(EntityManager& inner): _inner(inner) {}
 	
 	SystemManager(const SystemManager&) = delete;
 	SystemManager& operator=(const SystemManager&) = delete;
@@ -23,9 +24,9 @@ public:
 
 	template <typename T, typename ...Args>
 	requires std::derived_from<T, System>
-	SystemManager& RegisterSystem(Args&& ... args) {
-		T* system = new T(std::forward<Args>(args)...);
-
+	SystemManager& RegisterSystem(T* system) {
+		system->_entities = &_inner;
+		
 		if constexpr (std::is_base_of_v<UpdateSystem, T>)
 			_updates.emplace_back(system);
 		if constexpr (std::is_base_of_v<PostUpdateSystem, T>)

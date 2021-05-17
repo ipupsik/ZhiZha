@@ -20,10 +20,10 @@ void EventSystem::OnPostInit() {
 }
 
 void RenderSystem::OnPostUpdate() {
-    auto entities = _entities.GetEntitiesBy<RenderComponent, NameComponent>();
+    auto items = _entities->GetEntitiesBy<RenderComponent, NameComponent>();
     const RenderComponent *canvas = nullptr;
 
-    for (const auto& [Components, Entity] : entities) {
+    for (const auto& [Components, Entity] : items) {
 	    if (auto [render, name] = Components; name->Name == "Canvas")
 			canvas = render;
 	}

@@ -1,8 +1,0 @@
-prefix=C:/Users/potry/zhizha/Lib/Hypodermic
-exec_prefix=${prefix}
-includedir=${prefix}/include
-
-Name: libhypodermic
-Description: Hypodermic is an IoC container for C++11.
-Version: 2.5.0
-Cflags: -I${includedir}
