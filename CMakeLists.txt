@@ -6,6 +6,8 @@ file(GLOB_RECURSE SOURCE_FILES project/src/*.cpp project/src/*.c)
 file(GLOB_RECURSE HEADER_FILES project/include/*.h project/include/*.hpp)
 file(GLOB_RECURSE RESOURCES project/resources/*)
 
+find_package(Threads REQUIRED)
+
 if (UNIX)
 	set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/Lib/Linux)
 	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread -ltbb -lX11")
@@ -15,12 +17,14 @@ elseif (WIN32)
 endif()
 
 find_package(SFML COMPONENTS system window graphics REQUIRED)
-find_package(Threads REQUIRED)
 
 add_subdirectory(ECS)
+
 add_subdirectory(glad)
-add_subdirectory(GameEngine)
+
 include_directories(glad/include)
+add_subdirectory(GameEngine)
+
 include_directories(ECS/include)
 include_directories(GameEngine/include)
 include_directories(project/include)
@@ -30,6 +34,7 @@ target_link_libraries(main PRIVATE ECS)
 target_link_libraries(main PRIVATE GameEngine)
 target_link_libraries(main PRIVATE glad)
 target_link_libraries(main PRIVATE ${CMAKE_DL_LIBS})
+target_link_libraries(main PRIVATE ${Boost_LIBRARIES})
 
 install(FILES ${RESOURCES}
 		TYPE DATA)

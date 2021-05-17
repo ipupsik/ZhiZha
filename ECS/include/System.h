@@ -2,14 +2,13 @@
 
 #include "EntityManager.h"
 
-struct System {
+class System {
 	friend class SystemManager;
 	
-	virtual ~System() = default;
-
 protected:
-	template<typename T>
-	T& inject(std::string&& hint = "");
+	EntityManager* _entities = nullptr;
+	System() = default;
+	virtual ~System() = default;
 };
 
 /**

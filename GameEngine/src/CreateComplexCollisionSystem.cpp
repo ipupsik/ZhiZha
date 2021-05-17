@@ -3,9 +3,9 @@
 #include "ActorComponent.h"
 #include "Components.h"
 
-void CreateComplexCollisionSystem::OnPostInit()
+void CreateComplexCollisionSystem::OnInit()
 {
-	auto Entities = _entities.GetEntitiesBy<ActorComponent, ComplexCollision>();
+	auto Entities = _entities->GetEntitiesBy<ActorComponent, ComplexCollision>();
 
     for (auto& it : Entities)
     {

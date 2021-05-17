@@ -39,4 +39,4 @@ struct ComplexComponent {
 };
 
 template <typename T>
-std::size_t ComponentData<T>::Type = TypeFamily::Type<T>();
+std::size_t ComponentData<T>::Type = TypeFamily<Component>::Type<T>();
