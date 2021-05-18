@@ -4,7 +4,7 @@
 #include "Components.h"
 #include "MeshResource.h"
 
-struct ActorComponent : public ComponentData<Actor>
+struct ActorComponent : public ComponentData<ActorComponent>
 {
 	MeshResource* Mesh;
 	MaterialComponent Material;

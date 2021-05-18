@@ -4,24 +4,11 @@
 #ifdef linux
 
 #include <cmath>
-#include <iostream>
 
 constexpr auto PI = M_PI;
 #elif defined(_WIN32) || defined(WIN32) || defined(__WIN32)
 constexpr auto PI = 3.141592653589793238462643383279502884;
 #endif
-
-void TestSystem::OnFixedUpdate() {
-    sf::Color color{};
-    color.r = 256 * std::abs(sin(_x += _step));
-    color.g = 256 * std::abs(sin((_x += _step) + PI / 3));
-    color.b = 256 * std::abs(sin((_x += _step) + 2 * PI / 3));
-
-    _entities.GetComponent<RenderComponent>(_canvas)->color = color;
-
-    if (_x == 100)
-        _x = 0;
-}
 
 void EventSystem::OnPostInit() {
     sf::Event event{};
@@ -33,12 +20,11 @@ void EventSystem::OnPostInit() {
 }
 
 void RenderSystem::OnPostUpdate() {
-    auto entities = _entities.GetEntitiesBy<RenderComponent, NameComponent>();
+    auto items = _entities->GetEntitiesBy<RenderComponent, NameComponent>();
     const RenderComponent *canvas = nullptr;
 
-    for (auto item : entities) {
-    	auto [render, name] = item.Components;
-		if (name->Name == "Canvas")
+    for (const auto& [Components, Entity] : items) {
+	    if (auto [render, name] = Components; name->Name == "Canvas")
 			canvas = render;
 	}
 
@@ -47,22 +33,4 @@ void RenderSystem::OnPostUpdate() {
 
     _window.clear(canvas->color);
     _window.display();
-}
-
-void HugeSystem::OnUpdate() {
-	auto test = _entities.GetEntitiesBy<HugeComponent>();
-	for (const auto& entity: test) {
-		auto [huge] = entity.Components;
-		huge->Index;
-	}
-}
-
-void HugeSystem::OnInit() {
-	auto& parent = _entities.CreateEntity();
-	_entities.GetOrAddComponent<HugeComponent>(parent);
-
-	for (std::size_t i = 0; i < _count; i++) {
-		auto& entity = _entities.Instantiate(parent);
-		_entities.GetComponent<HugeComponent>(entity)->Index = i;
-	}
 }

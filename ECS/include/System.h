@@ -1,13 +1,14 @@
 ﻿#pragma once
 
 #include "EntityManager.h"
-#include "TypeFamily.h"
 
-struct System {
-	virtual ~System() = default;
-
+class System {
+	friend class SystemManager;
+	
 protected:
-	EntityManager& _entities = EntityManager::Current;
+	EntityManager* _entities = nullptr;
+	System() = default;
+	virtual ~System() = default;
 };
 
 /**
@@ -42,6 +43,9 @@ struct PostUpdateSystem : virtual System {
 	virtual void OnPostUpdate() = 0;
 };
 
+/**
+ * Система, которая вызывается перед первым кадром
+ */
 struct InitSystem: virtual System {
 	virtual void OnInit() = 0;
 };

@@ -1,7 +1,5 @@
 #include "EntityManager.h"
 
-EntityManager EntityManager::Current = EntityManager();
-
 Entity& EntityManager::Instantiate(const Entity& parent) {
 	auto copy = parent.copy();
 	if (_entities.size() <= copy->_id)
@@ -36,5 +34,3 @@ EntityManager::~EntityManager() {
 const std::vector<Entity*>& EntityManager::GetEntities() const {
 	return _entities;
 }
-
-EntityManager::EntityManager() = default;
