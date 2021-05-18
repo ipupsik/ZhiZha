@@ -9,5 +9,5 @@ class MatInitSystem : public virtual InitSystem {
 public:
 	explicit MatInitSystem(sf::Window& window): _window(window) {}
 
-	void OnPostInit() override;
+	void OnInit() override;
 };
