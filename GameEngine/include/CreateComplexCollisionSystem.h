@@ -9,5 +9,5 @@ class CreateComplexCollisionSystem : public virtual InitSystem {
 public:
 	explicit CreateComplexCollisionSystem(sf::Window& window): _window(window) {}
 
-	void OnPostInit() override;
+	void OnInit() override;
 };
