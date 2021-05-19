@@ -17,7 +17,7 @@ public:
 
 	std::string& Name();
 
-	virtual void LoadContent();
+	//virtual void LoadContent() = 0;
 
-	virtual void UnloadContent();
+	//virtual void UnloadContent() = 0;
 };

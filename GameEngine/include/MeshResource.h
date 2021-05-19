@@ -8,6 +8,7 @@
 #include "SFML/System/Vector2.hpp"
 
 class MeshResource : public ResourceFile {
+public:
 	struct Face {
 		unsigned int v1, v2, v3;
 	};
@@ -25,9 +26,7 @@ class MeshResource : public ResourceFile {
 
 	void initMesh();
 	void readFile(std::string&& filename);
-
-public:
 	explicit MeshResource(std::string&& filename);
 
-	void LoadContent() final;
+	//void LoadContent() final;
 };

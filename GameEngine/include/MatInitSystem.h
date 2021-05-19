@@ -1,5 +1,5 @@
 
-#include "Components.h"
+#include "Components/Components.h"
 #include "System.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 

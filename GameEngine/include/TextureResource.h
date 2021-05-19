@@ -6,7 +6,8 @@
 
 class TextureResource : public ResourceFile
 {
-	GLuint _textureId;
 public:
+	GLuint _textureId;
+
 	explicit TextureResource(std::string&& filename);
 };

@@ -1,5 +1,5 @@
 #include "MatInitSystem.h"
-#include "MaterialComponent.h"
+#include "Components/MaterialComponent.h"
 
 void MatInitSystem::OnInit()
 {

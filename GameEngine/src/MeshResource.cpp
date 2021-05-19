@@ -114,13 +114,8 @@ void MeshResource::initMesh() {
 	glBindVertexArray(0);
 }
 
-MeshResource::MeshResource(std::string&& filename) : ResourceFile(std::move(filename)) {
+MeshResource::MeshResource(std::string&& filename) : ResourceFile(std::move(filename + ".obj")) {
 
-	LoadContent();
-}
-
-void MeshResource::LoadContent()
-{
 	readFile(std::move(Name()));
 	initMesh();
 }
