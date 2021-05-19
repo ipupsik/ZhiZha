@@ -10,16 +10,18 @@ void Engine::initRenderThread() {
 	sf::Clock clock{};
 	_window.setActive(true);
 
+	glOrtho(-1.4, 1.4, -1.4, 1.4, 0, 8);
+	glEnable(GL_DEPTH_TEST);
 	while (_window.isOpen()) {
-		glOrtho(-1.4, 1.4, -1.4, 1.4, 0, 8);
-		glEnable(GL_DEPTH_TEST);
-
 		_systemManager->Update();
-		_systemManager->PostUpdate();
-		_deltaTime = clock.restart().asSeconds();
 
 		glClearColor(0.4f, 0.4f, 1.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		_systemManager->PostUpdate();
+		_window.display();
+
+		_deltaTime = clock.restart().asSeconds();
 	}
 
 	_window.setActive(false);
