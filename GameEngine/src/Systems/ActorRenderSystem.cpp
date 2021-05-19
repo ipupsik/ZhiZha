@@ -1,8 +1,8 @@
 #include "Systems/ActorRenderSystem.h"
 #include "Components/ActorComponent.h"
 #include "Components/MaterialComponent.h"
-#include "glm.hpp"
-#include "gtc/type_ptr.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 void ActorRenderSystem::OnPostUpdate()
 {
@@ -15,7 +15,7 @@ void ActorRenderSystem::OnPostUpdate()
 	for (const auto& [Components, Entity] : entities)
 	{
 		//Gettings Components
-		auto Actor = _entities->GetComponent<ActorComponent>(*Entity);
+		auto [Actor] = Components;
 
 		//Active out shaders
 		glUseProgram(Actor->Material._materialId);
