@@ -3,7 +3,7 @@
 #include <iomanip>
 
 #include "Engine.h"
-#include <glad/glad.h>
+#include "glad/glad.h"
 #include "SFML/OpenGL.hpp"
 
 void Engine::initRenderThread() {

@@ -9,7 +9,7 @@ class ResourceFile: public std::basic_ifstream<char> {
 public:
 	ResourceFile(const ResourceFile&) = delete;
 	ResourceFile& operator=(const ResourceFile&) = delete;
-	ResourceFile(ResourceFile&&) = default;
+	ResourceFile(ResourceFile&&) = delete;
 	ResourceFile& operator=(ResourceFile&&) = default;
 	
 	ResourceFile(std::string&& filename);

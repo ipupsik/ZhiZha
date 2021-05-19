@@ -33,7 +33,7 @@ protected:
 template <typename ...Args>
 struct ComplexComponent {
 	std::tuple<Args*...> Components;
-	Entity* Entity{};
+	class Entity* Entity{};
 
 	ComplexComponent() = default;
 };
