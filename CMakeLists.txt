@@ -19,20 +19,21 @@ endif()
 find_package(SFML COMPONENTS system window graphics REQUIRED)
 
 add_subdirectory(ECS)
-
+add_subdirectory(glm)
 add_subdirectory(glad)
-
-include_directories(glad/include)
 add_subdirectory(GameEngine)
 
+include_directories(glad/include)
 include_directories(ECS/include)
+include_directories(glm/include)
 include_directories(GameEngine/include)
 include_directories(project/include)
 
-add_executable(main ${SOURCE_FILES} ${HEADER_FILES})
+add_executable(main ${SOURCE_FILES} ${HEADER_FILES} "project/src/Map_InitSystem.cpp")
 target_link_libraries(main PRIVATE ECS)
 target_link_libraries(main PRIVATE GameEngine)
 target_link_libraries(main PRIVATE glad)
+#target_link_libraries(main PRIVATE glm)
 target_link_libraries(main PRIVATE ${CMAKE_DL_LIBS})
 target_link_libraries(main PRIVATE ${Boost_LIBRARIES})
 

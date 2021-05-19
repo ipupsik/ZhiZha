@@ -1,4 +1,4 @@
-#include "Systems.h"
+#include "Systems/Systems.h"
 #include "SFML/Window/Event.hpp"
 
 #ifdef linux
@@ -20,7 +20,7 @@ void EventSystem::OnPostInit() {
 }
 
 void RenderSystem::OnPostUpdate() {
-    auto items = _entities->GetEntitiesBy<RenderComponent, NameComponent>();
+    /*auto items = _entities->GetEntitiesBy<RenderComponent, NameComponent>();
     const RenderComponent *canvas = nullptr;
 
     for (const auto& [Components, Entity] : items) {
@@ -32,5 +32,5 @@ void RenderSystem::OnPostUpdate() {
         return;
 
     _window.clear(canvas->color);
-    _window.display();
+    _window.display();*/
 }

@@ -4,11 +4,13 @@
 
 #include <sstream>
 
-const std::string& LoadShaderFile(std::string&& filename)
+ShaderResource::ShaderResource(std::string&& shaderName) : ResourceFile(std::move(shaderName))
 {
-	std::string s = "Materials/";
-	s += filename;
-	std::ifstream ifile(s, std::ifstream::binary);
+}
+
+std::string LoadShaderFile(std::string& filename)
+{
+	std::ifstream ifile(filename, std::ifstream::binary);
 	std::string filetext;
 
 	while (ifile.good()) {
@@ -21,7 +23,7 @@ const std::string& LoadShaderFile(std::string&& filename)
 }
 
 void ShaderResource::LoadShader(GLuint type) {
-	const std::string& shaderProgram = LoadShaderFile(std::move(Name()));
+	const std::string shaderProgram(LoadShaderFile(Name()));
 	const char* text = shaderProgram.c_str();
 	_shaderId = glCreateShader(type);
 	glShaderSource(_shaderId, 1, &text, nullptr);
@@ -30,18 +32,10 @@ void ShaderResource::LoadShader(GLuint type) {
 
 VertexShaderResource::VertexShaderResource(std::string&& shaderName) : ShaderResource(shaderName + ".vert")
 {
-}
-
-void VertexShaderResource::LoadShader(GLuint type)
-{
 	ShaderResource::LoadShader(GL_VERTEX_SHADER);
 }
 
 FragmentShaderResource::FragmentShaderResource(std::string&& shaderName) : ShaderResource(shaderName + ".frag")
-{
-}
-
-void FragmentShaderResource::LoadShader(GLuint type)
 {
 	ShaderResource::LoadShader(GL_FRAGMENT_SHADER);
 }

@@ -3,15 +3,23 @@
 #include <iomanip>
 
 #include "Engine.h"
+#include <glad/glad.h>
+#include "SFML/OpenGL.hpp"
 
 void Engine::initRenderThread() {
 	sf::Clock clock{};
 	_window.setActive(true);
 
 	while (_window.isOpen()) {
+		glOrtho(-1.4, 1.4, -1.4, 1.4, 0, 8);
+		glEnable(GL_DEPTH_TEST);
+
 		_systemManager->Update();
 		_systemManager->PostUpdate();
 		_deltaTime = clock.restart().asSeconds();
+
+		glClearColor(0.4f, 0.4f, 1.0f, 0.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	_window.setActive(false);
