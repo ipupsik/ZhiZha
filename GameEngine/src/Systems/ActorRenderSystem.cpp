@@ -52,7 +52,7 @@ void ActorRenderSystem::OnPostUpdate()
 					glm::vec4(transMatrix[12], transMatrix[13], transMatrix[14], transMatrix[15])
 				};
 
-				result = ModelView * ModelView;
+				result = ModelView * result;
 				parent = parent->parent;
 			}
 			glPopMatrix();
