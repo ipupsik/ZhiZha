@@ -11,6 +11,7 @@ include(ImportLibs.cmake)
 add_subdirectory(ECS)
 add_subdirectory(glad)
 add_subdirectory(GameEngine)
+add_subdirectory(PhysicsEngine)
 
 include_directories(glad/include)
 include_directories(ECS/include)
