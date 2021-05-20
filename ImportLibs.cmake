@@ -5,11 +5,6 @@ set(${CMAKE_FIND_USE_PACKAGE_ROOT_PATH} FALSE)
 # Common libs for any platform
 set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/Lib/Common)
 
-find_package(glm REQUIRED)
-if (${glm_FOUND})
-    message(STATUS "Found GLM ${glm_VERSION} in ${glm_DIR}")
-endif()
-
 # Platform-dependent libs
 if (UNIX AND NOT APPLE)
     set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/Lib/Linux)
@@ -18,6 +13,7 @@ if (UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS_DEBUG "-ltbb")
 elseif (WIN32)
     set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/Lib/Windows)
+    set(SFML_STATIC_LIBRARIES TRUE)
 elseif(APPLE)
     set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/Lib/MacOS)
 endif()
