@@ -19,6 +19,9 @@
 *.out
 *.app
 
+!out/build/x64-Debug/share/*share
+!project/resources/*
+
 .vs
 .idea
 cmake-build-*/
