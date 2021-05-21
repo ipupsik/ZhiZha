@@ -137,7 +137,7 @@ public:
 
 	template <typename T>
 	requires std::derived_from<T, ComponentData<T>>
-	bool RemoveComponent(Entity& entity) {
+	bool RemoveComponent(const Entity& entity) {
 		if (!HasComponent<T>(entity))
 			return false;
 		delete _componentsTable[T::Type][entity._id];
@@ -156,6 +156,8 @@ public:
 	requires std::derived_from<T, ComponentData<T>>
 	T& ReplaceComponent(Entity& entity, Args&& ... args) {
 		return RemoveComponent<T>(entity) ? addComponent<T>(entity, args...) :
-				GetComponent<T>(entity)->get();
+				GetComponent<T>(entity);
 	}
+
+	void DestroyEntity(const Entity& entity);
 };
