@@ -2,15 +2,15 @@
 #include "EntityManager.h"
 #include "SystemManager.h"
 #include "ResourceManager.h"
-#include "Systems/Systems.h"
+#include "GameTime.h"
 #include "SFML/Window/Window.hpp"
 
 class Engine {
 	EntityManager* _entityManager = new EntityManager();
 	SystemManager* _systemManager = new SystemManager(*_entityManager);
 	ResourceManager* _resourceManager = new ResourceManager();
+	GameTime* _time = new GameTime();
 	sf::Window& _window;
-	float _deltaTime = 0.0f;
 
 	void initRenderThread();
 	void initFixedUpdateThread() const;
@@ -21,11 +21,12 @@ public:
 
 	~Engine();
 
-	explicit Engine(sf::RenderWindow& window): _window(window) {}
+	explicit Engine(sf::Window& window): _window(window) {}
 
 	[[nodiscard]] EntityManager& GetEntityManager() const { return *_entityManager; }
 	[[nodiscard]] SystemManager& GetSystemManager() const { return *_systemManager; }
 	[[nodiscard]] ResourceManager& GetResourceManager() const { return *_resourceManager; }
+	[[nodiscard]] GameTime& GetTime() const { return *_time; }
 
 	template <typename T, typename ...Args>
 		requires std::derived_from<T, System>

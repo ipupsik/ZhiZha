@@ -5,7 +5,7 @@ void MatInitSystem::OnInit()
 {
 	auto Entities = _entities->GetEntitiesBy<MaterialComponent>();
 
-	for (const auto it : Entities)
+	for (const auto& it : Entities)
 	{
         auto [Material] = it.Components;
         

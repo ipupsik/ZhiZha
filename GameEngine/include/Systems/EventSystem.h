@@ -1,4 +1,5 @@
-#include "Components/Components.h"
+#pragma once
+
 #include "System.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
@@ -13,13 +14,4 @@ public:
 	explicit EventSystem(sf::Window& window): _window(window) {}
 
 	void OnPostInit() override;
-};
-
-class RenderSystem : public virtual PostUpdateSystem {
-	sf::RenderWindow& _window;
-
-public:
-	explicit RenderSystem(sf::RenderWindow& window): _window(window) {}
-
-	void OnPostUpdate() override;
 };

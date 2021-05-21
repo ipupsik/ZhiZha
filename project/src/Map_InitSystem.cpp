@@ -1,45 +1,46 @@
 #include "Map_InitSystem.h"
+
 #include "Components/ActorComponent.h"
+#include "Components/MeshComponent.h"
 #include "Components/ComplexCollisionComponent.h"
 
 void Map_InitSystem::OnInit()
 {
 	//Initialize Components
 	Entity &Map = _entities->CreateEntity();
-	_entities->GetOrAddComponent<ActorComponent>(Map);
-	_entities->GetOrAddComponent<ComplexCollisionComponent>(Map);
-	//---
-
+	
 	//Getting Components
-	auto Actor = _entities->GetComponent<ActorComponent>(Map);
-	auto Collision = _entities->GetComponent<ComplexCollisionComponent>(Map);
+	auto& mesh = _entities->GetOrAddComponent<MeshComponent>(Map);
+	auto& transform = _entities->GetOrAddComponent<TransformComponent>(Map);
+	auto& material = _entities->GetOrAddComponent<MaterialComponent>(Map);
+	auto& Collision = _entities->GetOrAddComponent<ComplexCollisionComponent>(Map);
 
 	//Initialize mesh
-	Actor->Mesh = new MeshResource("Map");
+	mesh.Mesh = _resources.GetOrAddResource<MeshResource>("Map");
 
 	//Initialize material
-	Actor->Material.VertexShader = new VertexShaderResource("Map");
-	Actor->Material.FragmentShader = new FragmentShaderResource("Map");
-	Actor->Material.Textures.emplace_back(new TextureResource("Map_Albedo.png"));
-	Actor->Material.attributesCount = 2;
+	material.VertexShader = _resources.GetOrAddResource<VertexShaderResource>("Map");
+	material.FragmentShader = _resources.GetOrAddResource<FragmentShaderResource>("Map");
+	material.Textures.emplace_back(_resources.GetOrAddResource<TextureResource>("Map_Albedo.png"));
+	material.attributesCount = 2;
 
 	GLint ok;
 	GLchar log[2000];
-	Actor->Material._materialId = glCreateProgram();
-	glAttachShader(Actor->Material._materialId, Actor->Material.FragmentShader->_shaderId);
-	glAttachShader(Actor->Material._materialId, Actor->Material.VertexShader->_shaderId);
-	glLinkProgram(Actor->Material._materialId);
-	glGetProgramiv(Actor->Material._materialId, GL_LINK_STATUS, &ok);
+	material._materialId = glCreateProgram();
+	glAttachShader(material._materialId, material.FragmentShader->_shaderId);
+	glAttachShader(material._materialId, material.VertexShader->_shaderId);
+	glLinkProgram(material._materialId);
+	glGetProgramiv(material._materialId, GL_LINK_STATUS, &ok);
 	if (!ok)
 	{
-		glGetProgramInfoLog(Actor->Material._materialId, 2000, NULL, log);
+		glGetProgramInfoLog(material._materialId, 2000, NULL, log);
 		printf("\n");
 	}
 
 	//Initialize Transform
-	Actor->Transform.Location = { 0.0f, 0.0f };
-	Actor->Transform.Scale = { 1.0f, 1.0f };
-	Actor->Transform.Rotation = { 0.0f, 0.0f };
-
-	Actor->parent = nullptr;
+	transform.Location = { 0.0f, 0.0f };
+	transform.Scale = { 1.0f, 1.0f };
+	transform.Rotation = { 0.0f, 0.0f };
 }
+Map_InitSystem::Map_InitSystem(ResourceManager& resources)
+		:_resources(resources) { }

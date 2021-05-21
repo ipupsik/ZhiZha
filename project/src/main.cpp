@@ -1,10 +1,11 @@
 #include "Systems/CreateComplexCollisionSystem.h"
 #include "Map_InitSystem.h"
-#include "SFML/Graphics/RenderWindow.hpp"
 #include "Systems/ActorRenderSystem.h"
 #include "Engine.h"
 #include "MatInitSystem.h"
 #include "glad/glad.h"
+#include "Systems/EventSystem.h"
+#include "Systems/FPSSystem.h"
 
 #if defined(linux)
 #include <X11/Xlib.h>
@@ -21,16 +22,16 @@ int main() {
 	settings.majorVersion = 3;
 	settings.minorVersion = 0;
 
-	auto window = sf::RenderWindow(sf::VideoMode(800, 600), "Sample", sf::Style::Default, settings);
+	auto window = sf::Window(sf::VideoMode(1080, 720), "Sample", sf::Style::Default, settings);
 
 	gladLoadGL();
 
 	auto engine = new Engine(window);
-	engine->RegisterSystem<Map_InitSystem>(window)
+	engine->RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<CreateComplexCollisionSystem>(window)
 		.RegisterSystem<MatInitSystem>(window)
-		.RegisterSystem<RenderSystem>(window)
 		.RegisterSystem<EventSystem>(window)
-		.RegisterSystem<ActorRenderSystem>(window);
+		.RegisterSystem<ActorRenderSystem>(window)
+		.RegisterSystem<FPSSystem>(engine->GetTime());
 	engine->Start();
 }

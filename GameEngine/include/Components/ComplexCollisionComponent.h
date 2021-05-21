@@ -1,6 +1,7 @@
+#pragma once
+
 #include "Component.h"
 #include "Entity.h"
-#include "Components.h"
 #include "SFML/System/Vector2.hpp"
 
 struct ComplexCollisionComponent : public ComponentData<ComplexCollisionComponent>

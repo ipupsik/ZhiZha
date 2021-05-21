@@ -18,12 +18,12 @@ public:
 	~ResourceManager();
 
 	template<std::derived_from<ResourceFile> T>
-	T& GetOrAddResource(std::string&& filename) {
-		if (!_resourcesTable.contains(filename))
+	T* GetOrAddResource(std::string filename) {
+		if (_resourcesTable.contains(filename))
 			return static_cast<T*>(_resourcesTable[filename]);
 		
-		auto* newResource = new T(std::move(filename));
-		_resourcesTable[newResource->Name()] = newResource;
-		return *newResource;
+		auto newResource = new T(std::forward<std::string&&>(filename));
+		_resourcesTable[filename] = newResource;
+		return newResource;
 	}
 };
