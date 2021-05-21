@@ -1,19 +1,18 @@
 #pragma once
 
-#include <fstream>
+#include <SFML/System/FileInputStream.hpp>
 
-class ResourceFile: public std::basic_ifstream<char> {
+class ResourceFile: public virtual sf::FileInputStream {
 	std::string _filename;
-	bool _isLoaded = false;
 
 public:
 	ResourceFile(const ResourceFile&) = delete;
 	ResourceFile& operator=(const ResourceFile&) = delete;
 	ResourceFile(ResourceFile&&) = delete;
-	ResourceFile& operator=(ResourceFile&&) = default;
+	ResourceFile& operator=(ResourceFile&&) = delete;
 	
-	ResourceFile(std::string&& filename);
-	ResourceFile(const char* const filename): ResourceFile(std::string(filename)) {}
+	explicit ResourceFile(std::string&& filename);
+	explicit ResourceFile(const char* const filename): ResourceFile(std::string(filename)) {}
 
 	std::string& Name();
 
