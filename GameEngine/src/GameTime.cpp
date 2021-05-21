@@ -9,9 +9,12 @@ void GameTime::waitForUpdate() {
 	_frameTime += temp;
 	_time += temp;
 	_deltaTime = temp;
+	_deltaTimeQueue.push_back(_deltaTime);
+	if (_deltaTimeQueue.size() > 60)
+		_deltaTimeQueue.pop_front();
 
-	if (_maxDeltaTime > _frameTime)
-		sf::sleep(sf::seconds(_maxDeltaTime - _frameTime));
+	if (_maxDeltaTime * 2 > _frameTime)
+		sf::sleep(sf::seconds(_maxDeltaTime * 2 - _frameTime));
 	_frameTime = 0;
 }
 
@@ -20,8 +23,8 @@ void GameTime::waitForFixedUpdate() {
 	_fixedFrameTime += temp;
 	_fixedTime += temp;
 	
-	if (_fixedDeltaTime > _fixedFrameTime)
-		sf::sleep(sf::seconds(_fixedDeltaTime - _fixedFrameTime));
+	if (_fixedDeltaTime * 2 > _fixedFrameTime)
+		sf::sleep(sf::seconds(_fixedDeltaTime * 2 - _fixedFrameTime));
 	_fixedFrameTime = 0;
 }
 
