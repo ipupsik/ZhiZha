@@ -32,6 +32,6 @@ int main() {
 		.RegisterSystem<MatInitSystem>(window)
 		.RegisterSystem<EventSystem>(window)
 		//.RegisterSystem<ActorRenderSystem>(window)
-		.RegisterSystem<FPSSystem>(engine->GetTime(), window);
+		.RegisterSystem<FPSSystem>(engine->GetTime(), window, engine->GetResourceManager());
 	engine->Start();
 }

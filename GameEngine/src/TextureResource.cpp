@@ -3,7 +3,7 @@
 
 TextureResource::TextureResource(std::string&& filename) : ResourceFile(std::move(filename)), _textureId(-1) {
 	sf::Image newImage;
-	newImage.loadFromFile(Name());
+	newImage.loadFromStream(*this);
 	if (newImage.getPixelsPtr()) {
 		glGenTextures(1, &_textureId);
 		glBindTexture(GL_TEXTURE_2D, _textureId);
