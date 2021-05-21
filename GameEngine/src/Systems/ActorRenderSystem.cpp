@@ -1,47 +1,50 @@
 #include "Systems/ActorRenderSystem.h"
-#include "Components/ActorComponent.h"
+#include "Components/MeshComponent.h"
 #include "Components/MaterialComponent.h"
+#include "Components/TransformComponent.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
 void ActorRenderSystem::OnPostUpdate()
 {
-	auto entities = _entities->GetEntitiesBy<ActorComponent>();
+	const auto& entities =
+			_entities->GetEntitiesBy<MeshComponent, MaterialComponent,TransformComponent>();
 
 	glBegin(GL_TRIANGLES);
 	glVertex3f(0, 0, 0); glVertex3f(0, 1, 0); glVertex3f(0, 1, 1);
 	glEnd();
 
-	for (const auto& [Components, Entity] : entities)
+	for (const auto& [components, entity] : entities)
 	{
 		//Gettings Components
-		auto [Actor] = Components;
+		auto [mesh, material, transform] = components;
 
 		//Active out shaders
-		glUseProgram(Actor->Material._materialId);
+		glUseProgram(material->_materialId);
 
 		//Attach all textures
-		for (int i = 0; i < Actor->Material.Textures.size(); i++)
+		for (int i = 0; i < material->Textures.size(); i++)
 		{
 			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, Actor->Material.Textures[i]->_textureId);
+			glBindTexture(GL_TEXTURE_2D, material->Textures[i]->_textureId);
 
-			glUniform1i(glGetUniformLocation(Actor->Material._materialId, std::string("tex" + std::to_string(i)).c_str()), i);
+			glUniform1i(glGetUniformLocation(material->_materialId, std::string("tex" + std::to_string(i)).c_str()), i);
 		}
 		//--
 
 		//Find transform matrix on world coords
-		ActorComponent* parent = &*Actor;
+		const Entity* parent = entity;
 		glm::mat4x4 result;
 
 		while (parent)
 		{
+			
 			glPushMatrix();
 			{
-				glTranslatef(Actor->Transform.Location.x, Actor->Transform.Location.y, 0);
+				glTranslatef(transform->Location.x, transform->Location.y, 0);
 
-				glScalef(Actor->Transform.Scale.x, Actor->Transform.Scale.y, 1);
-				glRotatef(Actor->Transform.Rotation.x, 1, 0, 0);
+				glScalef(transform->Scale.x, transform->Scale.y, 1);
+				glRotatef(transform->Rotation.x, 1, 0, 0);
 
 				float transMatrix[16];
 				glGetFloatv(GL_MODELVIEW_MATRIX, transMatrix);
@@ -53,30 +56,30 @@ void ActorRenderSystem::OnPostUpdate()
 				};
 
 				result = ModelView * result;
-				parent = parent->parent;
+				parent = parent->GetParent();
 			}
 			glPopMatrix();
 		}
 		//--
 
 		//Bind all out buffers to draw primitives
-		GLint matrixId = glGetUniformLocation(Actor->Material._materialId, "Transform");
+		GLint matrixId = glGetUniformLocation(material->_materialId, "Transform");
 		glUniformMatrix4fv(matrixId, 1, GL_FALSE, glm::value_ptr(result));
 
-		glBindVertexArray(Actor->Mesh->_indexVAO);
+		glBindVertexArray(mesh->Mesh->_indexVAO);
 		{
-			for (int i = 0; i < Actor->Material.attributesCount; i++)
+			for (int i = 0; i < material->attributesCount; i++)
 				glEnableVertexAttribArray(i);
 
 			{
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Actor->Mesh->_indexEBO);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->Mesh->_indexEBO);
 				{
-					glDrawElements(GL_TRIANGLES, 3 * Actor->Mesh->_faces.size(), GL_UNSIGNED_INT, NULL);
+					glDrawElements(GL_TRIANGLES, 3 * mesh->Mesh->_faces.size(), GL_UNSIGNED_INT, NULL);
 				}
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 			}
 
-			for (int i = Actor->Material.attributesCount - 1; i >= 0; i--)
+			for (int i = material->attributesCount - 1; i >= 0; i--)
 				glDisableVertexAttribArray(i);
 		}
 		glBindVertexArray(0);

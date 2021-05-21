@@ -29,7 +29,7 @@ class EntityManager {
 
 public:
 	EntityManager() = default;
-	
+
 	~EntityManager();
 
 	[[nodiscard]] const std::vector<Entity*>& GetEntities() const;
@@ -143,7 +143,7 @@ public:
 	template <typename T, typename ...Args>
 	requires std::derived_from<T, ComponentData<T>>
 	T& ReplaceComponent(Entity& entity, Args&& ... args) {
-		return RemoveComponent<T>(entity) ? addComponent<T>(entity,
-				args...) : GetComponent<T>(entity)->get();
+		return RemoveComponent<T>(entity) ? addComponent<T>(entity, args...) :
+				GetComponent<T>(entity)->get();
 	}
 };

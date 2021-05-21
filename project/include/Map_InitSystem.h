@@ -1,12 +1,14 @@
-#include "Components/Components.h"
+#pragma once
+
+#include "ResourceManager.h"
 #include "System.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
 class Map_InitSystem : public virtual InitSystem {
-	sf::Window& _window;
+	ResourceManager& _resources;
 
 public:
-	explicit Map_InitSystem(sf::Window& window) : _window(window) {}
+	explicit Map_InitSystem(ResourceManager& resources);
 
 	void OnInit() override;
 };
