@@ -22,7 +22,7 @@ int main() {
 	settings.majorVersion = 3;
 	settings.minorVersion = 0;
 
-	auto window = sf::Window(sf::VideoMode(1080, 720), "Sample", sf::Style::Default, settings);
+	auto window = sf::RenderWindow(sf::VideoMode(1080, 720), "Sample", sf::Style::Default, settings);
 
 	gladLoadGL();
 
@@ -31,7 +31,7 @@ int main() {
 		.RegisterSystem<CreateComplexCollisionSystem>(window)
 		.RegisterSystem<MatInitSystem>(window)
 		.RegisterSystem<EventSystem>(window)
-		.RegisterSystem<ActorRenderSystem>(window)
-		.RegisterSystem<FPSSystem>(engine->GetTime());
+		//.RegisterSystem<ActorRenderSystem>(window)
+		.RegisterSystem<FPSSystem>(engine->GetTime(), window);
 	engine->Start();
 }

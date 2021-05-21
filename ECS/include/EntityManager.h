@@ -73,6 +73,18 @@ public:
 		return result;
 	}
 
+	template <typename T>
+	auto GetEntitiesBy() {
+		std::vector<ComplexComponent<T>> result;
+		if (!_componentsTable.contains(T::Type)) return result;
+		for (Component* item: _componentsTable.at(T::Type)) {
+			if (item == nullptr) continue;
+			ComplexComponent<T> complex;
+			complex.Entity = &item->GetEntity();
+			std::get<0>(complex.Components) = static_cast<T*>(item);
+		}
+	}
+
 	Entity& CreateEntity();
 
 	Entity& Instantiate(const Entity& parent);

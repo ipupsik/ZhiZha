@@ -1,6 +1,6 @@
+#include "Components/TransformComponent.h"
+#include "Components/MaterialComponent.h"
 #include "Map_InitSystem.h"
-
-#include "Components/ActorComponent.h"
 #include "Components/MeshComponent.h"
 #include "Components/ComplexCollisionComponent.h"
 

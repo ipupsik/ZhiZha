@@ -3,5 +3,12 @@
 #include <iostream>
 
 void FPSSystem::OnPostUpdate() {
-	std::cout << "FPS: " << 1 / _time.DeltaTime() << "															\r";
+	_window.draw(_fps);
+}
+
+void FPSSystem::OnFixedUpdate() {
+	_fps.setString("FPS: "
+		+ std::to_string(static_cast<long>((1 / _time.SmoothDeltaTime())))
+		+ " / "
+		+ std::to_string(_time.SmoothDeltaTime()) + "ms\n");
 }
