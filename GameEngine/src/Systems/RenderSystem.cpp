@@ -11,7 +11,7 @@ void RenderSystem::OnPostUpdate() {
 
 		auto texture = _entities->GetComponent<MaterialComponent>(*entity);
 		auto transform = _entities->GetComponent<TransformComponent>(*entity);
-		sf::RenderStates states(sf::BlendMultiply);
+		sf::RenderStates states = sf::RenderStates::Default;
 		sf::Transform transf;
 		if (texture != nullptr) {
 			states.shader = texture->Shader;
@@ -23,9 +23,6 @@ void RenderSystem::OnPostUpdate() {
 					.rotate(transform->Angle);
 			states.transform = transf;
 		}
-		_window.draw(*render->Buffer, states);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, render->Elements);
-		glDrawElements(GL_TRIANGLES, 3 * render->FacesSize, GL_UNSIGNED_INT, nullptr);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		_window.draw(*render->Drawable, states);
 	}
 }

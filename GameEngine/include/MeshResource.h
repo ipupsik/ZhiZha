@@ -1,16 +1,17 @@
 #pragma once
 
 #include <string>
+#include <utility>
 #include <vector>
 #include "glad/glad.h"
 
 #include "ResourceFile.h"
 #include "SFML/Graphics.hpp"
+#include "ObjectDrawable.h"
 
 class MeshResource : public ResourceFile {
 private:
-	void readFile(std::string&& filename);
-	void initMesh();
+	void readFile();
 
 	std::vector<sf::Vector2f> _vertices;
 	std::vector<sf::Vector2f> _normals;
@@ -21,13 +22,9 @@ private:
 	std::vector<sf::Vector3<unsigned int>> _facesNormal;
 	std::vector<sf::Vector3<unsigned int>> _facesTexCoord;
 
-	GLuint _ebo;
-	sf::VertexBuffer _vbo;
-
+	ObjectDrawable _obj;
 public:
-	[[nodiscard]] auto EBO() const { return _ebo; }
-	[[nodiscard]] auto& VBO() const { return _vbo; }
-	[[nodiscard]] auto Faces() const { return _faces.size(); }
+	ObjectDrawable& Object() { return _obj; }
 
 	explicit MeshResource(std::string&& filename);
 };

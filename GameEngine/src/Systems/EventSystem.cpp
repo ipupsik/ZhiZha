@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Systems/EventSystem.h"
 
 #include "SFML/Window/Event.hpp"
@@ -18,7 +17,6 @@ void EventSystem::OnPostInit() {
 			}
 			if (event.type == sf::Event::MouseWheelScrolled) {
 				auto view = _window.getView();
-				std::cout << event.mouseWheelScroll.delta << std::endl;
 				view.zoom(event.mouseWheelScroll.delta / 2 + 1);
 				view.setCenter(event.mouseWheelScroll.x, event.mouseWheelScroll.y);
 				_window.setView(view);

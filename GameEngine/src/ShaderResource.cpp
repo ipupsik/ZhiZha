@@ -10,7 +10,8 @@ ShaderResource::ShaderResource(std::string shaderName, sf::Shader::Type type)
 		throw std::runtime_error("Cannot load shader");
 }
 
-ShaderResource::ShaderResource(const std::string& name):ResourceFile(name + ".vert") {
+ShaderResource::ShaderResource(const std::string& name)
+		:ResourceFile(name + ".vert") {
 	auto fragmentShader = ResourceFile(name + ".frag");
 	if (!_shader.loadFromStream(*this, fragmentShader))
 		throw std::runtime_error("Cannot load shaders");

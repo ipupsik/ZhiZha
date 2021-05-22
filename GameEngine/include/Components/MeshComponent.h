@@ -2,10 +2,9 @@
 
 #include "Component.h"
 #include "MeshResource.h"
+#include "SFML/Graphics/Drawable.hpp"
 
 struct MeshComponent : public ComponentData<MeshComponent>
 {
-	sf::VertexBuffer* Buffer;
-	sf::Int64 Elements;
-	sf::Int32 FacesSize;
+	sf::Drawable* Drawable;
 };

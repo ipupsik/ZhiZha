@@ -1,9 +1,9 @@
 #include "MeshResource.h"
 
 #include <iostream>
-#include <fstream>
+#include "ObjectDrawable.h"
 
-void MeshResource::readFile(std::string&& filename) {
+void MeshResource::readFile() {
 	std::string s;
 	auto& fin = *this;
 	while (fin >> s) {
@@ -78,26 +78,7 @@ void MeshResource::readFile(std::string&& filename) {
 
 MeshResource::MeshResource(std::string&& filename)
 		:ResourceFile(std::move(filename + ".obj")) {
-	readFile(std::move(Name()));
-	initMesh();
-}
-
-void MeshResource::initMesh() {
-	std::vector<sf::Vertex> vertices(_vertices.size());
-	for (int i = 0; i < _vertices.size(); i++) {
-		vertices[i].position = _vertices[i];
-		vertices[i].texCoords = _uvs[i];
-	}
-	_vbo.create(vertices.size());
-	_vbo.setUsage(sf::VertexBuffer::Usage::Static);
-	_vbo.setPrimitiveType(sf::PrimitiveType::Triangles);
-	_vbo.update(vertices.data());
-
-	glGenBuffers(1, &_ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-	{
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(sf::Vector3<unsigned int>) * _faces.size(),
-				_faces.data(), GL_STATIC_DRAW);
-	}
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	readFile();
+	_obj.loadData(_vertices, _uvs, _faces);
+	_obj.init();
 }
