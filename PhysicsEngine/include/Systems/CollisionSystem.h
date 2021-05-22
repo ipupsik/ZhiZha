@@ -7,7 +7,7 @@ class CollisionSystem : public virtual FixedUpdateSystem {
 	sf::Window& _window;
 
 public:
-	explicit CollisionSystem(sf::Window& window): _window(window) {}
+	explicit CollisionSystem(sf::Window& window) : _window(window) {}
 
 	void OnFixedUpdate() override;
 };
