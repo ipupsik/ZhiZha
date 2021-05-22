@@ -8,10 +8,10 @@
  * нажали кнопку.
  */
 class EventSystem : public virtual PostInitSystem {
-	sf::Window& _window;
+	sf::RenderWindow& _window;
 
 public:
-	explicit EventSystem(sf::Window& window): _window(window) {}
+	explicit EventSystem(sf::RenderWindow& window): _window(window) {}
 
 	void OnPostInit() override;
 };

@@ -30,7 +30,7 @@ void Map_InitSystem::OnInit() {
 	material.Texture = _resources.GetOrAddResource<TextureResource>("Circle_Albedo.png")
 			->GetTexture();
 
-	for (int i = 0; i < 1000; i++) {
+	for (int i = 0; i < 10000; i++) {
 		auto& copy = _entities->Instantiate(Map);
 		auto& transform = _entities->GetOrAddComponent<TransformComponent>(copy);
 		auto& speed = _entities->GetOrAddComponent<SpeedComponent>(copy);
@@ -38,7 +38,8 @@ void Map_InitSystem::OnInit() {
 		//Initialize components
 		speed.Speed = (random() % 1000) / 1000.0f;
 
-		transform.Location = { 0, (random() % 6) + (random() % 100) / 100.0f };
+		transform.Location = { (random() % 1000) + (random() % 100) / 100.0f,
+				(random() % 1000) + (random() % 100) / 100.0f };
 		transform.Scale = { 100, 100 };
 		transform.Angle = 0;
 	}
