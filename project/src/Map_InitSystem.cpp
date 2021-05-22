@@ -15,22 +15,21 @@ void Map_InitSystem::OnInit() {
 
 	//Getting Components
 	auto& mesh = _entities->GetOrAddComponent<MeshComponent>(Map);
-	auto& material = _entities->GetOrAddComponent<MaterialComponent>(Map);
+//	auto& material = _entities->GetOrAddComponent<MaterialComponent>(Map);
 	auto& Collision = _entities->GetOrAddComponent<ComplexCollisionComponent>(Map);
 
 	//Initialize mesh
-	auto& map = *_resources.GetOrAddResource<MeshResource>("Circle");
-	mesh.Buffer = const_cast<sf::VertexBuffer*>(&map.VBO());
-	mesh.Elements = map.EBO();
-	mesh.FacesSize = map.Faces();
+	auto circle = new sf::CircleShape(1);
+	auto texture = _resources.GetOrAddResource<TextureResource>("Circle_Albedo.png")->GetTexture();
+	circle->setTexture(texture);
+	mesh.Drawable = circle;
 
 	//Initialize material
 	//FIXME shader loading
-	//material.Shader = _resources.GetOrAddResource<FragmentShaderResource>("Circle")->GetShader();
-	material.Texture = _resources.GetOrAddResource<TextureResource>("Circle_Albedo.png")
-			->GetTexture();
+//	material.Shader = _resources.GetOrAddResource<ShaderResource>("Circle")->GetShader();
+//	material.Texture = texture;
 
-	for (int i = 0; i < 10000; i++) {
+	for (int i = 0; i < 100; i++) {
 		auto& copy = _entities->Instantiate(Map);
 		auto& transform = _entities->GetOrAddComponent<TransformComponent>(copy);
 		auto& speed = _entities->GetOrAddComponent<SpeedComponent>(copy);
@@ -40,7 +39,7 @@ void Map_InitSystem::OnInit() {
 
 		transform.Location = { (random() % 1000) + (random() % 100) / 100.0f,
 				(random() % 1000) + (random() % 100) / 100.0f };
-		transform.Scale = { 100, 100 };
+		transform.Scale = { 5, 5 };
 		transform.Angle = 0;
 	}
 }

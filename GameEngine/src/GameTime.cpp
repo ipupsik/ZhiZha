@@ -27,6 +27,7 @@ void GameTime::waitForFixedUpdate() {
 		sf::sleep(sf::seconds(_fixedDeltaTime - _fixedFrameTime));
 
 	const auto temp = _fixedTimeClock.getElapsedTime().asSeconds();
+	_fixedFrameTime = temp;
 	_fixedTime += temp;
 
 	_fixedTimeClock.restart();

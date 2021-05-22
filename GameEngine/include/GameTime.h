@@ -12,7 +12,7 @@ class GameTime {
 
 	double _frameTime = 0;
 	float _fixedFrameTime = 0;
-	float _fixedDeltaTime = 1 / 25.0f;
+	float _fixedDeltaTime = 1 / 30.f;
 	double _deltaTime = 0;
 	double _maxDeltaTime = 1 / 60.0f;
 	int _frameCount = 0;

@@ -1,5 +1,7 @@
-uniform sampler2D tex0;
- 
+#version 430
+
+layout(location = 1) uniform sampler2D tex0;
+
 in vec2 texCoord;
 
 out vec4 diffuseColor;
