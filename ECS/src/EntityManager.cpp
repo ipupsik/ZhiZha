@@ -9,8 +9,10 @@ Entity& EntityManager::Instantiate(const Entity& parent) {
 	for (auto&[_, v] : _componentsTable) {
 		if (v.size() <= parent._id || v.size() <= copy->_id)
 			v.resize(Entity::_count, nullptr);
-		if (v[parent._id] != nullptr)
+		if (v[parent._id] != nullptr) {
 			v[copy->_id] = v[parent._id]->Copy();
+			v[copy->_id]->_entity = copy;
+		}
 	}
 	return *copy;
 }

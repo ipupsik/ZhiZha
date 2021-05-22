@@ -37,6 +37,7 @@ public:
 			sum += delta;
 		return sum / 60;
 	}
+	[[nodiscard]] float RealFixedTime() const { return _fixedFrameTime; }
 
 	/// <summary>
 	/// Slows down or speeds up time in game

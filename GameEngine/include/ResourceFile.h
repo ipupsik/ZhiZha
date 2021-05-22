@@ -1,8 +1,9 @@
 #pragma once
 
 #include <SFML/System/FileInputStream.hpp>
+#include <fstream>
 
-class ResourceFile: public virtual sf::FileInputStream {
+class ResourceFile: public virtual sf::FileInputStream, public std::ifstream {
 	std::string _filename;
 
 public:

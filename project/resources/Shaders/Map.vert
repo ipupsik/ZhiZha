@@ -1,9 +1,9 @@
 #version 430
 
-layout (location = 0) in vec2 _vertexPos;
-layout (location = 1) in vec2 _texCoord;
+in vec2 _vertexPos;
+in vec2 _texCoord;
 
-layout (location = 0) uniform mat4 Transform;
+uniform mat4 Transform;
 
 out vec2 texCoord;
 

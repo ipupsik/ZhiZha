@@ -2,13 +2,16 @@
 
 #include "ResourceFile.h"
 #include "glad/glad.h"
+#include <SFML/Graphics/Shader.hpp>
 
 class ShaderResource : public ResourceFile {
-public:
-	GLuint _shaderId;
+	sf::Shader _shader;
 
-	void LoadShader(GLuint type);
-	ShaderResource(std::string&& shaderName);
+public:
+	sf::Shader* GetShader() { return &_shader; }
+
+	ShaderResource(std::string name, sf::Shader::Type type);
+	explicit ShaderResource(const std::string& name);
 };
 
 class VertexShaderResource : public ShaderResource {

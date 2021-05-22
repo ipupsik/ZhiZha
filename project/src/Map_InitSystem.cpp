@@ -3,44 +3,45 @@
 #include "Map_InitSystem.h"
 #include "Components/MeshComponent.h"
 #include "Components/ComplexCollisionComponent.h"
+#include <random>
+#include <ctime>
+#include <Components/SpeedComponent.h>
 
-void Map_InitSystem::OnInit()
-{
+void Map_InitSystem::OnInit() {
+	auto random = std::default_random_engine(time(nullptr));
+
 	//Initialize Components
-	Entity &Map = _entities->CreateEntity();
-	
+	Entity& Map = _entities->CreateEntity();
+
 	//Getting Components
 	auto& mesh = _entities->GetOrAddComponent<MeshComponent>(Map);
-	auto& transform = _entities->GetOrAddComponent<TransformComponent>(Map);
 	auto& material = _entities->GetOrAddComponent<MaterialComponent>(Map);
 	auto& Collision = _entities->GetOrAddComponent<ComplexCollisionComponent>(Map);
 
 	//Initialize mesh
-	mesh.Mesh = _resources.GetOrAddResource<MeshResource>("Map");
+	auto& map = *_resources.GetOrAddResource<MeshResource>("Circle");
+	mesh.Buffer = const_cast<sf::VertexBuffer*>(&map.VBO());
+	mesh.Elements = map.EBO();
+	mesh.FacesSize = map.Faces();
 
 	//Initialize material
-	material.VertexShader = _resources.GetOrAddResource<VertexShaderResource>("Map");
-	material.FragmentShader = _resources.GetOrAddResource<FragmentShaderResource>("Map");
-	material.Textures.emplace_back(_resources.GetOrAddResource<TextureResource>("Map_Albedo.png"));
-	material.attributesCount = 2;
+	//FIXME shader loading
+	//material.Shader = _resources.GetOrAddResource<FragmentShaderResource>("Circle")->GetShader();
+	material.Texture = _resources.GetOrAddResource<TextureResource>("Circle_Albedo.png")
+			->GetTexture();
 
-	GLint ok;
-	GLchar log[2000];
-	material._materialId = glCreateProgram();
-	glAttachShader(material._materialId, material.FragmentShader->_shaderId);
-	glAttachShader(material._materialId, material.VertexShader->_shaderId);
-	glLinkProgram(material._materialId);
-	glGetProgramiv(material._materialId, GL_LINK_STATUS, &ok);
-	if (!ok)
-	{
-		glGetProgramInfoLog(material._materialId, 2000, NULL, log);
-		printf("\n");
+	for (int i = 0; i < 1000; i++) {
+		auto& copy = _entities->Instantiate(Map);
+		auto& transform = _entities->GetOrAddComponent<TransformComponent>(copy);
+		auto& speed = _entities->GetOrAddComponent<SpeedComponent>(copy);
+
+		//Initialize components
+		speed.Speed = (random() % 1000) / 1000.0f;
+
+		transform.Location = { 0, (random() % 6) + (random() % 100) / 100.0f };
+		transform.Scale = { 100, 100 };
+		transform.Angle = 0;
 	}
-
-	//Initialize Transform
-	transform.Location = { 0.0f, 0.0f };
-	transform.Scale = { 1.0f, 1.0f };
-	transform.Rotation = { 0.0f, 0.0f };
 }
 Map_InitSystem::Map_InitSystem(ResourceManager& resources)
 		:_resources(resources) { }

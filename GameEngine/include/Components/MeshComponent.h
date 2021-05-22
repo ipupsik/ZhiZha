@@ -5,5 +5,7 @@
 
 struct MeshComponent : public ComponentData<MeshComponent>
 {
-	MeshResource* Mesh;
+	sf::VertexBuffer* Buffer;
+	sf::Int64 Elements;
+	sf::Int32 FacesSize;
 };
