@@ -18,8 +18,8 @@ void RenderSystem::OnPostUpdate() {
 			states.texture = texture->Texture;
 		}
 		if (transform != nullptr) {
-			transf.scale(transform->Scale)
-					.translate(transform->Location)
+			transf.translate(transform->Location)
+					.scale(transform->Scale)
 					.rotate(transform->Angle);
 			states.transform = transf;
 		}
