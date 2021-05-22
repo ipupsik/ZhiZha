@@ -4,10 +4,8 @@
 #include <fstream>
 
 void MeshResource::readFile(std::string&& filename) {
-	std::string s = filename;
-	std::ifstream fin(s);
-	if (!fin)
-		return;
+	std::string s;
+	auto& fin = *this;
 	while (fin >> s) {
 		if (s == "v") {
 			sf::Vector2f v;
@@ -20,33 +18,33 @@ void MeshResource::readFile(std::string&& filename) {
 		}
 		else if (s == "f") {
 			char symbol;
-			Face f{}, n{}, uv{};
+			sf::Vector3<unsigned int> f, n, uv;
 
-			fin >> f.v1;
+			fin >> f.x;
 			fin >> symbol;
-			fin >> uv.v1;
+			fin >> uv.x;
 			fin >> symbol;
-			fin >> n.v1;
+			fin >> n.x;
 
-			fin >> f.v2;
+			fin >> f.y;
 			fin >> symbol;
-			fin >> uv.v2;
+			fin >> uv.y;
 			fin >> symbol;
-			fin >> n.v2;
+			fin >> n.y;
 
-			fin >> f.v3;
+			fin >> f.z;
 			fin >> symbol;
-			fin >> uv.v3;
+			fin >> uv.z;
 			fin >> symbol;
-			fin >> n.v3;
+			fin >> n.z;
 
-			f.v1--;
-			f.v2--;
-			f.v3--;
+			f.x--;
+			f.y--;
+			f.z--;
 
-			uv.v1--;
-			uv.v2--;
-			uv.v3--;
+			uv.x--;
+			uv.y--;
+			uv.z--;
 
 			_faces.push_back(f);
 			_facesNormal.push_back(n);
@@ -73,49 +71,33 @@ void MeshResource::readFile(std::string&& filename) {
 	}
 	_uvs.resize(_uvsInit.size());
 	for (auto i = 0; i < _faces.size(); i++) {
-		_uvs[_faces[i].v1] = _uvsInit[_facesTexCoord[i].v1];
-		_uvs[_faces[i].v2] = _uvsInit[_facesTexCoord[i].v2];
-		_uvs[_faces[i].v3] = _uvsInit[_facesTexCoord[i].v3];
+		_uvs[_faces[i].x] = _uvsInit[_facesTexCoord[i].x];
+		_uvs[_faces[i].y] = _uvsInit[_facesTexCoord[i].y];
 	}
+}
+
+MeshResource::MeshResource(std::string&& filename)
+		:ResourceFile(std::move(filename + ".obj")) {
+	readFile(std::move(Name()));
+	initMesh();
 }
 
 void MeshResource::initMesh() {
-	glGenBuffers(1, &_indexVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, _indexVBO);
-	{
-		glBufferData(GL_ARRAY_BUFFER, sizeof(sf::Vector2f) * _vertices.size(), &*_vertices.begin(), GL_STATIC_DRAW);
+	std::vector<sf::Vertex> vertices(_vertices.size());
+	for (int i = 0; i < _vertices.size(); i++) {
+		vertices[i].position = _vertices[i];
+		vertices[i].texCoords = _uvs[i];
 	}
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	_vbo.create(vertices.size());
+	_vbo.setUsage(sf::VertexBuffer::Usage::Static);
+	_vbo.setPrimitiveType(sf::PrimitiveType::Triangles);
+	_vbo.update(vertices.data());
 
-	glGenBuffers(1, &_indexTexVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, _indexTexVBO);
+	glGenBuffers(1, &_ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
 	{
-		glBufferData(GL_ARRAY_BUFFER, sizeof(sf::Vector2f) * _uvs.size(), &*_uvs.begin(), GL_STATIC_DRAW);
-	}
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glGenBuffers(1, &_indexEBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexEBO);
-	{
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Face) * _faces.size(), &*_faces.begin(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(sf::Vector3<unsigned int>) * _faces.size(),
+				_faces.data(), GL_STATIC_DRAW);
 	}
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glGenVertexArrays(1, &_indexVAO);
-	glBindVertexArray(_indexVAO);
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, _indexVBO);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ARRAY_BUFFER, _indexTexVBO);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_TRUE, 0, nullptr);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
-	glBindVertexArray(0);
-}
-
-MeshResource::MeshResource(std::string&& filename) : ResourceFile(std::move(filename + ".obj")) {
-
-	readFile(std::move(Name()));
-	initMesh();
 }

@@ -4,38 +4,20 @@
 
 #include <sstream>
 
-ShaderResource::ShaderResource(std::string&& shaderName) : ResourceFile(std::move(shaderName))
-{
+ShaderResource::ShaderResource(std::string shaderName, sf::Shader::Type type)
+		:ResourceFile(std::move(shaderName)) {
+	if (!_shader.loadFromStream(*this, type))
+		throw std::runtime_error("Cannot load shader");
 }
 
-std::string LoadShaderFile(std::string& filename)
-{
-	std::ifstream ifile(filename, std::ifstream::binary);
-	std::string filetext;
-
-	while (ifile.good()) {
-		std::string line;
-		std::getline(ifile, line);
-		filetext.append(line + "\n");
-	}
-
-	return filetext;
+ShaderResource::ShaderResource(const std::string& name):ResourceFile(name + ".vert") {
+	auto fragmentShader = ResourceFile(name + ".frag");
+	if (!_shader.loadFromStream(*this, fragmentShader))
+		throw std::runtime_error("Cannot load shaders");
 }
 
-void ShaderResource::LoadShader(GLuint type) {
-	const std::string shaderProgram(LoadShaderFile(Name()));
-	const char* text = shaderProgram.c_str();
-	_shaderId = glCreateShader(type);
-	glShaderSource(_shaderId, 1, &text, nullptr);
-	glCompileShader(_shaderId);
-}
+VertexShaderResource::VertexShaderResource(std::string&& shaderName)
+		:ShaderResource(shaderName + ".vert", sf::Shader::Vertex) { }
 
-VertexShaderResource::VertexShaderResource(std::string&& shaderName) : ShaderResource(shaderName + ".vert")
-{
-	ShaderResource::LoadShader(GL_VERTEX_SHADER);
-}
-
-FragmentShaderResource::FragmentShaderResource(std::string&& shaderName) : ShaderResource(shaderName + ".frag")
-{
-	ShaderResource::LoadShader(GL_FRAGMENT_SHADER);
-}
+FragmentShaderResource::FragmentShaderResource(std::string&& shaderName)
+		:ShaderResource(shaderName + ".frag", sf::Shader::Fragment) { }
