@@ -3,5 +3,5 @@
 #include "Component.h"
 
 struct SpeedComponent : public ComponentData<SpeedComponent> {
-	float Speed;
+	sf::Vector2f Speed;
 };

@@ -35,7 +35,7 @@ void Map_InitSystem::OnInit() {
 		auto& speed = _entities->GetOrAddComponent<SpeedComponent>(copy);
 
 		//Initialize components
-		speed.Speed = (random() % 1000) / 1000.0f;
+		speed.Speed.x = (random() % 1000) / 1000.0f;
 
 		transform.Location = { (random() % 1000) + (random() % 100) / 100.0f,
 				(random() % 1000) + (random() % 100) / 100.0f };
