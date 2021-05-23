@@ -6,5 +6,8 @@ struct ComponentDrop : public ComponentData<ComponentDrop>
 {
 	std::vector<Entity*> neighbours;
 	sf::Vector2f Neighbour_impact;
-	bool is_moved, is_in_valume, is_in_queue;
+	sf::Vector2f Forse;
+	sf::Vector2f Velocity;
+	sf::Vector2f Position;
+	bool is_moved, is_in_volume, is_in_queue, is_force_calculated;
 };
