@@ -8,7 +8,7 @@
 
 using namespace sf::Extensions::Vector2;
 
-//ÓÄÀËÈÒÜ!!!!!
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!!!!!
 
 void CollisionSystem::OnFixedUpdate() {
 	const auto& items = _entities->GetEntitiesBy<CircleCollisionComponent>();
@@ -28,7 +28,7 @@ void CollisionSystem::OnFixedUpdate() {
 
 			if (collision_1->Position->*Magnitude(collision_2->Position) <= 2 * collision_1->Radius)
 			{
-				_entities->GetComponent<>(current_entity)
+//				_entities->GetComponent<>(current_entity)
 			}
 
 		}
