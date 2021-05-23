@@ -8,10 +8,6 @@ void ActorRenderSystem::OnPostUpdate()
 {
 	auto entities = _entities->GetEntitiesBy<ActorComponent>();
 
-	glBegin(GL_TRIANGLES);
-	glVertex3f(0, 0, 0); glVertex3f(0, 1, 0); glVertex3f(0, 1, 1);
-	glEnd();
-
 	for (const auto& [Components, Entity] : entities)
 	{
 		//Gettings Components
