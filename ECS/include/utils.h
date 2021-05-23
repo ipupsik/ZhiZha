@@ -9,6 +9,12 @@
 #include <cmath>
 #include <SFML/System/Vector2.hpp>
 
+#if defined(linux)
+constexpr auto PI = M_PI;
+#else
+constexpr auto PI = 3.14159265358979323846;
+#endif
+
 template <typename Ext, typename For>
 concept ExtensionObj = requires(const For& primary, const Ext& extension) {
 	{ extension(primary) };
@@ -97,7 +103,7 @@ namespace sf::Extensions::Vector2 {
 
 	template <typename T>
 	constexpr auto RotateDeg(const double degrees) {
-		return RotateRad<T>(M_PI * degrees / 180.0);
+		return RotateRad<T>(PI * degrees / 180.0);
 	}
 } // namespace sf::Extensions::Vector2
 
