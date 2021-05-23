@@ -1,22 +1,14 @@
-#include "System.h"
-#include "Components/TransformComponent.h"
-#include "../PhysicsEngine/include/ComponentDrop.h"
-#include "../PhysicsEngine/include/DefinesPhysics.h"
-#include "utils.h"
+#include "ComponentDrop.h"
 
-#include "../PhysicsEngine/include/Systems/GravitationSystem.h"
-
-using namespace sf::Extensions::Vector2;
+#include "Systems/GravitationSystem.h"
 
 void GravitationSystem::OnFixedUpdate() {
-	// ниже вектор гравитации, который нужно будет отсюта срочно убрать, им производится все управление
-	sf::Vector2f Gravitation = { 0, G };
+	// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 	const auto& items = _entities->GetEntitiesBy<ComponentDrop>();
 
-	for (auto& [components, entity] : items)
-	{
-		auto& [drop] = components;
-		drop->Velocity += Gravitation * _gameTime.FixedDeltaTime();
+	for (auto&[components, entity] : items) {
+		auto&[drop] = components;
+		drop->Velocity += _gravitation * _gameTime.FixedDeltaTime();
 	}
 }
