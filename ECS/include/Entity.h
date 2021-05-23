@@ -30,7 +30,7 @@ public:
 
 	bool operator<(const Entity& rhs) const;
 
-	[[nodiscard]] const Entity& GetParent() const;
+	[[nodiscard]] const Entity* GetParent() const;
 };
 
 template <>

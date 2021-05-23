@@ -1,32 +1,30 @@
 #pragma once
 
 #include <string>
+#include <utility>
 #include <vector>
 #include "glad/glad.h"
 
 #include "ResourceFile.h"
-#include "SFML/System/Vector2.hpp"
+#include "SFML/Graphics.hpp"
+#include "ObjectDrawable.h"
 
 class MeshResource : public ResourceFile {
-public:
-	struct Face {
-		unsigned int v1, v2, v3;
-	};
-	
+private:
+	void readFile();
+
 	std::vector<sf::Vector2f> _vertices;
 	std::vector<sf::Vector2f> _normals;
 	std::vector<sf::Vector2f> _uvs;
 	std::vector<sf::Vector2f> _uvsInit;
 
-	std::vector<Face> _faces;
-	std::vector<Face > _facesNormal;
-	std::vector<Face> _facesTexCoord;
+	std::vector<sf::Vector3<unsigned int>> _faces;
+	std::vector<sf::Vector3<unsigned int>> _facesNormal;
+	std::vector<sf::Vector3<unsigned int>> _facesTexCoord;
 
-	GLuint _indexEBO = 0, _indexVBO = 0, _indexTexVBO = 0, _indexVAO = 0;
+	ObjectDrawable _obj;
+public:
+	ObjectDrawable& Object() { return _obj; }
 
-	void initMesh();
-	void readFile(std::string&& filename);
 	explicit MeshResource(std::string&& filename);
-
-	//void LoadContent() final;
 };

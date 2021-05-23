@@ -2,5 +2,6 @@
 
 ResourceManager::~ResourceManager() {
 	for (const auto& [_, v] : _resourcesTable)
-		delete v;
+		for (const auto& [_, vv] : v)
+			delete vv;
 }

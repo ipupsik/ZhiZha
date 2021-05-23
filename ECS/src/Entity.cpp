@@ -1,7 +1,7 @@
 #include "Entity.h"
 
-const Entity& Entity::GetParent() const {
-	return *_parent;
+const Entity* Entity::GetParent() const {
+	return _parent;
 }
 
 Entity::Entity(): _parent(nullptr), _id(_count++) {

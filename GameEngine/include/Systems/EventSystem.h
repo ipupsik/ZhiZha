@@ -1,4 +1,5 @@
-#include "Components/Components.h"
+#pragma once
+
 #include "System.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
@@ -7,19 +8,10 @@
  * нажали кнопку.
  */
 class EventSystem : public virtual PostInitSystem {
-	sf::Window& _window;
-
-public:
-	explicit EventSystem(sf::Window& window): _window(window) {}
-
-	void OnPostInit() override;
-};
-
-class RenderSystem : public virtual PostUpdateSystem {
 	sf::RenderWindow& _window;
 
 public:
-	explicit RenderSystem(sf::RenderWindow& window): _window(window) {}
+	explicit EventSystem(sf::RenderWindow& window): _window(window) {}
 
-	void OnPostUpdate() override;
+	void OnPostInit() override;
 };

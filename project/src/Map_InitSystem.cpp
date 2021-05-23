@@ -1,45 +1,47 @@
+#include "Components/TransformComponent.h"
+#include "Components/MaterialComponent.h"
 #include "Map_InitSystem.h"
-#include "Components/ActorComponent.h"
+#include "Components/MeshComponent.h"
 #include "Components/ComplexCollisionComponent.h"
+#include <random>
+#include <ctime>
+#include <Components/SpeedComponent.h>
 
-void Map_InitSystem::OnInit()
-{
+void Map_InitSystem::OnInit() {
+	auto random = std::default_random_engine(time(nullptr));
+
 	//Initialize Components
-	Entity &Map = _entities->CreateEntity();
-	_entities->GetOrAddComponent<ActorComponent>(Map);
-	_entities->GetOrAddComponent<ComplexCollisionComponent>(Map);
-	//---
+	Entity& Map = _entities->CreateEntity();
 
 	//Getting Components
-	auto Actor = _entities->GetComponent<ActorComponent>(Map);
-	auto Collision = _entities->GetComponent<ComplexCollisionComponent>(Map);
+	auto& mesh = _entities->GetOrAddComponent<MeshComponent>(Map);
+//	auto& material = _entities->GetOrAddComponent<MaterialComponent>(Map);
+	auto& Collision = _entities->GetOrAddComponent<ComplexCollisionComponent>(Map);
 
 	//Initialize mesh
-	Actor->Mesh = new MeshResource("Map");
+	auto circle = new sf::CircleShape(1);
+	auto texture = _resources.GetOrAddResource<TextureResource>("Circle_Albedo.png")->GetTexture();
+	circle->setTexture(texture);
+	mesh.Drawable = circle;
 
 	//Initialize material
-	Actor->Material.VertexShader = new VertexShaderResource("Map");
-	Actor->Material.FragmentShader = new FragmentShaderResource("Map");
-	Actor->Material.Textures.emplace_back(new TextureResource("Map_Albedo.png"));
-	Actor->Material.attributesCount = 2;
+	//FIXME shader loading
+//	material.Shader = _resources.GetOrAddResource<ShaderResource>("Circle")->GetShader();
+//	material.Texture = texture;
 
-	GLint ok;
-	GLchar log[2000];
-	Actor->Material._materialId = glCreateProgram();
-	glAttachShader(Actor->Material._materialId, Actor->Material.FragmentShader->_shaderId);
-	glAttachShader(Actor->Material._materialId, Actor->Material.VertexShader->_shaderId);
-	glLinkProgram(Actor->Material._materialId);
-	glGetProgramiv(Actor->Material._materialId, GL_LINK_STATUS, &ok);
-	if (!ok)
-	{
-		glGetProgramInfoLog(Actor->Material._materialId, 2000, NULL, log);
-		printf("\n");
+	for (int i = 0; i < 100; i++) {
+		auto& copy = _entities->Instantiate(Map);
+		auto& transform = _entities->GetOrAddComponent<TransformComponent>(copy);
+		auto& speed = _entities->GetOrAddComponent<SpeedComponent>(copy);
+
+		//Initialize components
+		speed.Speed.x = (random() % 1000) / 1000.0f;
+
+		transform.Location = { (random() % 1000) + (random() % 100) / 100.0f,
+				(random() % 1000) + (random() % 100) / 100.0f };
+		transform.Scale = { 5, 5 };
+		transform.Angle = 0;
 	}
-
-	//Initialize Transform
-	Actor->Transform.Location = { 0.0f, 0.0f };
-	Actor->Transform.Scale = { 1.0f, 1.0f };
-	Actor->Transform.Rotation = { 0.0f, 0.0f };
-
-	Actor->parent = nullptr;
 }
+Map_InitSystem::Map_InitSystem(ResourceManager& resources)
+		:_resources(resources) { }

@@ -6,11 +6,13 @@ Entity& EntityManager::Instantiate(const Entity& parent) {
 		_entities.resize(Entity::_count);
 	_entities[copy->_id] = copy;
 
-	for (auto& [_, v] : _componentsTable) {
+	for (auto&[_, v] : _componentsTable) {
 		if (v.size() <= parent._id || v.size() <= copy->_id)
 			v.resize(Entity::_count, nullptr);
-		if (v[parent._id] != nullptr)
+		if (v[parent._id] != nullptr) {
 			v[copy->_id] = v[parent._id]->Copy();
+			v[copy->_id]->_entity = copy;
+		}
 	}
 	return *copy;
 }
@@ -23,8 +25,8 @@ Entity& EntityManager::CreateEntity() {
 	return *basic;
 }
 
-EntityManager::~EntityManager() {	
-	for (const auto& [_, v] : _componentsTable)
+EntityManager::~EntityManager() {
+	for (const auto&[_, v] : _componentsTable)
 		for (auto component : v)
 			delete component;
 	for (auto entity : _entities)
@@ -33,4 +35,14 @@ EntityManager::~EntityManager() {
 
 const std::vector<Entity*>& EntityManager::GetEntities() const {
 	return _entities;
+}
+
+void EntityManager::DestroyEntity(const Entity& entity) {
+	for (auto&[k, v] : _componentsTable)
+		if (v.size() >= entity._id) {
+			v[entity._id] = nullptr;
+			delete v[entity._id];
+		}
+	_entities[entity._id] = nullptr;
+	delete _entities[entity._id];
 }
