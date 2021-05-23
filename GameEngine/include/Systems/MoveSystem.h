@@ -20,7 +20,7 @@ public:
 
 		for (auto& [components, entity] : items) {
 			auto& [transform, dt] = components;
-			transform->Location += dt->Speed;
+			transform->Location += dt->Speed * _time.FixedDeltaTime();
 		}
 	}
 };

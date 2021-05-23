@@ -6,6 +6,7 @@
 #include <random>
 #include <ctime>
 #include <Components/SpeedComponent.h>
+#include <ComponentDrop.h>
 
 void Map_InitSystem::OnInit() {
 	auto random = std::default_random_engine(time(nullptr));
@@ -15,8 +16,8 @@ void Map_InitSystem::OnInit() {
 
 	//Getting Components
 	auto& mesh = _entities->GetOrAddComponent<MeshComponent>(Map);
-//	auto& material = _entities->GetOrAddComponent<MaterialComponent>(Map);
-	auto& Collision = _entities->GetOrAddComponent<ComplexCollisionComponent>(Map);
+	_entities->GetOrAddComponent<ComponentDrop>(Map);
+	_entities->GetOrAddComponent<SpeedComponent>(Map);
 
 	//Initialize mesh
 	auto circle = new sf::CircleShape(1);
@@ -32,10 +33,6 @@ void Map_InitSystem::OnInit() {
 	for (int i = 0; i < 100; i++) {
 		auto& copy = _entities->Instantiate(Map);
 		auto& transform = _entities->GetOrAddComponent<TransformComponent>(copy);
-		auto& speed = _entities->GetOrAddComponent<SpeedComponent>(copy);
-
-		//Initialize components
-		speed.Speed.x = (random() % 1000) / 1000.0f;
 
 		transform.Location = { (random() % 1000) + (random() % 100) / 100.0f,
 				(random() % 1000) + (random() % 100) / 100.0f };
