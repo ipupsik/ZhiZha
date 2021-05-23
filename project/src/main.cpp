@@ -6,9 +6,11 @@
 #include "glad/glad.h"
 #include "Systems/EventSystem.h"
 #include "Systems/FPSSystem.h"
+#include "Systems/GravitationSystem.h"
 
 #if defined(linux)
 #include <X11/Xlib.h>
+#include <DefinesPhysics.h>
 #endif
 
 int main() {
@@ -27,12 +29,15 @@ int main() {
 
 	gladLoadGL();
 
+	sf::Vector2f gravity = {0, G};
+
 	auto engine = new Engine(window);
 	engine->RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
 			.RegisterSystem<CreateComplexCollisionSystem>(window)
 			.RegisterSystem<EventSystem>(window)
 			.RegisterSystem<RenderSystem>(window)
 			.RegisterSystem<FPSSystem>(engine->GetTime(), window, engine->GetResourceManager())
-			.RegisterSystem<MoveSystem>( engine->GetTime());
+			.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
+			.RegisterSystem<MoveSystem>(engine->GetTime());
 	engine->Start();
 }

@@ -8,7 +8,9 @@ class GravitationSystem : public virtual FixedUpdateSystem {
 	sf::Vector2f& _gravitation;
 
 public:
-	explicit GravitationSystem(GameTime& gameTime) : _gameTime(gameTime) {}
+	explicit GravitationSystem(GameTime& gameTime, sf::Vector2f& gravitation)
+		: _gameTime(gameTime)
+		, _gravitation(gravitation) {}
 
 	void OnFixedUpdate() override;
 };
