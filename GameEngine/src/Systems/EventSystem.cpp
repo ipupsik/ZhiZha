@@ -10,16 +10,12 @@ void EventSystem::OnPostInit() {
 			if (event.type == sf::Event::Closed)
 				_window.close();
 			if (event.type == sf::Event::Resized) {
-				auto view = _window.getView();
-				view.setSize(event.size.width, event.size.height);
-				view.setCenter(event.size.width / 2.f, event.size.height / 2.f);
-				_window.setView(view);
+				_gameView.setSize(event.size.width, event.size.height);
+				_gameView.setCenter(event.size.width / 2.f, event.size.height / 2.f);
 			}
 			if (event.type == sf::Event::MouseWheelScrolled) {
-				auto view = _window.getView();
-				view.zoom(event.mouseWheelScroll.delta / 2 + 1);
-				view.setCenter(event.mouseWheelScroll.x, event.mouseWheelScroll.y);
-				_window.setView(view);
+				_gameView.zoom(event.mouseWheelScroll.delta / 2 + 1);
+				_gameView.setCenter(event.mouseWheelScroll.x, event.mouseWheelScroll.y);
 			}
 		}
 	}

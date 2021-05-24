@@ -2,11 +2,11 @@
 #include "Components/MaterialComponent.h"
 #include "Map_InitSystem.h"
 #include "Components/MeshComponent.h"
-#include "Components/MeshCollider.h"
 #include <random>
 #include <ctime>
 #include <Components/SpeedComponent.h>
 #include <ComponentDrop.h>
+#include <DefinesPhysics.h>
 #include "Components/LayerComponent.h"
 
 void Map_InitSystem::OnInit() {
@@ -17,12 +17,6 @@ void Map_InitSystem::OnInit() {
 	Entity& floor = _entities->CreateEntity();
 
 	//Setting balls components
-	_entities->GetOrAddComponent<MeshComponent>(ball, [&](MeshComponent& c) {
-		auto circle = new sf::CircleShape(2);
-		const auto texture = _resources.GetOrAddResource<TextureResource>("Circle_Albedo.png")->GetTexture();
-		circle->setTexture(texture);
-		c.Drawable = circle;
-	});
 	_entities->GetOrAddComponent<LayerComponent>(ball, [](LayerComponent& c) {
 		c.Index = Game;
 	});
@@ -36,7 +30,7 @@ void Map_InitSystem::OnInit() {
 		c.Drawable = rect;
 	});
 	_entities->GetOrAddComponent<TransformComponent>(floor, [](TransformComponent& c) {
-		c.Location = {0, 400};
+		c.Location = {0, 500};
 		c.Scale = { 1, 1 };
 	});
 	_entities->GetOrAddComponent<LayerComponent>(floor, [](LayerComponent& c) {
@@ -48,16 +42,24 @@ void Map_InitSystem::OnInit() {
 	//	material.Shader = _resources.GetOrAddResource<ShaderResource>("Circle")->GetShader();
 	//	material.Texture = texture;
 
-	for (int i = 0; i < 100; i++) {
+	for (int i = 1; i <= 1000; i++) {
 		auto& copy = _entities->Instantiate(ball);
 		auto& transform = _entities->GetOrAddComponent<TransformComponent>(copy);
+		_entities->GetOrAddComponent<MeshComponent>(copy, [&](MeshComponent& c) {
+			auto circle = new sf::CircleShape(RADIUS);
+			const auto texture = _resources.GetOrAddResource<TextureResource>("Circle_Albedo.png")->GetTexture();
+			circle->setTexture(texture);
+			c.Drawable = circle;
+		});
 
-		transform.Location = {
-			(random() % 1000) + (random() % 100) / 100.0f,
-			(random() % 1000) + (random() % 100) / 100.0f
-		};
-		transform.Scale = {5, 5};
+		transform.Scale = {1, 1};
 		transform.Angle = 0;
+		transform.Location.x = random() % 1000 + (random() % 1000) / 1000;
+		transform.Location.y = random() % 1000 + (random() % 1000) / 1000;
+
+		auto speed = _entities->GetComponent<SpeedComponent>(copy);
+		speed->Speed.x = (-5 + random() % 10) + (random() % 1000) / 1000;
+		speed->Speed.y = (-5 + random() % 10) + (random() % 1000) / 1000;
 	}
 }
 

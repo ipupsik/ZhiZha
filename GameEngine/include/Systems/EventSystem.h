@@ -9,9 +9,11 @@
  */
 class EventSystem : public virtual PostInitSystem {
 	sf::RenderWindow& _window;
+	sf::View _gameView;
 
 public:
-	explicit EventSystem(sf::RenderWindow& window): _window(window) {}
+	explicit EventSystem(sf::RenderWindow& window, sf::View gameView)
+		: _window(window), _gameView(gameView) {}
 
 	void OnPostInit() override;
 };

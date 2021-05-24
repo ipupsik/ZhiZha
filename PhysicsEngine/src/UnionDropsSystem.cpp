@@ -1,5 +1,5 @@
 
-#include "System.h"
+#include <iostream>
 #include "Components/TransformComponent.h"
 #include "GameTime.h"
 #include "../PhysicsEngine/include/ComponentDrop.h"
@@ -14,16 +14,15 @@ using namespace sf::Extensions::Vector2;
 
 void UnionDropsSystem::OnFixedUpdate()
 {
-	const auto& items = _entities->GetEntitiesBy<ComponentDrop>();
-	Entity& Volume = _entities->CreateEntity();
-
-	auto& volume_component = _entities->GetOrAddComponent<ComponentVolume>(Volume);
+	const auto& items = _entities->GetEntitiesBy<ComponentDrop, TransformComponent>();
 
 	for (auto& [components, drop] : items) {
-		auto& [drop_components] = components;
+		auto& [drop_components, transform] = components;
 		if (!(drop_components->is_in_volume)) {
-			auto& copy = _entities->Instantiate(Volume);
-			CheckAndAddDrop(*(_entities->GetComponent<ComponentVolume>(copy)), *drop_components, *drop);
+			Entity& Volume = _entities->CreateEntity();
+
+			auto& volume_component = _entities->GetOrAddComponent<ComponentVolume>(Volume);
+			CheckAndAddDrop(volume_component, *drop_components, *drop);
 		}
 	}
 }
@@ -52,6 +51,6 @@ void UnionDropsSystem::CheckAndAddDrop(ComponentVolume& volume_component, Compon
 		for (auto& neighbour : component_drop.neighbours) {
 			CheckAndAddDrop(volume_component,*(_entities->GetComponent<ComponentDrop>(*neighbour)), *neighbour);
 		}
-		// тут должна быть проверка на соседство со стенкой
+		// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	}
 }

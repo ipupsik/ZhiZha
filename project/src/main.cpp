@@ -1,6 +1,5 @@
-#include <Systems/RenderSystem.h>
-#include <Systems/MoveSystem.h>
-
+#include "Systems/RenderSystem.h"
+#include "Systems/MoveSystem.h"
 #include "DefinesPhysics.h"
 #include "Map_InitSystem.h"
 #include "Engine.h"
@@ -11,11 +10,13 @@
 #include "Systems/FPSSystem.h"
 #include "Systems/GravitationSystem.h"
 #include "Systems/RotateSystem.h"
+#include "Systems/UnionDropsSystem.h"
+#include "Systems/ForceCalculationSystem.h"
+#include "Systems/ShiftDropsSystem.h"
+#include "Systems/ResetParamsSystem.h"
 
 #if defined(linux)
 #include <X11/Xlib.h>
-#include <DefinesPhysics.h>
-#include <Systems/CollisionSystem.h>
 #endif
 
 int main() {
@@ -30,24 +31,28 @@ int main() {
 	settings.minorVersion = 0;
 
 	auto window = sf::RenderWindow(sf::VideoMode(1080, 720), "Sample", sf::Style::Default,
-	                               settings);
+			settings);
 
 	gladLoadGL();
 
-	sf::Vector2f gravity = {0, G};
+	sf::Vector2f gravity = { 0, G };
 	std::vector views = {
-		window.getDefaultView(), // game view
-		window.getDefaultView() // gui view
+			window.getDefaultView(), // game view
+			window.getDefaultView() // gui view
 	};
 
 	auto engine = new Engine(window);
 	engine->RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
-	      .RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime())
-	      .RegisterSystem<EventSystem>(window)
-	      .RegisterSystem<RenderSystem>(window, views)
-	      .RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
-	      .RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
-	      .RegisterSystem<MoveSystem>(engine->GetTime())
-	      .RegisterSystem<CollisionSystem>();
+			.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime())
+			.RegisterSystem<EventSystem>(window, views[Game])
+			.RegisterSystem<RenderSystem>(window, views)
+			.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
+			//.RegisterSystem<MoveSystem>(engine->GetTime())
+			.RegisterSystem<CollisionSystem>()
+			.RegisterSystem<UnionDropsSystem>(window)
+			.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
+			.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
+			.RegisterSystem<ShiftDropsSystem>()
+			.RegisterSystem<ResetParamsSystem>();
 	engine->Start();
 }
