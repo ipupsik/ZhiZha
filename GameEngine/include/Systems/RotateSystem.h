@@ -6,7 +6,7 @@
 #include "SFML/Graphics/View.hpp"
 #include "SFML/Graphics.hpp"
 
-class RotateSystem : public virtual FixedUpdateSystem, public virtual InitSystem {
+class RotateSystem : public virtual UpdateSystem, public virtual InitSystem {
 	sf::View& _gameView;
 	double _dphi = 0;
 	double _ddphi = 0;
@@ -21,6 +21,6 @@ public:
 		  _gravitation(gravitation),
 		  _time(time) {}
 
-	void OnFixedUpdate() override;
+	void OnUpdate() override;
 	void OnInit() override;
 };

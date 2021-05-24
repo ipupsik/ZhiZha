@@ -41,6 +41,8 @@ int main() {
 			window.getDefaultView() // gui view
 	};
 
+	views.at(Game).zoom(3);
+
 	auto engine = new Engine(window);
 	engine->RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
 			.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime())
