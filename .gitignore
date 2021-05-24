@@ -27,3 +27,5 @@
 cmake-build-*/
 Debug/
 out/
+.vscode/
+build/
