@@ -2,11 +2,6 @@
 #pragma once
 
 #include <cmath>
-#include <functional>
-#include <stack>
-#include <unordered_set>
-#include <vector>
-#include <cmath>
 #include <SFML/System/Vector2.hpp>
 
 #if defined(linux)
