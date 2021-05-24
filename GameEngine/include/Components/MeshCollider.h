@@ -4,7 +4,7 @@
 #include "Entity.h"
 #include "SFML/System/Vector2.hpp"
 
-struct ComplexCollisionComponent : public ComponentData<ComplexCollisionComponent>
+struct MeshCollider : public ComponentData<MeshCollider>
 {
 	struct face
 	{
