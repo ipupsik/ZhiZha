@@ -11,6 +11,7 @@
 #if defined(linux)
 #include <X11/Xlib.h>
 #include <DefinesPhysics.h>
+#include <Systems/CollisionSystem.h>
 #endif
 
 int main() {
@@ -38,6 +39,7 @@ int main() {
 			.RegisterSystem<RenderSystem>(window)
 			.RegisterSystem<FPSSystem>(engine->GetTime(), window, engine->GetResourceManager())
 			.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
-			.RegisterSystem<MoveSystem>(engine->GetTime());
+			.RegisterSystem<MoveSystem>(engine->GetTime())
+			.RegisterSystem<CollisionSystem>();
 	engine->Start();
 }
