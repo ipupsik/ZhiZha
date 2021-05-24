@@ -2,7 +2,7 @@
 #include "Components/MaterialComponent.h"
 #include "Map_InitSystem.h"
 #include "Components/MeshComponent.h"
-#include "Components/ComplexCollisionComponent.h"
+#include "Components/MeshCollider.h"
 #include <random>
 #include <ctime>
 #include <Components/SpeedComponent.h>
