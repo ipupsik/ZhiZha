@@ -10,6 +10,8 @@
 
 class MaterialComponent : public ComponentData<MaterialComponent> {
 public:
-	sf::Shader* Shader = nullptr;
-	sf::Texture* Texture = nullptr;
+	GLuint _materialId;
+	GLuint attributesCount;
+	ShaderResource* VertexShader, * FragmentShader;
+	std::vector<TextureResource*> Textures;
 };

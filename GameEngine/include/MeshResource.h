@@ -7,12 +7,9 @@
 
 #include "ResourceFile.h"
 #include "SFML/Graphics.hpp"
-#include "ObjectDrawable.h"
 
 class MeshResource : public ResourceFile {
-private:
-	void readFile();
-
+public:
 	std::vector<sf::Vector2f> _vertices;
 	std::vector<sf::Vector2f> _normals;
 	std::vector<sf::Vector2f> _uvs;
@@ -22,9 +19,11 @@ private:
 	std::vector<sf::Vector3<unsigned int>> _facesNormal;
 	std::vector<sf::Vector3<unsigned int>> _facesTexCoord;
 
-	ObjectDrawable _obj;
 public:
-	ObjectDrawable& Object() { return _obj; }
 
+	GLuint _indexEBO = 0, _indexVBO = 0, _indexTexVBO = 0, _indexVAO = 0;
+
+	void initMesh();
+	void readFile();
 	explicit MeshResource(std::string&& filename);
 };

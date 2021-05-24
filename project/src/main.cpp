@@ -1,5 +1,6 @@
 #include <Systems/RenderSystem.h>
 #include <Systems/MoveSystem.h>
+#include <Systems/MaterialAttachSystem.h>
 
 #include "DefinesPhysics.h"
 #include "Map_InitSystem.h"
@@ -42,9 +43,10 @@ int main() {
 
 	auto engine = new Engine(window);
 	engine->RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
+			.RegisterSystem<MaterialAttachSystem>(window)
 	      .RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime())
 	      .RegisterSystem<EventSystem>(window)
-	      .RegisterSystem<RenderSystem>(window, views)
+	      .RegisterSystem<RenderSystem>(window)
 	      .RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
 	      .RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 	      .RegisterSystem<MoveSystem>(engine->GetTime())

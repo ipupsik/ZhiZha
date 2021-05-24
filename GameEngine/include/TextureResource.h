@@ -4,10 +4,10 @@
 #include "SFML/Graphics.hpp"
 #include "ResourceFile.h"
 
-class TextureResource : public ResourceFile {
-	sf::Texture _texture;
+class TextureResource : public ResourceFile
+{
 public:
-	auto* GetTexture() { return &_texture; }
+	GLuint _textureId;
 
 	explicit TextureResource(std::string&& filename);
 };

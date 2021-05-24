@@ -1,7 +1,7 @@
 file(GLOB_RECURSE HEADER_FILES include/*.h)
 file(GLOB_RECURSE SOURCE_FILES src/*.cpp)
 
-add_library(GameEngine ${SOURCE_FILES} ${HEADER_FILES})
+add_library(GameEngine ${SOURCE_FILES} ${HEADER_FILES} "src/Systems/MaterialAttachSystem.cpp")
 include_directories(../ECS/include)
 include_directories(../glad/include)
 

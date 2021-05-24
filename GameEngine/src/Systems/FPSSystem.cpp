@@ -18,7 +18,7 @@ void FPSSystem::OnInit() {
 	_entities->GetOrAddComponent<MeshComponent>(fontEntity, [&](MeshComponent& c) {
 		_fps.setFont(_font);
 		_fps.setCharacterSize(24);
-		c.Drawable = &_fps;
+		//c.Drawable = &_fps;
 	});
 	_entities->GetOrAddComponent<LayerComponent>(fontEntity, [](LayerComponent& c) {
 		c.Index = Gui;

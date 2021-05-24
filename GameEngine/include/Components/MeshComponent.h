@@ -6,5 +6,5 @@
 
 struct MeshComponent : public ComponentData<MeshComponent>
 {
-	sf::Drawable* Drawable;
+	MeshResource* Mesh;
 };

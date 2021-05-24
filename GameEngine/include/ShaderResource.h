@@ -5,13 +5,11 @@
 #include <SFML/Graphics/Shader.hpp>
 
 class ShaderResource : public ResourceFile {
-	sf::Shader _shader;
-
 public:
-	sf::Shader* GetShader() { return &_shader; }
+	GLuint _shaderId;
 
-	ShaderResource(std::string name, sf::Shader::Type type);
-	explicit ShaderResource(const std::string& name);
+	void LoadShader(GLuint type);
+	ShaderResource(std::string&& shaderName);
 };
 
 class VertexShaderResource : public ShaderResource {

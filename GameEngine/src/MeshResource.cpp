@@ -1,11 +1,12 @@
 #include "MeshResource.h"
 
 #include <iostream>
-#include "ObjectDrawable.h"
 
 void MeshResource::readFile() {
-	std::string s;
-	auto& fin = *this;
+	std::string s = Name();
+	std::ifstream fin(s);
+	if (!fin)
+		return;
 	while (fin >> s) {
 		if (s == "v") {
 			sf::Vector2f v;
@@ -76,9 +77,43 @@ void MeshResource::readFile() {
 	}
 }
 
-MeshResource::MeshResource(std::string&& filename)
-		:ResourceFile(std::move(filename + ".obj")) {
+void MeshResource::initMesh() {
+	glGenBuffers(1, &_indexVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, _indexVBO);
+	{
+		glBufferData(GL_ARRAY_BUFFER, sizeof(sf::Vector2f) * _vertices.size(), &*_vertices.begin(), GL_STATIC_DRAW);
+	}
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glGenBuffers(1, &_indexTexVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, _indexTexVBO);
+	{
+		glBufferData(GL_ARRAY_BUFFER, sizeof(sf::Vector2f) * _uvs.size(), &*_uvs.begin(), GL_STATIC_DRAW);
+	}
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glGenBuffers(1, &_indexEBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexEBO);
+	{
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(sf::Vector3<unsigned int>) * _faces.size(), &*_faces.begin(), GL_STATIC_DRAW);
+	}
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	glGenVertexArrays(1, &_indexVAO);
+	glBindVertexArray(_indexVAO);
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, _indexVBO);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, _indexTexVBO);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_TRUE, 0, nullptr);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+	glBindVertexArray(0);
+}
+
+MeshResource::MeshResource(std::string&& filename) : ResourceFile(std::move(filename + ".obj")) {
 	readFile();
-	_obj.loadData(_vertices, _uvs, _faces);
-	_obj.init();
+	initMesh();
 }
