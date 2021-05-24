@@ -5,4 +5,4 @@
 class ShiftDropsSystem : public virtual FixedUpdateSystem {
 public:
 	void OnFixedUpdate() override;
-}
+};
