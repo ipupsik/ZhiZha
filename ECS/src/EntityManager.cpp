@@ -39,7 +39,7 @@ const std::vector<Entity*>& EntityManager::GetEntities() const {
 
 void EntityManager::DestroyEntity(const Entity& entity) {
 	for (auto&[k, v] : _componentsTable)
-		if (v.size() >= entity._id) {
+		if (v.size() > entity._id) {
 			v[entity._id] = nullptr;
 			delete v[entity._id];
 		}
