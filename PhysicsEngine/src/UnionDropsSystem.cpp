@@ -30,7 +30,7 @@ void UnionDropsSystem::OnFixedUpdate()
 
 void UnionDropsSystem::AddToVolume(auto& volume_component, Entity& drop)
 {
-	//volume_component->Perimetr_drops.push(drop);
+	volume_component.Perimetr_drops.push(&drop);
 }
 
 void UnionDropsSystem::CheckAndAddDrop(ComponentVolume& volume_component, ComponentDrop& component_drop, Entity& drop)
