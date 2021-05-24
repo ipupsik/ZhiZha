@@ -91,17 +91,17 @@ namespace sf::Extensions::Vector2 {
 		};
 	}
 
-	template <typename T>
+	template <typename T = float>
 	constexpr auto RotateRad(const double radians) {
 		return [radians](const sf::Vector2<T>& vector) {
-			return sf::Vector2f {
-				std::cos(radians) * vector.x - std::sin(radians) * vector.y,
-				std::sin(radians) * vector.x + std::cos(radians) * vector.y
+			return sf::Vector2f{
+					static_cast<float>(std::cos(radians) * vector.x - std::sin(radians) * vector.y),
+					static_cast<float>(std::sin(radians) * vector.x + std::cos(radians) * vector.y)
 			};
 		};
 	}
 
-	template <typename T>
+	template <typename T = float>
 	constexpr auto RotateDeg(const double degrees) {
 		return RotateRad<T>(PI * degrees / 180.0);
 	}
@@ -109,5 +109,5 @@ namespace sf::Extensions::Vector2 {
 
 template <typename F, std::size_t ...Index>
 constexpr void foreach(F f, std::integer_sequence<const std::size_t, Index...>) {
-	auto res = {(f(std::integral_constant<const std::size_t, Index>()), 0)... };
+	auto res = { (f(std::integral_constant<const std::size_t, Index>()), 0)... };
 }
