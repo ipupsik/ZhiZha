@@ -1,4 +1,5 @@
 #include <Components/TransformComponent.h>
+#include <iostream>
 #include "ComponentDrop.h"
 #include "Components/CircleCollisionComponent.h"
 #include "utils.h"
@@ -37,8 +38,8 @@ void CollisionSystem::OnFixedUpdate() {
 
 		for (int i = 0; i < drop->neighbours.size(); ++i) {
 			drop->Neighbour_impact +=
-					-_entities->GetComponent<TransformComponent>(*(drop->neighbours[i]))->Location
-							+ transform->Location;
+					_entities->GetComponent<TransformComponent>(*(drop->neighbours[i]))->Location
+							- transform->Location;
 		}
 	}
 	//������� ������� ������_������ -- end
