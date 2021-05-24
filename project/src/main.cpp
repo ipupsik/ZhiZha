@@ -1,9 +1,12 @@
 #include <Systems/RenderSystem.h>
 #include <Systems/MoveSystem.h>
+
+#include "DefinesPhysics.h"
 #include "Systems/CreateComplexCollisionSystem.h"
 #include "Map_InitSystem.h"
 #include "Engine.h"
 #include "glad/glad.h"
+#include "Systems/CollisionSystem.h"
 #include "Systems/EventSystem.h"
 #include "Systems/FPSSystem.h"
 #include "Systems/GravitationSystem.h"
