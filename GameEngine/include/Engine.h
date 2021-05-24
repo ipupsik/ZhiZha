@@ -3,14 +3,14 @@
 #include "SystemManager.h"
 #include "ResourceManager.h"
 #include "GameTime.h"
-#include "SFML/Window/Window.hpp"
+#include "SFML/Graphics/RenderWindow.hpp"
 
 class Engine {
 	EntityManager* _entityManager = new EntityManager();
 	SystemManager* _systemManager = new SystemManager(*_entityManager);
 	ResourceManager* _resourceManager = new ResourceManager();
 	GameTime* _time = new GameTime();
-	sf::Window& _window;
+	sf::RenderWindow& _window;
 
 	void initRenderThread();
 	void initFixedUpdateThread() const;
@@ -21,7 +21,7 @@ public:
 
 	~Engine();
 
-	explicit Engine(sf::Window& window): _window(window) {}
+	explicit Engine(sf::RenderWindow& window): _window(window) {}
 
 	[[nodiscard]] EntityManager& GetEntityManager() const { return *_entityManager; }
 	[[nodiscard]] SystemManager& GetSystemManager() const { return *_systemManager; }

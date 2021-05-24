@@ -1,8 +1,11 @@
 #version 430
 
-out vec4 diffuseColor;
+layout (location = 1) uniform sampler2D tex0;
 
-void main()
-{
-    diffuseColor = vec4(1.0, 1.0f, 0, 1.0);
+in vec2 texPos;
+
+out vec4 _diffuseColor;
+
+void main() {
+    _diffuseColor = texture2D(tex0, texPos);
 }

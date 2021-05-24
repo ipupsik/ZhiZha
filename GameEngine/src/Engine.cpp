@@ -6,13 +6,13 @@
 void Engine::initRenderThread() {
 	_window.setActive(true);
 
-	glOrtho(-1.4, 1.4, -1.4, 1.4, 0, 8);
+	// glOrtho(-1.4, 1.4, -1.4, 1.4, 0, 8);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	while (_window.isOpen()) {
+		_window.clear(sf::Color { 100, 100, 255, 255 });
 		_systemManager->Update();
-
-		glClearColor(0.4f, 0.4f, 1.0f, 0.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		_systemManager->PostUpdate();
 		_window.display();

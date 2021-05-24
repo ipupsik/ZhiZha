@@ -1,14 +1,14 @@
 #version 430
 
+uniform mat4 Transform;
+
 layout (location = 0) in vec2 _vertexPos;
-layout (location = 1) in vec2 _texCoord;
 
-layout (location = 0) uniform mat4 Transform;
+layout (location = 1) in vec2 _texPos;
 
-layout (location = 0) out vec2 texCoord;
+out vec2 texPos;
 
-void main()
-{
+void main() {
     gl_Position = Transform * vec4(_vertexPos, 0, 1);
-	texCoord = _texCoord;
+    texPos = _texPos;
 }
