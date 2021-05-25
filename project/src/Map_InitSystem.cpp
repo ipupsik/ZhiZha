@@ -42,7 +42,7 @@ void Map_InitSystem::OnInit() {
 	//	material.Shader = _resources.GetOrAddResource<ShaderResource>("Circle")->GetShader();
 	//	material.Texture = texture;
 
-	for (int i = 1; i <= 1500; i++) {
+	for (int i = 1; i <= 400; i++) {
 		auto& copy = _entities->Instantiate(ball);
 		auto& transform = _entities->GetOrAddComponent<TransformComponent>(copy);
 		_entities->GetOrAddComponent<MeshComponent>(copy, [&](MeshComponent& c) {
@@ -55,11 +55,11 @@ void Map_InitSystem::OnInit() {
 		transform.Scale = {1, 1};
 		transform.Angle = 0;
 		transform.Location.x = random() % 1000 + (random() % 1000) / 1000;
-		transform.Location.y = random() % 1000 + (random() % 1000) / 1000;
+		transform.Location.y = random() % 200 + (random() % 100) / 100;
 
 		auto speed = _entities->GetComponent<SpeedComponent>(copy);
-		speed->Speed.x = (-5 + random() % 10) + (random() % 1000) / 1000;
-		speed->Speed.y = (-5 + random() % 10) + (random() % 1000) / 1000;
+		speed->Speed.x = (-5 + random() % 30) + (random() % 1000) / 1000;
+		speed->Speed.y = (-5 + random() % 30) + (random() % 1000) / 1000;
 	}
 }
 

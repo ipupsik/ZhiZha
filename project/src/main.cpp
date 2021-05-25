@@ -54,7 +54,7 @@ int main() {
 			.RegisterSystem<UnionDropsSystem>(window)
 			.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 			.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
-			.RegisterSystem<ShiftDropsSystem>()
+			.RegisterSystem<ShiftDropsSystem>(engine->GetTime())
 			.RegisterSystem<ResetParamsSystem>();
 	engine->Start();
 }

@@ -25,15 +25,19 @@ void ShiftDropsSystem::OnFixedUpdate()
 
 			if (!current_drop_transform) continue;
 
+			sf::Vector2f _oldLocation = current_drop_transform->Location;
+
 			// here we need check collision with walls !!!!!!!!!!!!!!!!!!!
 
 			// collision with other balls in volume (if we dont have collision with walls)
+
 			current_drop_transform->Location += current_drop_speed.Speed;
 
 			const auto& all_other_drops = _entities->GetEntitiesBy<ComponentDrop, TransformComponent>();
 
 			for (auto& [current_components_drop, current_other_drop] : all_other_drops)
 			{
+				
 				if (current_other_drop == current_drop)
 				{
 					continue;
@@ -55,11 +59,30 @@ void ShiftDropsSystem::OnFixedUpdate()
 					shift_vector.y *= shift_lenght;
 
 					current_drop_transform->Location -= shift_vector;
+
+					current_drop_speed.Speed = (current_drop_transform->Location - _oldLocation);
+					current_drop_speed.Speed.x /= _gameTime.FixedDeltaTime() * 50;
+					//current_drop_speed.Speed.y /= _gameTime.FixedDeltaTime() * 50;
 				}
 			}
 
+			/*if (true) {
+				current_drop_speed.Speed = (current_drop_transform->Location - _oldLocation);/////////
+				current_drop_speed.Speed.x /= _gameTime.FixedDeltaTime() * 50;
+				current_drop_speed.Speed.y /= _gameTime.FixedDeltaTime() * 50;
+			}*/
+
 			auto& current_drop_comp = *(_entities->GetComponent<ComponentDrop>(*current_drop));
 			current_drop_comp.is_moved = true;
+
+			float _wallY = 500; // take from another file
+			float _wallThickness = 2; // take from another file
+
+			if (current_drop_transform->Location.y > _wallY - _wallThickness - 2 * RADIUS) {
+				current_drop_transform->Location.y = _wallY - _wallThickness - 2 * RADIUS;
+				current_drop_speed.Speed.y = 0;
+				current_volume_comp->Is_Interract_Wall = true;
+			};
 
 			for (int j = 0; j < current_drop_comp.neighbours.size(); ++j)
 			{
