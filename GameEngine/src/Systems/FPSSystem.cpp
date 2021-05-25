@@ -1,7 +1,7 @@
 #include "Systems/FPSSystem.h"
 
 #include "Components/LayerComponent.h"
-#include "Components/MeshComponent.h"
+#include "Components/RenderedComponent.h"
 
 void FPSSystem::OnFixedUpdate() {
 	_fps.setString("FPS: "
@@ -15,10 +15,10 @@ void FPSSystem::OnInit() {
 	const auto font = _resources.GetOrAddResource<ResourceFile>("JetBrainsMono-Regular.ttf");
 	_font.loadFromStream(*font);
 	auto& fontEntity = _entities->CreateEntity();
-	_entities->GetOrAddComponent<MeshComponent>(fontEntity, [&](MeshComponent& c) {
+	_entities->GetOrAddComponent<RenderedComponent>(fontEntity, [&](RenderedComponent& c) {
 		_fps.setFont(_font);
 		_fps.setCharacterSize(24);
-		//c.Drawable = &_fps;
+		c.DrawableObj = &_fps;
 	});
 	_entities->GetOrAddComponent<LayerComponent>(fontEntity, [](LayerComponent& c) {
 		c.Index = Gui;

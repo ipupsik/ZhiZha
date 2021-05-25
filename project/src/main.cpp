@@ -1,8 +1,8 @@
 #include <Systems/RenderSystem.h>
 #include <Systems/MoveSystem.h>
-#include <Systems/MaterialAttachSystem.h>
 
 #include "DefinesPhysics.h"
+#include "Zhizha_InitSystem.h"
 #include "Map_InitSystem.h"
 #include "Engine.h"
 #include "Components/LayerComponent.h"
@@ -12,6 +12,7 @@
 #include "Systems/FPSSystem.h"
 #include "Systems/GravitationSystem.h"
 #include "Systems/RotateSystem.h"
+#include "Systems/MaterialAttachSystem.h"
 
 #if defined(linux)
 #include <X11/Xlib.h>
@@ -42,13 +43,14 @@ int main() {
 	};
 
 	auto engine = new Engine(window);
-	engine->RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
-			.RegisterSystem<MaterialAttachSystem>(window)
+	engine->RegisterSystem<Zhizha_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<MaterialAttachSystem>(window)
 	      .RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime())
 	      .RegisterSystem<EventSystem>(window)
-	      .RegisterSystem<RenderSystem>(window)
+	      .RegisterSystem<RenderSystem>(window, views)
 	      .RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
-	      .RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
+	      //.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 	      .RegisterSystem<MoveSystem>(engine->GetTime())
 	      .RegisterSystem<CollisionSystem>();
 	engine->Start();

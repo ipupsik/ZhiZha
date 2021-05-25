@@ -1,5 +1,7 @@
 #include "Systems/MaterialAttachSystem.h"
 #include "Components/MaterialComponent.h"
+#include "Components/RenderedComponent.h"
+#include "ObjectDrawable.h"
 
 void MaterialAttachSystem::OnInit()
 {
@@ -7,18 +9,18 @@ void MaterialAttachSystem::OnInit()
 
     for (const auto& it : Entities)
     {
-        auto [Material] = it.Components;
+        auto [material] = it.Components;
 
         GLint ok;
         GLchar log[2000];
-        Material->_materialId = glCreateProgram();
-        glAttachShader(Material->_materialId, Material->FragmentShader->_shaderId);
-        glAttachShader(Material->_materialId, Material->VertexShader->_shaderId);
-        glLinkProgram(Material->_materialId);
-        glGetProgramiv(Material->_materialId, GL_LINK_STATUS, &ok);
+        material->_materialId = glCreateProgram();
+        glAttachShader(material->_materialId, material->FragmentShader->_shaderId);
+        glAttachShader(material->_materialId, material->VertexShader->_shaderId);
+        glLinkProgram(material->_materialId);
+        glGetProgramiv(material->_materialId, GL_LINK_STATUS, &ok);
         if (!ok)
         {
-            glGetProgramInfoLog(Material->_materialId, 2000, NULL, log);
+            glGetProgramInfoLog(material->_materialId, 2000, NULL, log);
             printf("\n");
         }
     }
