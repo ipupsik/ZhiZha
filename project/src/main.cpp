@@ -45,12 +45,12 @@ int main() {
 	engine->RegisterSystem<Zhizha_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<MaterialAttachSystem>(window)
-	      .RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime())
-	      .RegisterSystem<EventSystem>(window)
+	      //.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime())
+	      //.RegisterSystem<EventSystem>(window)
 	      .RegisterSystem<RenderSystem>(window, views)
 	      .RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
-	      //.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
-	      .RegisterSystem<MoveSystem>(engine->GetTime())
+	      .RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
+	      //.RegisterSystem<MoveSystem>(engine->GetTime())
 	      .RegisterSystem<CollisionSystem>();
 	engine->Start();
 }

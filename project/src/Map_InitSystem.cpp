@@ -48,9 +48,6 @@ void Map_InitSystem::OnInit()
 	_entities->GetOrAddComponent<LayerComponent>(map, [](LayerComponent& c) {
 		c.Index = Game;
 	});
-
-	_entities->GetOrAddComponent<ComponentDrop>(map);
-	_entities->GetOrAddComponent<SpeedComponent>(map);
 }
 
 Map_InitSystem::Map_InitSystem(ResourceManager& resources)

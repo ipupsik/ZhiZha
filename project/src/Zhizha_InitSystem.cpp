@@ -13,7 +13,6 @@
 
 void Zhizha_InitSystem::OnInit()
 {
-	//Initialize Enityty
 	for (int i = 0; i < 10; i++)
 	{
 		Entity& ball = _entities->CreateEntity();
@@ -30,9 +29,12 @@ void Zhizha_InitSystem::OnInit()
 			});
 
 		_entities->GetOrAddComponent<TransformComponent>(ball, [&](TransformComponent& c) {
-			c.Location = { 0 + 0.05f * i, 0.1 };
-			c.Scale = { 0.3, 0.3 };
-			c.Angle = 0.0f;
+			c.Location = {
+			((rand() % 1000) + (rand() % 100) / 100.0f) * 0.001f,
+			((rand() % 1000) + (rand() % 100) / 100.0f) * 0.001f
+			};
+			c.Scale = { 0.1f, 0.1f } ;
+			c.Angle = 0;
 			c.parent = nullptr;
 			});
 
@@ -44,7 +46,6 @@ void Zhizha_InitSystem::OnInit()
 			DrawObj->material = &_entities->GetOrAddComponent<MaterialComponent>(ball);
 			DrawObj->mesh = &_entities->GetOrAddComponent<MeshComponent>(ball);
 			DrawObj->transform = &_entities->GetOrAddComponent<TransformComponent>(ball);
-
 			});
 
 		_entities->GetOrAddComponent<LayerComponent>(ball, [](LayerComponent& c) {
@@ -54,6 +55,21 @@ void Zhizha_InitSystem::OnInit()
 		_entities->GetOrAddComponent<ComponentDrop>(ball);
 		_entities->GetOrAddComponent<SpeedComponent>(ball);
 	}
+
+	//Initialize Enityty
+	/*for (int i = 0; i < 10; i++)
+	{
+		auto& copy = _entities->Instantiate(ball);
+		auto& transform = _entities->GetOrAddComponent<TransformComponent>(copy);
+
+		transform.Location = {
+			((rand() % 1000) + (rand() % 100) / 100.0f) * 0.001f,
+			((rand() % 1000) + (rand() % 100) / 100.0f) * 0.001f
+		};
+		transform.Scale = { 5, 5 };
+		transform.Angle = 0;
+		transform.parent = nullptr;
+	}*/
 }
 
 Zhizha_InitSystem::Zhizha_InitSystem(ResourceManager& resources)

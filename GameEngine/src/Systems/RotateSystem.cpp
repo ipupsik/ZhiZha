@@ -34,21 +34,3 @@ void RotateSystem::OnUpdate() {
 	_gravitation = sf::Vector2f{0, G}->*RotateDeg(_phi);
 	_line->setRotation(_phi);
 }
-
-void RotateSystem::OnInit() {
-	_line = new sf::RectangleShape({10, 40});
-	_line->setFillColor(sf::Color::Yellow);
-	_line->setOrigin(5, 0);
-
-	auto& line = _entities->CreateEntity();
-	_entities->GetOrAddComponent<MeshComponent>(line, [&](MeshComponent& c) {
-		c.Drawable = _line;
-	});
-	_entities->GetOrAddComponent<TransformComponent>(line, [](TransformComponent& c) {
-		c.Location = {40, 80};
-		c.Scale = {1, 1};
-	});
-	_entities->GetOrAddComponent<LayerComponent>(line, [](LayerComponent& c) {
-		c.Index = Gui;
-	});
-}
