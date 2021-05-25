@@ -10,7 +10,7 @@
 
 using namespace sf::Extensions::Vector2;
 
-void RotateSystem::OnUpdate() {
+void RotateSystem::OnFixedUpdate() {
 	_dphi = 0;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))

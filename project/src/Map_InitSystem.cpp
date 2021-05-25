@@ -42,7 +42,7 @@ void Map_InitSystem::OnInit() {
 	//	material.Shader = _resources.GetOrAddResource<ShaderResource>("Circle")->GetShader();
 	//	material.Texture = texture;
 
-	for (int i = 0; i < 50; i++)
+	for (int i = -10; i < 60; i++)
 		for (int j = 1; j <= 10; j++) {
 			auto& copy = _entities->Instantiate(ball);
 			auto& transform = _entities->GetOrAddComponent<TransformComponent>(copy);
