@@ -1,8 +1,9 @@
 #pragma once
 
+#include "ComponentDrop.h"
+#include "ComponentVolume.h"
 #include "System.h"
 #include "SFML/Graphics/RenderWindow.hpp"
-
 
 class UnionDropsSystem : public virtual FixedUpdateSystem {
 	sf::Window& _window;

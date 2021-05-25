@@ -1,6 +1,5 @@
-#include <Systems/RenderSystem.h>
-#include <Systems/MoveSystem.h>
-
+#include "Systems/RenderSystem.h"
+#include "Systems/MoveSystem.h"
 #include "DefinesPhysics.h"
 #include "Zhizha_InitSystem.h"
 #include "Map_InitSystem.h"
@@ -16,8 +15,6 @@
 
 #if defined(linux)
 #include <X11/Xlib.h>
-#include <DefinesPhysics.h>
-#include <Systems/CollisionSystem.h>
 #endif
 
 int main() {
@@ -32,15 +29,17 @@ int main() {
 	settings.minorVersion = 0;
 
 	auto window = sf::RenderWindow(sf::VideoMode(1080, 720), "Sample", sf::Style::Default,
-	                               settings);
+			settings);
 
 	gladLoadGL();
 
-	sf::Vector2f gravity = {0, G};
+	sf::Vector2f gravity = { 0, G };
 	std::vector views = {
-		window.getDefaultView(), // game view
-		window.getDefaultView() // gui view
+			window.getDefaultView(), // game view
+			window.getDefaultView() // gui view
 	};
+
+	views.at(Game).zoom(3);
 
 	auto engine = new Engine(window);
 	engine->RegisterSystem<Zhizha_InitSystem>(engine->GetResourceManager())

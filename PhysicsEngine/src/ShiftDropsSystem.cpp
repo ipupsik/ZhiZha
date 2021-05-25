@@ -20,13 +20,15 @@ void ShiftDropsSystem::OnFixedUpdate()
 		for (int i = 0; i < current_volume_comp->Perimetr_drops.size(); ++i)
 		{
 			Entity* current_drop = current_volume_comp->Perimetr_drops.front();
-			auto& current_drop_transform = *(_entities->GetComponent<TransformComponent>(*current_drop));
+			auto current_drop_transform = _entities->GetComponent<TransformComponent>(*current_drop);
 			auto& current_drop_speed = *(_entities->GetComponent<SpeedComponent>(*current_drop));
+
+			if (!current_drop_transform) continue;
 
 			// here we need check collision with walls !!!!!!!!!!!!!!!!!!!
 
 			// collision with other balls in volume (if we dont have collision with walls)
-			current_drop_transform.Location += current_drop_speed.Speed;
+			current_drop_transform->Location += current_drop_speed.Speed;
 
 			const auto& all_other_drops = _entities->GetEntitiesBy<ComponentDrop, TransformComponent>();
 
@@ -39,10 +41,10 @@ void ShiftDropsSystem::OnFixedUpdate()
 
 				auto& [other_drop_comp, other_transform_comp] = current_components_drop;
 
-				if (current_drop_transform.Location->*SqrMagnitude(other_transform_comp->Location)
+				if (current_drop_transform->Location->*SqrMagnitude(other_transform_comp->Location)
 					<= 4 * RADIUS * RADIUS)
 				{
-					sf::Vector2f vector_centers = current_drop_transform.Location - other_transform_comp->Location;
+					sf::Vector2f vector_centers = current_drop_transform->Location - other_transform_comp->Location;
 
 					float shift_lenght = 2 * RADIUS - vector_centers->*Length();
 
@@ -52,7 +54,7 @@ void ShiftDropsSystem::OnFixedUpdate()
 					shift_vector.x *= shift_lenght;
 					shift_vector.y *= shift_lenght;
 
-					current_drop_transform.Location -= shift_vector;
+					current_drop_transform->Location -= shift_vector;
 				}
 			}
 

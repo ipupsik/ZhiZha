@@ -16,6 +16,7 @@ void ResetParamsSystem::OnFixedUpdate()
 		drop_comp->is_force_calculated = false;
 		drop_comp->is_in_queue = false;
 		drop_comp->is_in_volume = false;
+		drop_comp->is_volume_calculated = false;
 		drop_comp->is_moved = false;
 	}
 

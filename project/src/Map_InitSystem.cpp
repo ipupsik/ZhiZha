@@ -3,11 +3,11 @@
 #include "Components/RenderedComponent.h"
 #include "Map_InitSystem.h"
 #include "Components/MeshComponent.h"
-#include "Components/MeshCollider.h"
 #include <random>
 #include <ctime>
 #include <Components/SpeedComponent.h>
 #include <ComponentDrop.h>
+#include <DefinesPhysics.h>
 #include "Components/LayerComponent.h"
 #include "ObjectDrawable.h"
 
