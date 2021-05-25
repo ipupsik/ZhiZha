@@ -31,7 +31,7 @@ void Map_InitSystem::OnInit() {
 	});
 	_entities->GetOrAddComponent<TransformComponent>(floor, [](TransformComponent& c) {
 		c.Location = {0, 500};
-		c.Scale = { 1, 1 };
+		c.Scale = {1, 1};
 	});
 	_entities->GetOrAddComponent<LayerComponent>(floor, [](LayerComponent& c) {
 		c.Index = Game;
@@ -42,25 +42,26 @@ void Map_InitSystem::OnInit() {
 	//	material.Shader = _resources.GetOrAddResource<ShaderResource>("Circle")->GetShader();
 	//	material.Texture = texture;
 
-	for (int i = 1; i <= 400; i++) {
-		auto& copy = _entities->Instantiate(ball);
-		auto& transform = _entities->GetOrAddComponent<TransformComponent>(copy);
-		_entities->GetOrAddComponent<MeshComponent>(copy, [&](MeshComponent& c) {
-			auto circle = new sf::CircleShape(RADIUS);
-			const auto texture = _resources.GetOrAddResource<TextureResource>("Circle_Albedo.png")->GetTexture();
-			circle->setTexture(texture);
-			c.Drawable = circle;
-		});
+	for (int i = 0; i < 50; i++)
+		for (int j = 1; j <= 10; j++) {
+			auto& copy = _entities->Instantiate(ball);
+			auto& transform = _entities->GetOrAddComponent<TransformComponent>(copy);
+			_entities->GetOrAddComponent<MeshComponent>(copy, [&](MeshComponent& c) {
+				auto circle = new sf::CircleShape(RADIUS);
+				const auto texture = _resources.GetOrAddResource<TextureResource>("Circle_Albedo.png")->GetTexture();
+				circle->setTexture(texture);
+				c.Drawable = circle;
+			});
 
-		transform.Scale = {1, 1};
-		transform.Angle = 0;
-		transform.Location.x = random() % 1000 + (random() % 1000) / 1000;
-		transform.Location.y = random() % 200 + (random() % 100) / 100;
+			transform.Scale = {1, 1};
+			transform.Angle = 0;
+			transform.Location.x = 2 * RADIUS * i + 1;
+			transform.Location.y = 2 * RADIUS * j + 1;
 
-		auto speed = _entities->GetComponent<SpeedComponent>(copy);
-		speed->Speed.x = (-5 + random() % 30) + (random() % 1000) / 1000;
-		speed->Speed.y = (-5 + random() % 30) + (random() % 1000) / 1000;
-	}
+			auto speed = _entities->GetComponent<SpeedComponent>(copy);
+			// speed->Speed.x = (-5 + random() % 30) + (random() % 1000) / 1000;
+			// speed->Speed.y = (-5 + random() % 30) + (random() % 1000) / 1000;
+		}
 }
 
 Map_InitSystem::Map_InitSystem(ResourceManager& resources)

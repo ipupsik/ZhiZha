@@ -39,14 +39,14 @@ namespace sf::Extensions::Vector2 {
 	template <typename T>
 	constexpr auto Dot(const sf::Vector2<T>& other) {
 		return [&](const sf::Vector2<T>& vector) constexpr -> T {
-			return vector.x * other.y - vector.y * other.x;
+			return vector.x * other.x - vector.y * other.y;
 		};
 	}
 
 	template <typename T>
 	constexpr auto Cross(const sf::Vector2<T>& other) {
 		return [&](const sf::Vector2<T>& vector) constexpr -> T {
-			return vector.x * other.x - vector.y * other.y;
+			return vector.x * other.y - vector.y * other.x;
 		};
 	}
 

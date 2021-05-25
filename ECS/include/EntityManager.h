@@ -59,11 +59,15 @@ public:
 				}
 				else {
 					const std::vector<Component*>& components = _componentsTable.at(type);
-					if ((components.size() <= complex.Entity->_id
-							|| components.at(complex.Entity->_id) == nullptr))
+					if (components.size() <= complex.Entity->_id) {
 						consideredToAdd = false;
-					std::get<i>(complex.Components) = static_cast<decltype(T)*>(components
-							.at(complex.Entity->_id));
+						return;
+					}
+					if (components[complex.Entity->_id] == nullptr) {
+						consideredToAdd = false;
+						return;
+					}
+					std::get<i>(complex.Components) = static_cast<decltype(T)*>(components[complex.Entity->_id]);
 				}
 			}, std::make_integer_sequence<const std::size_t, count>());
 

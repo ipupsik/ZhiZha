@@ -62,7 +62,7 @@ void ShiftDropsSystem::OnFixedUpdate()
 
 					current_drop_speed.Speed = (current_drop_transform->Location - _oldLocation);
 					current_drop_speed.Speed.x /= _gameTime.FixedDeltaTime() * 50;
-					//current_drop_speed.Speed.y /= _gameTime.FixedDeltaTime() * 50;
+					current_drop_speed.Speed.y /= _gameTime.FixedDeltaTime() * 50;
 				}
 			}
 
@@ -78,19 +78,20 @@ void ShiftDropsSystem::OnFixedUpdate()
 			float _wallY = 500; // take from another file
 			float _wallThickness = 2; // take from another file
 
-			if (current_drop_transform->Location.y > _wallY - _wallThickness - 2 * RADIUS) {
+			if (current_drop_transform->Location.y > _wallY - _wallThickness - 2 * RADIUS
+				&& current_drop_transform->Location.x < 1000
+				&& current_drop_transform->Location.x > 0) {
 				current_drop_transform->Location.y = _wallY - _wallThickness - 2 * RADIUS;
 				current_drop_speed.Speed.y = 0;
 				current_volume_comp->Is_Interract_Wall = true;
-			};
+			}
 
-			for (int j = 0; j < current_drop_comp.neighbours.size(); ++j)
-			{
-				auto& other_drop_comp = *(_entities->GetComponent<ComponentDrop>(*(current_drop_comp.neighbours[j])));
+			for (auto neighbour : current_drop_comp.neighbours) {
+				auto& other_drop_comp = *(_entities->GetComponent<ComponentDrop>(*neighbour));
 				if (!(other_drop_comp.is_moved) && !(other_drop_comp.is_in_queue))
 				{
 					other_drop_comp.is_in_queue = true;
-					current_volume_comp->Perimetr_drops.push(current_drop_comp.neighbours[j]);
+					current_volume_comp->Perimetr_drops.push(neighbour);
 				}
 			}
 

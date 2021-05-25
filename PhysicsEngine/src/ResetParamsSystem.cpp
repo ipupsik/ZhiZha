@@ -3,13 +3,18 @@
 
 #include "Systems/ResetParamsSystem.h"
 
+#include "Components/TransformComponent.h"
+
 void ResetParamsSystem::OnFixedUpdate()
 {
-	const auto& drops = _entities->GetEntitiesBy<ComponentDrop>();
+	const auto& drops = _entities->GetEntitiesBy<ComponentDrop, TransformComponent>();
 
 	for (auto& [components, cur_entity] : drops)
 	{
-		auto&[drop_comp] = components;
+		auto&[drop_comp, transform] = components;
+
+		if (transform->Location.y > 1200)
+			_entities->DestroyEntity(*cur_entity);
 
 		drop_comp->neighbours.resize(0);
 
