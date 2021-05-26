@@ -21,19 +21,16 @@ void ShiftDropsSystem::OnFixedUpdate() {
 
 		for (auto& neighbor : currentDrop->neighbours) {
 			auto neighborTransform = _entities->GetComponent<TransformComponent>(*neighbor);
+			auto neighborSpeed = _entities->GetComponent<SpeedComponent>(*neighbor);
 
-			if (!neighborTransform) continue;
-			auto oldLocation = currentTransform->Location;
+			if (!neighborTransform || !neighborSpeed) continue;
 
-			// here we need check collision with walls !!!!!!!!!!!!!!!!!!!
-
-			// collision with other balls in volume (if we dont have collision with walls)
-
-			if (currentTransform->Location->*SqrMagnitude(neighborTransform->Location)
-					< 4 * RADIUS * RADIUS) {
-				currentSpeed->Speed.x *= 0.01;
-				currentSpeed->Speed.y *= 0.01;
-				currentTransform->Location += oldLocation - neighborTransform->Location;
+			auto distance = currentTransform->Location->*Magnitude(neighborTransform->Location);
+			if (distance < 2 * RADIUS) {
+				auto direction = (currentTransform->Location - neighborTransform->Location)->*Normalize();
+				neighborSpeed->Speed += currentSpeed->Speed * (1.f - SURFACE_FORCE);
+				currentSpeed->Speed *= SURFACE_FORCE;
+				currentTransform->Location += (2 * RADIUS - distance) * direction;
 			}
 		}
 
