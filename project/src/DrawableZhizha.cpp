@@ -25,16 +25,18 @@ void DrawableZhizha::draw(sf::RenderTarget& target, sf::RenderStates states) con
 			glEnableVertexAttribArray(i);
 
 		{
-			GLuint VertexIndex;
-			glGenBuffers(1, &VertexIndex);
-			glBindBuffer(GL_ARRAY_BUFFER, VertexIndex);
+			if (vertices.size() > 0)
 			{
-				glBufferData(GL_ARRAY_BUFFER,  2 * sizeof(float) * vertices.size(), &*vertices.begin(), GL_STREAM_DRAW);
+				glEnableClientState(GL_VERTEX_ARRAY);
 				{
-					glDrawArrays(GL_TRIANGLES, NULL, vertices.size());
+					std::vector<float>tmp = vertices;
+					glVertexPointer(2, GL_FLOAT, 0, tmp.begin()._Ptr);
+					{
+						int length = tmp.size() / 6;
+						//glDrawArrays(GL_TRIANGLES, 0, length);  <-- FIX ME
+					}
 				}
 			}
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
 
 		for (int i = material->attributesCount - 1; i >= 0; i--)

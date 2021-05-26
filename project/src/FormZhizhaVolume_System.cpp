@@ -23,13 +23,13 @@ void FormZhizhaVolume_System::OnFixedUpdate()
 		auto&[drop_comp] = components;
 		sf::Vector2f center = _entities->GetComponent<TransformComponent>(*cur_entity)->Location;
 		float radius = _entities->GetComponent<TransformComponent>(*cur_entity)->Scale.x;
-
-		for (int i = 0; i < drop_comp->neighbours.size() - 1; i++)
+		int length = drop_comp->neighbours.size();
+		for (int i = 0; i < length - 1; i++)
 		{
-			sf::Vector2f center_i = _entities->GetComponent<TransformComponent>(*drop_comp->neighbours[i])->Location;
-			for (int j = i + 1; j < drop_comp->neighbours.size(); j++)
+			sf::Vector2f center_i = _entities->GetComponent<TransformComponent>(*(drop_comp->neighbours[i]))->Location;
+			for (int j = i + 1; j < length; j++)
 			{
-				sf::Vector2f center_j = _entities->GetComponent<TransformComponent>(*drop_comp->neighbours[i])->Location;
+				sf::Vector2f center_j = _entities->GetComponent<TransformComponent>(*(drop_comp->neighbours[i]))->Location;
 				_DrawableZhizha->vertices.emplace_back(center_i.x);
 				_DrawableZhizha->vertices.emplace_back(center_i.x);
 
@@ -41,9 +41,9 @@ void FormZhizhaVolume_System::OnFixedUpdate()
 			}
 		}
 
-		for (int i = 0; i < drop_comp->neighbours.size(); i++)
+		for (int i = 0; i < length; i++)
 		{
-			sf::Vector2f center_i = _entities->GetComponent<TransformComponent>(*drop_comp->neighbours[i])->Location;
+			sf::Vector2f center_i = _entities->GetComponent<TransformComponent>(*(drop_comp->neighbours[i]))->Location;
 
 			sf::Vector2f CenterVector = center_i - center;
 
