@@ -52,11 +52,11 @@ int main() {
 		.RegisterSystem<MaterialAttachSystem>(window)
 		//.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime())
 		//.RegisterSystem<EventSystem>(window)
-		.RegisterSystem<RenderSystem>(window, views)
 		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
 		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 		//.RegisterSystem<MoveSystem>(engine->GetTime())
 		.RegisterSystem<FormZhizhaVolume_System>()
+		.RegisterSystem<RenderSystem>(window, views)
 		.RegisterSystem<ResetParamsSystem>()
 	    .RegisterSystem<CollisionSystem>();
 	engine->Start();

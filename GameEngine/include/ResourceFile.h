@@ -13,6 +13,7 @@ public:
 	ResourceFile& operator=(ResourceFile&&) = delete;
 	
 	explicit ResourceFile(std::string&& filename);
+	explicit ResourceFile();
 	explicit ResourceFile(const char* const filename): ResourceFile(std::string(filename)) {}
 
 	std::string& Name();

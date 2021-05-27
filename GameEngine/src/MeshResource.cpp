@@ -117,3 +117,8 @@ MeshResource::MeshResource(std::string&& filename) : ResourceFile(std::move(file
 	readFile();
 	initMesh();
 }
+
+MeshResource::MeshResource()
+{
+
+}

@@ -11,7 +11,7 @@ void ResetParamsSystem::OnFixedUpdate()
 	{
 		auto&[drop_comp] = components;
 
-		drop_comp->neighbours.resize(0);
+		drop_comp->neighbours.clear();
 
 		drop_comp->is_force_calculated = false;
 		drop_comp->is_in_queue = false;

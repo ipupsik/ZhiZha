@@ -8,6 +8,11 @@ ResourceFile::ResourceFile(std::string&& filename): _filename("../share/" + file
 	std::ifstream::open(_filename);
 }
 
+ResourceFile::ResourceFile()
+{
+	
+}
+
 std::string& ResourceFile::Name() {
 	return _filename;
 }

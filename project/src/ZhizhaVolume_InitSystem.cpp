@@ -17,8 +17,8 @@ void ZhizhaVolume_InitSystem::OnInit()
 	Entity& ZhizhaVolume = _entities->CreateEntity();
 
 	_entities->GetOrAddComponent<MaterialComponent>(ZhizhaVolume, [&](MaterialComponent& c) {
-		c.VertexShader = _resources.GetOrAddResource<VertexShaderResource>("Circle");
-		c.FragmentShader = _resources.GetOrAddResource<FragmentShaderResource>("Circle");
+		c.VertexShader = _resources.GetOrAddResource<VertexShaderResource>("Zhizha");
+		c.FragmentShader = _resources.GetOrAddResource<FragmentShaderResource>("Zhizha");
 		c.Textures.emplace_back(_resources.GetOrAddResource<TextureResource>("Circle_Albedo.png"));
 		c.attributesCount = 2;
 		});
@@ -28,6 +28,7 @@ void ZhizhaVolume_InitSystem::OnInit()
 		c.DrawableObj = new DrawableZhizha;
 		DrawableZhizha* DrawObj = dynamic_cast<DrawableZhizha*>(c.DrawableObj);
 
+		DrawObj->initMesh();
 		DrawObj->material = &_entities->GetOrAddComponent<MaterialComponent>(ZhizhaVolume);
 		});
 

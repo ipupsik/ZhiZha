@@ -6,6 +6,7 @@
 #include "Components/MaterialComponent.h"
 #include "Components/TransformComponent.h"
 #include "Components/MeshComponent.h"
+#include "MeshResource.h"
 
 #include <vector>
 
@@ -14,6 +15,10 @@
 class DrawableZhizha : public sf::Drawable {
 public:
 	MaterialComponent *material;
-	std::vector<float> vertices;
+	GLuint indexVBO, indexVAO, indexEBO;
+	std::vector<sf::Vector2f> vertices[2];
+	int side = 0;
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	void initMesh();
 };

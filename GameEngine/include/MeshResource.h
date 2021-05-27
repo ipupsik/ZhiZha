@@ -26,4 +26,5 @@ public:
 	void initMesh();
 	void readFile();
 	explicit MeshResource(std::string&& filename);
+	explicit MeshResource();
 };

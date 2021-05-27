@@ -58,21 +58,6 @@ void Zhizha_InitSystem::OnInit()
 			_entities->GetOrAddComponent<SpeedComponent>(ball);
 		}
 	}
-
-	//Initialize Enityty
-	/*for (int i = 0; i < 10; i++)
-	{
-		auto& copy = _entities->Instantiate(ball);
-		auto& transform = _entities->GetOrAddComponent<TransformComponent>(copy);
-
-		transform.Location = {
-			((rand() % 1000) + (rand() % 100) / 100.0f) * 0.001f,
-			((rand() % 1000) + (rand() % 100) / 100.0f) * 0.001f
-		};
-		transform.Scale = { 5, 5 };
-		transform.Angle = 0;
-		transform.parent = nullptr;
-	}*/
 }
 
 Zhizha_InitSystem::Zhizha_InitSystem(ResourceManager& resources)
