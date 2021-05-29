@@ -32,7 +32,7 @@ void ShiftDropsSystem::OnFixedUpdate() {
 				auto direction = (currentTransform->Location - neighborTransform->Location)->*Normalize();
 				//neighborSpeed->Speed += currentSpeed->Speed * (1.f - SURFACE_FORCE);
 				//currentSpeed->Speed *= SURFACE_FORCE;
-				Momentum_Conservation(*currentSpeed, *neighborSpeed, *neighborDrop);
+				MomentumConservation(*currentSpeed, *neighborSpeed, *neighborDrop);
 				currentTransform->Location += (2 * RADIUS - distance) * direction;
 			}
 		}
@@ -49,7 +49,7 @@ void ShiftDropsSystem::OnFixedUpdate() {
 	}
 }
 
-void ShiftDropsSystem::Momentum_Conservation(SpeedComponent& currentSpeed, SpeedComponent& neighborSpeed, ComponentDrop& neighborDrop) {
+void ShiftDropsSystem::MomentumConservation(SpeedComponent& currentSpeed, SpeedComponent& neighborSpeed, ComponentDrop& neighborDrop) {
 	sf::Vector2f _newSpeed = neighborSpeed.Speed + (currentSpeed.Speed - neighborSpeed.Speed) / (float)(neighborDrop.Volum_Component->Number_Of_Drops + 1);
 	ÑhangeSpeed(neighborSpeed, neighborDrop, _newSpeed);
 	currentSpeed.Speed = neighborSpeed.Speed;
