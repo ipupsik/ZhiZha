@@ -12,6 +12,7 @@
 using namespace sf::Extensions::Vector2;
 
 void ShiftDropsSystem::OnFixedUpdate() {
+	int i = 0;//
 	const auto& items = _entities
 			->GetEntitiesBy<ComponentDrop, TransformComponent, SpeedComponent>();
 
@@ -22,14 +23,16 @@ void ShiftDropsSystem::OnFixedUpdate() {
 		for (auto& neighbor : currentDrop->neighbours) {
 			auto neighborTransform = _entities->GetComponent<TransformComponent>(*neighbor);
 			auto neighborSpeed = _entities->GetComponent<SpeedComponent>(*neighbor);
+			auto neighborDrop = _entities->GetComponent<ComponentDrop>(*neighbor);
 
 			if (!neighborTransform || !neighborSpeed) continue;
 
 			auto distance = currentTransform->Location->*Magnitude(neighborTransform->Location);
 			if (distance < 2 * RADIUS) {
 				auto direction = (currentTransform->Location - neighborTransform->Location)->*Normalize();
-				neighborSpeed->Speed += currentSpeed->Speed * (1.f - SURFACE_FORCE);
-				currentSpeed->Speed *= SURFACE_FORCE;
+				//neighborSpeed->Speed += currentSpeed->Speed * (1.f - SURFACE_FORCE);
+				//currentSpeed->Speed *= SURFACE_FORCE;
+				Momentum_Conservation(*currentSpeed, *neighborSpeed, *neighborDrop);
 				currentTransform->Location += (2 * RADIUS - distance) * direction;
 			}
 		}
@@ -42,6 +45,24 @@ void ShiftDropsSystem::OnFixedUpdate() {
 				&& currentTransform->Location.x > 0) {
 				currentTransform->Location.y = _wallY - _wallThickness - 2 * RADIUS;
 				currentSpeed->Speed.y = 0;
+		}
+	}
+}
+
+void ShiftDropsSystem::Momentum_Conservation(SpeedComponent& currentSpeed, SpeedComponent& neighborSpeed, ComponentDrop& neighborDrop) {
+	sf::Vector2f _newSpeed = neighborSpeed.Speed + (currentSpeed.Speed - neighborSpeed.Speed) / (float)(neighborDrop.Volum_Component->Number_Of_Drops + 1);
+	ÑhangeSpeed(neighborSpeed, neighborDrop, _newSpeed);
+	currentSpeed.Speed = neighborSpeed.Speed;
+}
+
+void ShiftDropsSystem::ÑhangeSpeed(SpeedComponent& currentSpeed, ComponentDrop& currentDrop, sf::Vector2f& newSpeed) {
+	if (!(currentDrop.if_changed_speed)) {
+		currentSpeed.Speed = newSpeed;
+		currentDrop.if_changed_speed = true;
+			for (auto& neighbor : currentDrop.neighbours) {
+				auto neighborSpeed = _entities->GetComponent<SpeedComponent>(*neighbor);
+				auto neighborDrop = _entities->GetComponent<ComponentDrop>(*neighbor);
+				ÑhangeSpeed(*neighborSpeed, *neighborDrop, newSpeed);
 			}
 	}
 }

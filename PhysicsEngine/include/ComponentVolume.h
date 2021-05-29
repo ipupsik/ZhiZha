@@ -11,4 +11,5 @@ struct ComponentVolume : public ComponentData<ComponentVolume>
 	sf::Vector2f Top_Position;
 	sf::Vector2f Bottom_Position_Interract_Wall;
 	bool Is_Interract_Wall = false;
+	size_t Number_Of_Drops = 0;
 };
