@@ -17,7 +17,7 @@ void Map_InitSystem::OnInit()
 	Entity& map = _entities->CreateEntity();
 
 	_entities->GetOrAddComponent<MeshComponent>(map, [&](MeshComponent& c) {
-		c.Mesh = _resources.GetOrAddResource<MeshResource>("Map");
+		c.Mesh = _resources.GetOrAddResource<MeshResource>("map");
 		});
 
 	_entities->GetOrAddComponent<MaterialComponent>(map, [&](MaterialComponent& c) {
@@ -28,8 +28,8 @@ void Map_InitSystem::OnInit()
 		});
 
 	_entities->GetOrAddComponent<TransformComponent>(map, [&](TransformComponent& c) {
-		c.Location = { 0, -0.2 };
-		c.Scale = { 0.6, 0.6 };
+		c.Location = { 0.0, -.2 };
+		c.Scale = { 0.04, 0.04 };
 		c.Angle = 0.0f;
 		c.parent = nullptr;
 		});

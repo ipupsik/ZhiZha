@@ -14,6 +14,8 @@
 #include "Systems/RotateSystem.h"
 #include "Systems/ResetParamsSystem.h"
 #include "Systems/MaterialAttachSystem.h"
+#include "BackGround_InitSystem.h"
+
 #include "ZhizhaVolume_InitSystem.h"
 #include "FormZhizhaVolume_System.h"
 
@@ -46,7 +48,8 @@ int main() {
 	views.at(Game).zoom(3);
 
 	auto engine = new Engine(window);
-	engine->RegisterSystem<Zhizha_InitSystem>(engine->GetResourceManager())
+	engine->RegisterSystem<BackGround_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<Zhizha_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<ZhizhaVolume_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<MaterialAttachSystem>(window)
