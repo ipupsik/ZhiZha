@@ -74,6 +74,7 @@ void MeshResource::readFile() {
 	for (auto i = 0; i < _faces.size(); i++) {
 		_uvs[_faces[i].x] = _uvsInit[_facesTexCoord[i].x];
 		_uvs[_faces[i].y] = _uvsInit[_facesTexCoord[i].y];
+		_uvs[_faces[i].z] = _uvsInit[_facesTexCoord[i].z];
 	}
 }
 
