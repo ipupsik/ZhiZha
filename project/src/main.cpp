@@ -55,7 +55,7 @@ int main() {
 		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
 		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 		//.RegisterSystem<MoveSystem>(engine->GetTime())
-		.RegisterSystem<FormZhizhaVolume_System>()
+		//.RegisterSystem<FormZhizhaVolume_System>()
 		.RegisterSystem<RenderSystem>(window, views)
 		.RegisterSystem<ResetParamsSystem>()
 	    .RegisterSystem<CollisionSystem>();
