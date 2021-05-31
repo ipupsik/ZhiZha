@@ -8,6 +8,7 @@
 #include <ctime>
 #include <Components/SpeedComponent.h>
 #include <ComponentDrop.h>
+#include "GlobalRotation_Component.h"
 #include "Components/LayerComponent.h"
 
 void Zhizha_InitSystem::OnInit()
@@ -45,6 +46,8 @@ void Zhizha_InitSystem::OnInit()
 
 			_entities->GetOrAddComponent<ComponentDrop>(ball);
 			_entities->GetOrAddComponent<SpeedComponent>(ball);
+
+			_entities->GetOrAddComponent<GlobalRotation_Component>(ball);
 		}
 	}
 }
