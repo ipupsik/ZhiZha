@@ -10,6 +10,7 @@
 
 #include "Systems/CollisionSystem.h"
 #include "Systems/EventSystem.h"
+#include "Systems/CameraMovingSystem.h"
 #include "Systems/FPSSystem.h"
 #include "Systems/GravitationSystem.h"
 #include "Systems/RotateSystem.h"
@@ -84,6 +85,7 @@ int main() {
 		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
 
 		.RegisterSystem<FormZhizhaVolume_System>()
+		.RegisterSystem<CameraMovingSystem>(camera_location)
 		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi)
 		.RegisterSystem<RenderSystem_HUD>(window, views)
 
