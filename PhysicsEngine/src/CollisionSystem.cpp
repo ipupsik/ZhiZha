@@ -20,7 +20,7 @@ void CollisionSystem::OnFixedUpdate() {
 				continue;
 			}
 
-			// here use squared distance, because to get square is much easier, then to get square
+			// here use squared distance, because to get square is much easier, than to get square root
 			if (transformCurrent->Location->*SqrMagnitude(transformOther->Location)
 					<= 4 * RADIUS * RADIUS) {
 				drop_current->neighbours.push_back(other_entity);
