@@ -11,7 +11,7 @@
 using namespace sf::Extensions::Vector2;
 
 void RotateSystem::OnFixedUpdate() {
-	/*_dphi = 0;
+	_dphi = 0;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		_dphi = -300 / (std::abs(_phi) + 10);
@@ -30,6 +30,5 @@ void RotateSystem::OnFixedUpdate() {
 	const auto deltaPhi = _dphi * _time.FixedDeltaTime() + _ddphi * _time.FixedDeltaTime() * _time.FixedDeltaTime() / 2;
 	_phi += deltaPhi;
 	
-	_gameView.setRotation(_phi);
-	_gravitation = sf::Vector2f{0, G}->*RotateDeg(_phi);*/
+	_gravitation = sf::Vector2f{0, G}->*RotateDeg(_phi);
 }

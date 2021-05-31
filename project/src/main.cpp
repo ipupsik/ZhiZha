@@ -1,4 +1,5 @@
-#include "Systems/RenderSystem.h"
+#include "Systems/RenderSystem_HUD.h"
+#include "Systems/RenderSystem_Models.h"
 #include "Systems/MoveSystem.h"
 #include "DefinesPhysics.h"
 #include "Zhizha_InitSystem.h"
@@ -52,6 +53,8 @@ int main() {
 	gladLoadGL();
 
 	sf::Vector2f gravity = { 0, -G / 20 };
+	sf::Vector2f camera_location = { 0.0f, 0.0f };
+	float global_phi = 0;
 	std::vector views = {
 			window.getDefaultView(), // game view
 			window.getDefaultView() // gui view
@@ -74,11 +77,14 @@ int main() {
 		.RegisterSystem<ZhizhaVolume_InitSystem>(engine->GetResourceManager())
 
 		.RegisterSystem<MaterialAttachSystem>(window)
-		.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime())
+		.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime(), global_phi)
 		.RegisterSystem<EventSystem>(window, views[Game])
 		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
+
 		.RegisterSystem<FormZhizhaVolume_System>()
-		.RegisterSystem<RenderSystem>(window, views)
+		.RegisterSystem<RenderSystem_HUD>(window, views)
+		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi)
+
 
 		.RegisterSystem<CollisionSystem>()
 		.RegisterSystem<UnionDropsSystem>(window)

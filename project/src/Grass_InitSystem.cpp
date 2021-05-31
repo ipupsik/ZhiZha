@@ -9,7 +9,7 @@
 #include <ComponentDrop.h>
 #include <DefinesPhysics.h>
 #include "Components/LayerComponent.h"
-#include "ObjectDrawable.h"
+#include "GlobalRotation_Component.h"
 
 void Grass_InitSystem::OnInit()
 {
@@ -34,20 +34,11 @@ void Grass_InitSystem::OnInit()
 		c.parent = nullptr;
 		});
 
-	//Setting balls components
-	_entities->GetOrAddComponent<RenderedComponent>(grass, [&](RenderedComponent& c) {
-		c.DrawableObj = new ObjectDrawable;
-		ObjectDrawable* DrawObj = dynamic_cast<ObjectDrawable*>(c.DrawableObj);
-
-		DrawObj->material = &_entities->GetOrAddComponent<MaterialComponent>(grass);
-		DrawObj->mesh = &_entities->GetOrAddComponent<MeshComponent>(grass);
-		DrawObj->transform = &_entities->GetOrAddComponent<TransformComponent>(grass);
-
-		});
-
 	_entities->GetOrAddComponent<LayerComponent>(grass, [](LayerComponent& c) {
 		c.Index = Game;
 	});
+
+	_entities->GetOrAddComponent<GlobalRotation_Component>(grass);
 }
 
 Grass_InitSystem::Grass_InitSystem(ResourceManager& resources)

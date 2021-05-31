@@ -9,7 +9,7 @@
 #include <ComponentDrop.h>
 #include <DefinesPhysics.h>
 #include "Components/LayerComponent.h"
-#include "ObjectDrawable.h"
+#include "GlobalRotation_Component.h"
 
 void SmallSkull_InitSystem::OnInit()
 {
@@ -34,20 +34,11 @@ void SmallSkull_InitSystem::OnInit()
 		c.parent = nullptr;
 		});
 
-	//Setting balls components
-	_entities->GetOrAddComponent<RenderedComponent>(skull, [&](RenderedComponent& c) {
-		c.DrawableObj = new ObjectDrawable;
-		ObjectDrawable* DrawObj = dynamic_cast<ObjectDrawable*>(c.DrawableObj);
-
-		DrawObj->material = &_entities->GetOrAddComponent<MaterialComponent>(skull);
-		DrawObj->mesh = &_entities->GetOrAddComponent<MeshComponent>(skull);
-		DrawObj->transform = &_entities->GetOrAddComponent<TransformComponent>(skull);
-
-		});
-
 	_entities->GetOrAddComponent<LayerComponent>(skull, [](LayerComponent& c) {
 		c.Index = Game;
 	});
+
+	_entities->GetOrAddComponent<GlobalRotation_Component>(skull);
 }
 
 SmallSkull_InitSystem::SmallSkull_InitSystem(ResourceManager& resources)

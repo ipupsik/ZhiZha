@@ -1,7 +1,6 @@
 #include "Systems/MaterialAttachSystem.h"
 #include "Components/MaterialComponent.h"
 #include "Components/RenderedComponent.h"
-#include "ObjectDrawable.h"
 
 void MaterialAttachSystem::OnInit()
 {
