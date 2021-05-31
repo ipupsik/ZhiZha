@@ -50,7 +50,7 @@ void ShiftDropsSystem::OnFixedUpdate() {
 }
 
 void ShiftDropsSystem::MomentumConservation(SpeedComponent& currentSpeed, SpeedComponent& neighborSpeed, ComponentDrop& neighborDrop) {
-	sf::Vector2f _newSpeed = neighborSpeed.Speed + (currentSpeed.Speed - neighborSpeed.Speed) / (float)(neighborDrop.Volum_Component->Number_Of_Drops + 1);
+	sf::Vector2f _newSpeed = neighborSpeed.Speed + (currentSpeed.Speed - neighborSpeed.Speed) / (float)(neighborDrop.Volum_Component.Number_Of_Drops + 1);
 	ÑhangeSpeed(neighborSpeed, neighborDrop, _newSpeed);
 	currentSpeed.Speed = neighborSpeed.Speed;
 }

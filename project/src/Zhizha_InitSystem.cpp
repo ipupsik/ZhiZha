@@ -32,10 +32,10 @@ void Zhizha_InitSystem::OnInit()
 
 			_entities->GetOrAddComponent<TransformComponent>(ball, [&](TransformComponent& c) {
 				c.Location = {
-				i * 0.01f + 0.1f,
-				j * 0.01f
+				i * 0.02f + 0.1f,
+				j * 0.02f
 				};
-				c.Scale = { 0.1f, 0.1f };
+				c.Scale = { 0.05f, 0.05f };
 				c.Angle = 0;
 				c.parent = nullptr;
 				});

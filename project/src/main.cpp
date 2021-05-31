@@ -14,6 +14,9 @@
 #include "Systems/RotateSystem.h"
 #include "Systems/ResetParamsSystem.h"
 #include "Systems/MaterialAttachSystem.h"
+#include "Systems/UnionDropsSystem.h"
+#include "Systems/ForceCalculationSystem.h"
+#include "Systems/ShiftDropsSystem.h"
 #include "BackGround_InitSystem.h"
 
 #include "ZhizhaVolume_InitSystem.h"
@@ -47,7 +50,7 @@ int main() {
 
 	gladLoadGL();
 
-	sf::Vector2f gravity = { 0, G };
+	sf::Vector2f gravity = { 0, -G / 20 };
 	std::vector views = {
 			window.getDefaultView(), // game view
 			window.getDefaultView() // gui view
@@ -70,14 +73,17 @@ int main() {
 		.RegisterSystem<ZhizhaVolume_InitSystem>(engine->GetResourceManager())
 
 		.RegisterSystem<MaterialAttachSystem>(window)
-		//.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime())
+		.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime())
 		.RegisterSystem<EventSystem>(window, views[Game])
 		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
-		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
-		.RegisterSystem<MoveSystem>(engine->GetTime())
 		//.RegisterSystem<FormZhizhaVolume_System>()
 		.RegisterSystem<RenderSystem>(window, views)
-		.RegisterSystem<ResetParamsSystem>()
-	    .RegisterSystem<CollisionSystem>();
+
+		.RegisterSystem<CollisionSystem>()
+		.RegisterSystem<UnionDropsSystem>(window)
+		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
+		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
+		.RegisterSystem<ShiftDropsSystem>(engine->GetTime())
+		.RegisterSystem<ResetParamsSystem>();
 	engine->Start();
 }
