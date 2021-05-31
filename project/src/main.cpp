@@ -18,6 +18,14 @@
 
 #include "ZhizhaVolume_InitSystem.h"
 #include "FormZhizhaVolume_System.h"
+#include "SmallBrunch_InitSystem.h"
+#include "SmallSkull_InitSystem.h"
+#include "Grass_InitSystem.h"
+#include "Stone_1_InitSystem.h"
+#include "Stone_2_InitSystem.h"
+#include "Tree_1_InitSystem.h"
+#include "Tree_2_InitSystem.h"
+#include "Tree_3_InitSystem.h"
 
 #if defined(linux)
 #include <X11/Xlib.h>
@@ -49,9 +57,18 @@ int main() {
 
 	auto engine = new Engine(window);
 	engine->RegisterSystem<BackGround_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<Grass_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<SmallBrunch_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<Tree_1_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<Tree_2_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<Tree_3_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<Stone_1_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<Stone_2_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<SmallSkull_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Zhizha_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<ZhizhaVolume_InitSystem>(engine->GetResourceManager())
+
 		.RegisterSystem<MaterialAttachSystem>(window)
 		//.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime())
 		//.RegisterSystem<EventSystem>(window)

@@ -29,7 +29,7 @@ void Map_InitSystem::OnInit()
 
 	_entities->GetOrAddComponent<TransformComponent>(map, [&](TransformComponent& c) {
 		c.Location = { 0.0, -.2 };
-		c.Scale = { 0.04, 0.04 };
+		c.Scale = { 0.07, 0.07 };
 		c.Angle = 0.0f;
 		c.parent = nullptr;
 		});
