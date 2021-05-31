@@ -28,7 +28,7 @@ void FormZhizhaVolume_System::OnFixedUpdate()
 			float radius = _entities->GetComponent<TransformComponent>(*cur_entity)->Scale.x;
 			int length = drop_comp->neighbours.size();
 
-			/*for (int i = 0; i < length - 1; i++)
+			for (int i = 0; i < length - 1; i++)
 			{
 				sf::Vector2f center_i = _entities->GetComponent<TransformComponent>(*(drop_comp->neighbours[i]))->Location;
 				for (int j = i + 1; j < length; j++)
@@ -38,7 +38,7 @@ void FormZhizhaVolume_System::OnFixedUpdate()
 					tmp.emplace_back(center);
 					tmp.emplace_back(center_j);
 				}
-			}*/
+			}
 
 			for (int i = 0; i < length; i++)
 			{

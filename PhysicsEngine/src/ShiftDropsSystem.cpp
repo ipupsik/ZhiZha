@@ -18,6 +18,8 @@ void ShiftDropsSystem::OnFixedUpdate() {
 
 	for (auto& item : items) {
 		auto&[currentDrop, currentTransform, currentSpeed] = item.Components;
+		//sf::Vector2f _oldLocation = currentTransform->Location;
+
 		currentTransform->Location += currentSpeed->Speed * _gameTime.FixedDeltaTime();
 
 		for (auto& neighbor : currentDrop->neighbours) {
@@ -33,19 +35,21 @@ void ShiftDropsSystem::OnFixedUpdate() {
 				//neighborSpeed->Speed += currentSpeed->Speed * (1.f - SURFACE_FORCE);
 				//currentSpeed->Speed *= SURFACE_FORCE;
 				MomentumConservation(*currentSpeed, *neighborSpeed, *neighborDrop);
-				currentTransform->Location += (2 * RADIUS - distance) * direction;
+				currentTransform->Location += direction * (float)(2 * RADIUS - distance);
 			}
 		}
 
-		float _wallY = 500; // take from another file
-		float _wallThickness = 2; // take from another file
+		//currentSpeed->Speed = (currentTransform->Location - _oldLocation) / _gameTime.FixedDeltaTime();
 
-		if (currentTransform->Location.y > _wallY - _wallThickness - 2 * RADIUS
-				&& currentTransform->Location.x < 1000
-				&& currentTransform->Location.x > 0) {
-				currentTransform->Location.y = _wallY - _wallThickness - 2 * RADIUS;
-				currentSpeed->Speed.y = 0;
-		}
+		//float _wallY = 500; // take from another file
+		//float _wallThickness = 2; // take from another file
+
+		//if (currentTransform->Location.y > _wallY - _wallThickness - 2 * RADIUS
+		//		&& currentTransform->Location.x < 1000
+		//		&& currentTransform->Location.x > 0) {
+		//		currentTransform->Location.y = _wallY - _wallThickness - 2 * RADIUS;
+		//		currentSpeed->Speed.y = 0;
+		//}
 	}
 }
 
