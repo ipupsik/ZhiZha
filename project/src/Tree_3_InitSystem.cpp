@@ -9,7 +9,7 @@
 #include <ComponentDrop.h>
 #include <DefinesPhysics.h>
 #include "Components/LayerComponent.h"
-#include "ObjectDrawable.h"
+#include "GlobalRotation_Component.h"
 
 void Tree_3_InitSystem::OnInit()
 {
@@ -34,20 +34,11 @@ void Tree_3_InitSystem::OnInit()
 		c.parent = nullptr;
 		});
 
-	//Setting balls components
-	_entities->GetOrAddComponent<RenderedComponent>(tree_3, [&](RenderedComponent& c) {
-		c.DrawableObj = new ObjectDrawable;
-		ObjectDrawable* DrawObj = dynamic_cast<ObjectDrawable*>(c.DrawableObj);
-
-		DrawObj->material = &_entities->GetOrAddComponent<MaterialComponent>(tree_3);
-		DrawObj->mesh = &_entities->GetOrAddComponent<MeshComponent>(tree_3);
-		DrawObj->transform = &_entities->GetOrAddComponent<TransformComponent>(tree_3);
-
-		});
-
 	_entities->GetOrAddComponent<LayerComponent>(tree_3, [](LayerComponent& c) {
 		c.Index = Game;
 	});
+
+	_entities->GetOrAddComponent<GlobalRotation_Component>(tree_3);
 }
 
 Tree_3_InitSystem::Tree_3_InitSystem(ResourceManager& resources)

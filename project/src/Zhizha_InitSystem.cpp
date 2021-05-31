@@ -9,7 +9,6 @@
 #include <Components/SpeedComponent.h>
 #include <ComponentDrop.h>
 #include "Components/LayerComponent.h"
-#include "ObjectDrawable.h"
 
 void Zhizha_InitSystem::OnInit()
 {
@@ -38,16 +37,6 @@ void Zhizha_InitSystem::OnInit()
 				c.Scale = { 0.05f, 0.05f };
 				c.Angle = 0;
 				c.parent = nullptr;
-				});
-
-			//Setting balls components
-			_entities->GetOrAddComponent<RenderedComponent>(ball, [&](RenderedComponent& c) {
-				c.DrawableObj = new ObjectDrawable;
-				ObjectDrawable* DrawObj = dynamic_cast<ObjectDrawable*>(c.DrawableObj);
-
-				DrawObj->material = &_entities->GetOrAddComponent<MaterialComponent>(ball);
-				DrawObj->mesh = &_entities->GetOrAddComponent<MeshComponent>(ball);
-				DrawObj->transform = &_entities->GetOrAddComponent<TransformComponent>(ball);
 				});
 
 			_entities->GetOrAddComponent<LayerComponent>(ball, [](LayerComponent& c) {

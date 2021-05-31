@@ -1,12 +1,12 @@
 #include <Components/MaterialComponent.h>
 #include <Components/MeshComponent.h>
 #include <Components/TransformComponent.h>
-#include "Systems/RenderSystem.h"
+#include "Systems/RenderSystem_HUD.h"
 
 #include "Components/LayerComponent.h"
 #include "Components/RenderedComponent.h"
 
-void RenderSystem::OnPostUpdate() {
+void RenderSystem_HUD::OnPostUpdate() {
 	const auto& items = _entities->GetEntitiesBy<RenderedComponent, LayerComponent>();
 
 	for (auto&[components, entity]: items) {

@@ -9,7 +9,7 @@
 #include <ComponentDrop.h>
 #include <DefinesPhysics.h>
 #include "Components/LayerComponent.h"
-#include "ObjectDrawable.h"
+#include "GlobalRotation_Component.h"
 
 void Stone_1_InitSystem::OnInit()
 {
@@ -34,20 +34,11 @@ void Stone_1_InitSystem::OnInit()
 		c.parent = nullptr;
 		});
 
-	//Setting balls components
-	_entities->GetOrAddComponent<RenderedComponent>(stone_1, [&](RenderedComponent& c) {
-		c.DrawableObj = new ObjectDrawable;
-		ObjectDrawable* DrawObj = dynamic_cast<ObjectDrawable*>(c.DrawableObj);
-
-		DrawObj->material = &_entities->GetOrAddComponent<MaterialComponent>(stone_1);
-		DrawObj->mesh = &_entities->GetOrAddComponent<MeshComponent>(stone_1);
-		DrawObj->transform = &_entities->GetOrAddComponent<TransformComponent>(stone_1);
-
-		});
-
 	_entities->GetOrAddComponent<LayerComponent>(stone_1, [](LayerComponent& c) {
 		c.Index = Game;
 	});
+
+	_entities->GetOrAddComponent<GlobalRotation_Component>(stone_1);
 }
 
 Stone_1_InitSystem::Stone_1_InitSystem(ResourceManager& resources)

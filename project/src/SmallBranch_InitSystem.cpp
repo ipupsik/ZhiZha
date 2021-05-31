@@ -9,7 +9,7 @@
 #include <ComponentDrop.h>
 #include <DefinesPhysics.h>
 #include "Components/LayerComponent.h"
-#include "ObjectDrawable.h"
+#include "GlobalRotation_Component.h"
 
 void SmallBrunch_InitSystem::OnInit()
 {
@@ -34,20 +34,11 @@ void SmallBrunch_InitSystem::OnInit()
 		c.parent = nullptr;
 		});
 
-	//Setting balls components
-	_entities->GetOrAddComponent<RenderedComponent>(brunch, [&](RenderedComponent& c) {
-		c.DrawableObj = new ObjectDrawable;
-		ObjectDrawable* DrawObj = dynamic_cast<ObjectDrawable*>(c.DrawableObj);
-
-		DrawObj->material = &_entities->GetOrAddComponent<MaterialComponent>(brunch);
-		DrawObj->mesh = &_entities->GetOrAddComponent<MeshComponent>(brunch);
-		DrawObj->transform = &_entities->GetOrAddComponent<TransformComponent>(brunch);
-
-		});
-
 	_entities->GetOrAddComponent<LayerComponent>(brunch, [](LayerComponent& c) {
 		c.Index = Game;
 	});
+
+	_entities->GetOrAddComponent<GlobalRotation_Component>(brunch);
 }
 
 SmallBrunch_InitSystem::SmallBrunch_InitSystem(ResourceManager& resources)
