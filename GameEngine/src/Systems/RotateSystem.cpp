@@ -14,21 +14,11 @@ void RotateSystem::OnFixedUpdate() {
 	_dphi = 0;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		_dphi = -300 / (std::abs(_phi) + 10);
+		_dphi = -900 / 1000.0f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		_dphi = 300 / (std::abs(_phi) + 10);
+		_dphi = 900 / 1000.0f;
 
-	if (std::abs(_phi) < 1e-1) {
-		_ddphi = 0;
-		_phi = 0;
-	}
-	else if (_phi > 0)
-		_ddphi = -500;
-	else
-		_ddphi = 500;
-
-	const auto deltaPhi = _dphi * _time.FixedDeltaTime() + _ddphi * _time.FixedDeltaTime() * _time.FixedDeltaTime() / 2;
-	_phi += deltaPhi;
+	_phi += _dphi;
 	
-	_gravitation = sf::Vector2f{0, G}->*RotateDeg(_phi);
+	_gravitation = sf::Vector2f{0, -G / 20}->*RotateDeg(_phi);
 }

@@ -18,7 +18,6 @@
 #include "Systems/UnionDropsSystem.h"
 #include "Systems/ForceCalculationSystem.h"
 #include "Systems/ShiftDropsSystem.h"
-#include "Systems/TestSystem.h"
 #include "BackGround_InitSystem.h"
 
 #include "ZhizhaVolume_InitSystem.h"
@@ -91,7 +90,6 @@ int main() {
 		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ShiftDropsSystem>(engine->GetTime())
-		.RegisterSystem<TestSystem>()
 		.RegisterSystem<ResetParamsSystem>();
 	engine->Start();
 }

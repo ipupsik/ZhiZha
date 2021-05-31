@@ -13,8 +13,8 @@ void RenderSystem_Models::OnPostUpdate() {
 	const auto& items = _entities->GetEntitiesBy<MaterialComponent, MeshComponent, TransformComponent>();
 
 	glPushMatrix();
+	glRotatef(_phi, 0, 0, 1);
 	glTranslatef(_camera_location.x, _camera_location.y, 0);
-	glRotatef(_phi, 1, 0, 0);
 	for (auto& [components, entity] : items) {
 		auto& [material, mesh, transform] = components;
 
@@ -45,8 +45,7 @@ void RenderSystem_Models::OnPostUpdate() {
 				glTranslatef(TmpParent->Location.x, TmpParent->Location.y, 0);
 
 				glScalef(TmpParent->Scale.x, TmpParent->Scale.y, 1);
-				glRotatef(TmpParent->Angle, 1, 0, 0);
-
+				glRotatef(TmpParent->Angle, 0, 0, 1);
 				float transMatrix[16];
 				glGetFloatv(GL_MODELVIEW_MATRIX, transMatrix);
 				glm::mat4x4 ModelView = {
