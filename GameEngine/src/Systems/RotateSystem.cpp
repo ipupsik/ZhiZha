@@ -10,15 +10,15 @@
 
 using namespace sf::Extensions::Vector2;
 
-void RotateSystem::OnFixedUpdate() {
+void RotateSystem::OnUpdate() {
 	_dphi = 0;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		_dphi = -900 / 1000.0f;
+		_dphi = -900 / 1000.0f * 100;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		_dphi = 900 / 1000.0f;
+		_dphi = 900 / 1000.0f * 100;
 
-	_phi += _dphi;
+	_phi += _dphi * _time.DeltaTime();
 	
 	_gravitation = sf::Vector2f{0, -G / 20}->*RotateDeg(-_phi);
 }
