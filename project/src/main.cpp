@@ -22,6 +22,7 @@
 #include "Systems/TestSystem.h"
 #include "BackGround_InitSystem.h"
 
+#include "ZhizhaDraw_System.h"
 #include "ZhizhaVolume_InitSystem.h"
 #include "FormZhizhaVolume_System.h"
 #include "SmallBrunch_InitSystem.h"
@@ -88,14 +89,14 @@ int main() {
 		.RegisterSystem<CameraMovingSystem>(camera_location)
 		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi)
 		.RegisterSystem<RenderSystem_HUD>(window, views)
-
+		//.RegisterSystem<ZhizhaDraw_System>(window, views, camera_location, global_phi)
 
 		.RegisterSystem<CollisionSystem>()
 		.RegisterSystem<UnionDropsSystem>(window)
 		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ShiftDropsSystem>(engine->GetTime())
-		.RegisterSystem<TestSystem>()
+		.RegisterSystem<FormZhizhaVolume_System>()
 		.RegisterSystem<ResetParamsSystem>();
 	engine->Start();
 }

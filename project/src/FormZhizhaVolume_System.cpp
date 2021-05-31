@@ -1,8 +1,8 @@
 #include "ComponentDrop.h"
 #include "Components/MeshComponent.h"
 #include "Components/RenderedComponent.h"
+#include "Components/TransformComponent.h"
 #include "ZhizhaVolumeComponent.h"
-#include "DrawableZhizha.h"
 #include "utils.h"
 
 #include "FormZhizhaVolume_System.h"
@@ -11,21 +11,19 @@ using namespace sf::Extensions::Vector2;
 
 void FormZhizhaVolume_System::OnFixedUpdate()
 {
-	const auto& drops = _entities->GetEntitiesBy<ComponentDrop>();
+	const auto& drops = _entities->GetEntitiesBy<ComponentDrop, TransformComponent>();
 
 	const auto& _ZhizhaVolume = _entities->GetEntitiesBy<RenderedComponent, ZhizhaVolumeComponent>();
 	if (_ZhizhaVolume.size() > 0)
 	{
 		const auto& [_RenderedComponent, _ZhizhaVolumeComponent] = _ZhizhaVolume[0].Components;
 
-		DrawableZhizha* _DrawableZhizha = dynamic_cast<DrawableZhizha*>(_RenderedComponent->DrawableObj);
-
 		std::vector<sf::Vector2f>tmp(0);
 		for (auto& [components, cur_entity] : drops)
 		{
-			auto& [drop_comp] = components;
-			sf::Vector2f center = _entities->GetComponent<TransformComponent>(*cur_entity)->Location;
-			float radius = _entities->GetComponent<TransformComponent>(*cur_entity)->Scale.x;
+			auto& [drop_comp, transform] = components;
+			sf::Vector2f center = transform->Location;
+			float radius = 0.01f;
 			int length = drop_comp->neighbours.size();
 
 			for (int i = 0; i < length - 1; i++)
@@ -56,7 +54,7 @@ void FormZhizhaVolume_System::OnFixedUpdate()
 				tmp.emplace_back(center_i - OthoCenterVector);
 				tmp.emplace_back(center - OthoCenterVector);
 			}
-			_DrawableZhizha->vertices[_DrawableZhizha->side] = tmp;
+			_ZhizhaVolumeComponent->vertices[_ZhizhaVolumeComponent->side] = tmp;
 		}
 	}
 }
