@@ -18,6 +18,7 @@
 #include "Systems/UnionDropsSystem.h"
 #include "Systems/ForceCalculationSystem.h"
 #include "Systems/ShiftDropsSystem.h"
+#include "Systems/TestSystem.h"
 #include "BackGround_InitSystem.h"
 
 #include "ZhizhaVolume_InitSystem.h"
@@ -51,7 +52,7 @@ int main() {
 
 	gladLoadGL();
 
-	sf::Vector2f gravity = { 0, -G / 20 };
+	sf::Vector2f gravity = { 0, G / 20 };
 	sf::Vector2f camera_location = { 0.0f, 0.0f };
 	float global_phi = 0;
 	std::vector views = {
@@ -90,6 +91,7 @@ int main() {
 		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ShiftDropsSystem>(engine->GetTime())
+		.RegisterSystem<TestSystem>()
 		.RegisterSystem<ResetParamsSystem>();
 	engine->Start();
 }

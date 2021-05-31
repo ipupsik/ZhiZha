@@ -18,7 +18,7 @@ void ShiftDropsSystem::OnFixedUpdate() {
 
 	for (auto& item : items) {
 		auto&[currentDrop, currentTransform, currentSpeed] = item.Components;
-		//sf::Vector2f _oldLocation = currentTransform->Location;
+		sf::Vector2f _oldLocation = currentTransform->Location;
 
 		currentTransform->Location += currentSpeed->Speed * _gameTime.FixedDeltaTime();
 
@@ -39,7 +39,10 @@ void ShiftDropsSystem::OnFixedUpdate() {
 			}
 		}
 
-		//currentSpeed->Speed = (currentTransform->Location - _oldLocation) / _gameTime.FixedDeltaTime();
+		if ((currentTransform->Location - _oldLocation)->*Length() < 0.00001f){
+			std::cout << "===" << std::endl;
+		}
+		
 
 		//float _wallY = 500; // take from another file
 		//float _wallThickness = 2; // take from another file
