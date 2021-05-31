@@ -20,5 +20,5 @@ void RotateSystem::OnFixedUpdate() {
 
 	_phi += _dphi;
 	
-	_gravitation = sf::Vector2f{0, -G / 20}->*RotateDeg(_phi);
+	_gravitation = sf::Vector2f{0, -G / 20}->*RotateDeg(-_phi);
 }

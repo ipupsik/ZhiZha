@@ -11,7 +11,7 @@ void Engine::initRenderThread() {
 	//glEnable(GL_CULL_FACE);
 	//glCullFace(GL_BACK);
 	while (_window.isOpen()) {
-		_window.clear(sf::Color { 100, 100, 255, 255 });
+		_window.clear(sf::Color { 0, 0, 0, 255 });
 		_systemManager->Update();
 		_systemManager->PostUpdate();
 		_window.display();

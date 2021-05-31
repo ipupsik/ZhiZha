@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Component.h"
-#include "ComponentVolume.h"
 #include "Entity.h"
 #include "SFML/System/Vector2.hpp"
 #include <vector>

@@ -5,6 +5,7 @@
 
 #include "Components/LayerComponent.h"
 #include "Components/RenderedComponent.h"
+#include "GlobalRotation_Component.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -13,10 +14,13 @@ void RenderSystem_Models::OnPostUpdate() {
 	const auto& items = _entities->GetEntitiesBy<MaterialComponent, MeshComponent, TransformComponent>();
 
 	glPushMatrix();
-	glRotatef(_phi, 0, 0, 1);
 	glTranslatef(_camera_location.x, _camera_location.y, 0);
+
 	for (auto& [components, entity] : items) {
+		glPushMatrix();
 		auto& [material, mesh, transform] = components;
+		if (_entities->HasComponent<GlobalRotation_Component>(*entity))
+			glRotatef(_phi, 0, 0, 1);
 
 		glUseProgram(material->_materialId);
 
@@ -89,7 +93,8 @@ void RenderSystem_Models::OnPostUpdate() {
 
 		//Disable our shaders
 		glUseProgram(0);
-	}
 
+		glPopMatrix();
+	}
 	glPopMatrix();
 }

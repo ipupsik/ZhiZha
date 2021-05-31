@@ -50,6 +50,7 @@ int main() {
 			settings);
 
 	gladLoadGL();
+	glScalef(1, 1 / 1080.0f / 720.0f, 1);
 
 	sf::Vector2f gravity = { 0, -G / 20 };
 	sf::Vector2f camera_location = { 0.0f, 0.0f };
@@ -81,8 +82,8 @@ int main() {
 		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
 
 		.RegisterSystem<FormZhizhaVolume_System>()
-		.RegisterSystem<RenderSystem_HUD>(window, views)
 		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi)
+		.RegisterSystem<RenderSystem_HUD>(window, views)
 
 
 		.RegisterSystem<CollisionSystem>()
