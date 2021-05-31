@@ -39,7 +39,7 @@ void ShiftDropsSystem::OnFixedUpdate() {
 			}
 		}
 
-		if ((currentTransform->Location - _oldLocation)->*Length() < 0.00001f){
+		if ((currentTransform->Location - _oldLocation)->*Length() < 0.0000001f){
 			std::cout << "===" << std::endl;
 		}
 		

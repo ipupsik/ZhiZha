@@ -3,6 +3,7 @@ file(GLOB_RECURSE SOURCE_FILES src/*.cpp)
 
 add_library(GameEngine ${SOURCE_FILES} ${HEADER_FILES})
 include_directories(../ECS/include)
+include_directories(../project/include)
 include_directories(../glad/include)
 
 target_include_directories(GameEngine
