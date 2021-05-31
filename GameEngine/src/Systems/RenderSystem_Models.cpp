@@ -14,14 +14,13 @@ void RenderSystem_Models::OnPostUpdate() {
 	const auto& items = _entities->GetEntitiesBy<MaterialComponent, MeshComponent, TransformComponent>();
 
 	glPushMatrix();
-	glTranslatef(_camera_location.x, _camera_location.y, 0);
 
 	for (auto& [components, entity] : items) {
 		glPushMatrix();
 		auto& [material, mesh, transform] = components;
 		if (_entities->HasComponent<GlobalRotation_Component>(*entity))
 			glRotatef(_phi, 0, 0, 1);
-
+		glTranslatef(_camera_location.x, _camera_location.y, 0);
 		glUseProgram(material->_materialId);
 
 		//Attach all textures

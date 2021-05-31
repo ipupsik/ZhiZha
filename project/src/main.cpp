@@ -19,7 +19,7 @@
 #include "Systems/UnionDropsSystem.h"
 #include "Systems/ForceCalculationSystem.h"
 #include "Systems/ShiftDropsSystem.h"
-#include "Systems/TestSystem.h"
+//#include "Systems/TestSystem.h"
 #include "BackGround_InitSystem.h"
 
 #include "ZhizhaDraw_System.h"
