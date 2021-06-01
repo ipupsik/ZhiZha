@@ -1,6 +1,7 @@
 #include "Systems/CameraMovingSystem.h"
 #include <Components/TransformComponent.h>
 #include "../PhysicsEngine/include/ComponentDrop.h"
+#include <iostream>
 
 
 void CameraMovingSystem::OnFixedUpdate() {
@@ -17,4 +18,6 @@ void CameraMovingSystem::OnFixedUpdate() {
 	_newLocation /= (float)items.size();
 	_newLocation *= -1.f;
 	_camera_location = _newLocation;
+	//if ()
+	//std::cout << " camera x: " << _camera_location.x << " y: " << _camera_location.y << std::endl;
 }
