@@ -1,6 +1,7 @@
 #include "Systems/RenderSystem_HUD.h"
 #include "Systems/RenderSystem_Models.h"
 #include "Systems/MoveSystem.h"
+#include "Systems/EndSystem.h"
 #include "DefinesPhysics.h"
 #include "Zhizha_InitSystem.h"
 #include "Map_InitSystem.h"
@@ -97,6 +98,7 @@ int main() {
 		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ShiftDropsSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ResetParamsSystem>(camera_location)
-		.RegisterSystem<CameraMovingSystem>(camera_location);
+		//.RegisterSystem<CameraMovingSystem>(camera_location)
+		.RegisterSystem<EndSystem>(engine->GetTime());
 	engine->Start();
 }
