@@ -9,7 +9,6 @@
 using namespace sf::Extensions::Vector2;
 
 void ShiftDropsSystem::OnFixedUpdate() {
-	int i = 0;//
 	const auto& items = _entities
 			->GetEntitiesBy<ComponentDrop, TransformComponent, SpeedComponent>();
 
@@ -27,12 +26,14 @@ void ShiftDropsSystem::OnFixedUpdate() {
 			if (!neighborTransform || !neighborSpeed) continue;
 
 			auto distance = currentTransform->Location->*Magnitude(neighborTransform->Location);
-			if (distance < 2 * RADIUS) {
-				auto direction = (currentTransform->Location - neighborTransform->Location)->*Normalize();
-				/*neighborSpeed->Speed += currentSpeed->Speed * (1.f - SURFACE_FORCE);
-				currentSpeed->Speed *= SURFACE_FORCE;*/
+			if (distance < 2 * RADIUS && distance >= RADIUS) {
+				auto direction = (_oldLocation - neighborTransform->Location)->*Normalize();
 				MomentumConservation(*currentSpeed, *neighborSpeed, *neighborDrop);
-				currentTransform->Location += direction * (float)(2 * RADIUS - distance);
+				currentTransform->Location += direction * (2 * RADIUS);
+			} else if (distance < RADIUS) {
+				auto direction = sf::Vector2f {0, 1};
+				MomentumConservation(*currentSpeed, *neighborSpeed, *neighborDrop);
+				currentTransform->Location += direction * (2 * RADIUS);
 			}
 		}
 

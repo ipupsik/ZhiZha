@@ -187,7 +187,7 @@ int main() {
 		.RegisterSystem<ShiftDropsSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ComplexCollisionSystem>()
 		.RegisterSystem<ResetParamsSystem>(camera_location)
-		.RegisterSystem<CameraMovingSystem>(camera_location)
-		.RegisterSystem<EndSystem>(engine->GetTime());
+		.RegisterSystem<CameraMovingSystem>(camera_location);
+//		.RegisterSystem<EndSystem>(engine->GetTime());
 	engine->Start();
 }

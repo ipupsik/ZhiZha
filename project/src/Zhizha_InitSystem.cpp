@@ -35,7 +35,7 @@ void Zhizha_InitSystem::OnInit()
 				i * 0.02f + 0.1f,
 				j * 0.02f
 				};
-				c.Scale = { 0.05f, 0.05f };
+				c.Scale = { 0.2f, 0.2f };
 				c.Angle = 0;
 				c.parent = nullptr;
 				});
