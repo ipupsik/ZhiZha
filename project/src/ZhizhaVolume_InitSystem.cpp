@@ -9,6 +9,7 @@
 #include <Components/SpeedComponent.h>
 #include <ComponentDrop.h>
 #include "Components/LayerComponent.h"
+#include "GlobalRotation_Component.h"
 #include "ZhizhaVolumeComponent.h"
 
 void ZhizhaVolume_InitSystem::OnInit()
@@ -25,6 +26,8 @@ void ZhizhaVolume_InitSystem::OnInit()
 	_entities->GetOrAddComponent<LayerComponent>(ZhizhaVolume, [](LayerComponent& c) {
 		c.Index = Game;
 		});
+
+	_entities->GetOrAddComponent<GlobalRotation_Component>(ZhizhaVolume);
 
 	_entities->GetOrAddComponent<ZhizhaVolumeComponent>(ZhizhaVolume, [](ZhizhaVolumeComponent& c) {
 		glGenBuffers(1, &c.indexVBO);

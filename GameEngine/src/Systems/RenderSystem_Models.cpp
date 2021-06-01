@@ -13,8 +13,6 @@
 void RenderSystem_Models::OnPostUpdate() {
 	const auto& items = _entities->GetEntitiesBy<MaterialComponent, MeshComponent, TransformComponent>();
 
-	glPushMatrix();
-
 	for (auto& [components, entity] : items) {
 		glPushMatrix();
 		auto& [material, mesh, transform] = components;
@@ -95,5 +93,4 @@ void RenderSystem_Models::OnPostUpdate() {
 
 		glPopMatrix();
 	}
-	glPopMatrix();
 }

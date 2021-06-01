@@ -14,14 +14,13 @@
 void ZhizhaDraw_System::OnPostUpdate() {
 	const auto& items = _entities->GetEntitiesBy<MaterialComponent, ZhizhaVolumeComponent>();
 
-	glPushMatrix();
-	glTranslatef(_camera_location.x, _camera_location.y, 0);
-
 	for (auto& [components, entity] : items) {
 		glPushMatrix();
 		auto& [material, ZhizhaVolume] = components;
 		if (_entities->HasComponent<GlobalRotation_Component>(*entity))
 			glRotatef(_phi, 0, 0, 1);
+
+		glTranslatef(_camera_location.x, _camera_location.y, 0);
 
 		glUseProgram(material->_materialId);
 
@@ -35,6 +34,18 @@ void ZhizhaDraw_System::OnPostUpdate() {
 		}
 		//--
 
+		float transMatrix[16];
+		glGetFloatv(GL_MODELVIEW_MATRIX, transMatrix);
+		glm::mat4x4 ModelView = {
+			glm::vec4(transMatrix[0], transMatrix[1], transMatrix[2], transMatrix[3]),
+			glm::vec4(transMatrix[4], transMatrix[5], transMatrix[6], transMatrix[7]),
+			glm::vec4(transMatrix[8], transMatrix[9], transMatrix[10], transMatrix[11]),
+			glm::vec4(transMatrix[12], transMatrix[13], transMatrix[14], transMatrix[15])
+		};
+
+		GLint matrixId = glGetUniformLocation(material->_materialId, "Transform");
+		glUniformMatrix4fv(matrixId, 1, GL_FALSE, glm::value_ptr(ModelView));
+
 		if (ZhizhaVolume->vertices[ZhizhaVolume->side].size() > 0)
 		{
 			glBindVertexArray(ZhizhaVolume->indexVAO);
@@ -45,7 +56,7 @@ void ZhizhaDraw_System::OnPostUpdate() {
 				{
 					glBindBuffer(GL_ARRAY_BUFFER, ZhizhaVolume->indexVBO);
 					{
-						glBufferData(GL_ARRAY_BUFFER, sizeof(sf::Vector2f) * ZhizhaVolume->vertices[ZhizhaVolume->side].size(), 
+						glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(float) * ZhizhaVolume->vertices[ZhizhaVolume->side].size(), 
 							ZhizhaVolume->vertices[ZhizhaVolume->side].begin()._Ptr, GL_STREAM_DRAW);
 					}
 					glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -69,6 +80,10 @@ void ZhizhaDraw_System::OnPostUpdate() {
 			glBindVertexArray(0);
 		}
 		glUseProgram(0);
+
+		ZhizhaVolume->vertices[ZhizhaVolume->side].clear();
+		ZhizhaVolume->side = (ZhizhaVolume->side + 1) % 2;
+
+		glPopMatrix();
 	}
-	glPopMatrix();
 }
