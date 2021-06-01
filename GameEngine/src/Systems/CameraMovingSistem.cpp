@@ -9,18 +9,24 @@ void CameraMovingSystem::OnFixedUpdate() {
 	const auto& items = _entities->GetEntitiesBy<TransformComponent, ComponentDrop>();
 
 	sf::Vector2f _newLocation = { 0, 0 };
-
+	int good_count = 0;
 	for (auto& item : items) {
 		auto& [currentTransform, currentDrop] = item.Components;
-		_newLocation += currentTransform->Location;
+		sf::Vector2f screen_location = currentTransform->Location - _camera_location;
+		if (screen_location.x <= 2.6f && screen_location.x >= -2.6f)
+			if (screen_location.y <= 2.6f && screen_location.y >= -2.6f)
+			{
+				_newLocation += currentTransform->Location;
+				good_count++;
+			}
 	}
 
-	_newLocation /= (float)items.size();
-	_newLocation *= -1.f;
-	
-	_camera_location = _newLocation;
-	/*if (_newLocation.x != _newLocation.x){
-		_camera_location = { 0,0 };
-	}*/
+	if (good_count > 0)
+	{
+		_newLocation /= (float)good_count;
+		_newLocation *= -1.f;
+		_camera_location = _newLocation;
+	}
+
 	//std::cout << " camera x: " << _camera_location.x << " y: " << _camera_location.y << std::endl;
 }

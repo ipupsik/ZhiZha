@@ -127,8 +127,8 @@ int main() {
 	settings.majorVersion = 3;
 	settings.minorVersion = 0;
 
-	auto window = sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Sample", sf::Style::Default,
-			settings);
+	auto window = sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "ZhiZha",
+			sf::Style::Close | sf::Style::Titlebar, settings);
 
 	int exit_code;
 	show_menu(window, &exit_code);
@@ -181,7 +181,7 @@ int main() {
 		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ShiftDropsSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ResetParamsSystem>(camera_location)
-		//.RegisterSystem<CameraMovingSystem>(camera_location)
+		.RegisterSystem<CameraMovingSystem>(camera_location)
 		.RegisterSystem<EndSystem>(engine->GetTime());
 	engine->Start();
 }
