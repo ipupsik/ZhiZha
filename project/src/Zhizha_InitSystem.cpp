@@ -10,6 +10,7 @@
 #include <ComponentDrop.h>
 #include "GlobalRotation_Component.h"
 #include "Components/LayerComponent.h"
+#include "Components/ComplexCollisionComponent.h"
 
 void Zhizha_InitSystem::OnInit()
 {
@@ -48,6 +49,7 @@ void Zhizha_InitSystem::OnInit()
 			_entities->GetOrAddComponent<SpeedComponent>(ball);
 
 			_entities->GetOrAddComponent<GlobalRotation_Component>(ball);
+			_entities->GetOrAddComponent<ComplexCollisionComponent>(ball);
 		}
 	}
 }
