@@ -1,7 +1,7 @@
 #include "Systems/CameraMovingSystem.h"
 #include <Components/TransformComponent.h>
 #include "../PhysicsEngine/include/ComponentDrop.h"
-#include <iostream>
+//#include <iostream>
 
 
 void CameraMovingSystem::OnFixedUpdate() {
@@ -17,13 +17,13 @@ void CameraMovingSystem::OnFixedUpdate() {
 		auto& [currentTransform, currentDrop] = item.Components;
 		_newLocation += currentTransform->Location;
 	}
-	//if()
+
 	_newLocation /= (float)items.size();
 	_newLocation *= -1.f;
-	if (!_newLocation.x) {
-		std::cout << " camersdfdsdfsdfsa x: "<< std::endl;
+	
+	_camera_location = _newLocation;
+	if (_newLocation.x != _newLocation.x){
+		_camera_location = { 0,0 };
 	}
-	//_camera_location = _newLocation;
-	//if ()
-	std::cout << " camera x: " << _camera_location.x << " y: " << _camera_location.y << std::endl;
+	//std::cout << " camera x: " << _camera_location.x << " y: " << _camera_location.y << std::endl;
 }
