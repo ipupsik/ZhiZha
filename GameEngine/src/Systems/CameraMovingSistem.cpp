@@ -17,10 +17,13 @@ void CameraMovingSystem::OnFixedUpdate() {
 		auto& [currentTransform, currentDrop] = item.Components;
 		_newLocation += currentTransform->Location;
 	}
-
+	//if()
 	_newLocation /= (float)items.size();
 	_newLocation *= -1.f;
-	_camera_location = _newLocation;
+	if (!_newLocation.x) {
+		std::cout << " camersdfdsdfsdfsa x: "<< std::endl;
+	}
+	//_camera_location = _newLocation;
 	//if ()
-	//std::cout << " camera x: " << _camera_location.x << " y: " << _camera_location.y << std::endl;
+	std::cout << " camera x: " << _camera_location.x << " y: " << _camera_location.y << std::endl;
 }
