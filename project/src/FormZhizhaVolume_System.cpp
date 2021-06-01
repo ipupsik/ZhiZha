@@ -13,10 +13,10 @@ void FormZhizhaVolume_System::OnFixedUpdate()
 {
 	const auto& drops = _entities->GetEntitiesBy<ComponentDrop, TransformComponent>();
 
-	const auto& _ZhizhaVolume = _entities->GetEntitiesBy<RenderedComponent, ZhizhaVolumeComponent>();
+	const auto& _ZhizhaVolume = _entities->GetEntitiesBy<ZhizhaVolumeComponent>();
 	if (_ZhizhaVolume.size() > 0)
 	{
-		const auto& [_RenderedComponent, _ZhizhaVolumeComponent] = _ZhizhaVolume[0].Components;
+		const auto& [_ZhizhaVolumeComponent] = _ZhizhaVolume[0].Components;
 
 		std::vector<sf::Vector2f>tmp(0);
 		for (auto& [components, cur_entity] : drops)
@@ -32,9 +32,9 @@ void FormZhizhaVolume_System::OnFixedUpdate()
 				for (int j = i + 1; j < length; j++)
 				{
 					sf::Vector2f center_j = _entities->GetComponent<TransformComponent>(*(drop_comp->neighbours[i]))->Location;
-					tmp.emplace_back(center_i);
-					tmp.emplace_back(center);
-					tmp.emplace_back(center_j);
+					tmp.push_back(center_i);
+					tmp.push_back(center);
+					tmp.push_back(center_j);
 				}
 			}
 
@@ -50,9 +50,9 @@ void FormZhizhaVolume_System::OnFixedUpdate()
 				OthoCenterVector->*Normalize();
 				OthoCenterVector *= radius;
 
-				tmp.emplace_back(center + OthoCenterVector);
-				tmp.emplace_back(center_i - OthoCenterVector);
-				tmp.emplace_back(center - OthoCenterVector);
+				tmp.push_back(center + OthoCenterVector);
+				tmp.push_back(center_i - OthoCenterVector);
+				tmp.push_back(center - OthoCenterVector);
 			}
 			_ZhizhaVolumeComponent->vertices[_ZhizhaVolumeComponent->side] = tmp;
 		}

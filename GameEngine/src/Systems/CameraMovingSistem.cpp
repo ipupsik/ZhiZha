@@ -8,6 +8,9 @@ void CameraMovingSystem::OnFixedUpdate() {
 	//_camera_location = { 0, 0 };
 	const auto& items = _entities->GetEntitiesBy<TransformComponent, ComponentDrop>();
 
+	if (items.empty())
+		return;
+
 	sf::Vector2f _newLocation = { 0, 0 };
 
 	for (auto& item : items) {

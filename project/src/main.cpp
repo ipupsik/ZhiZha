@@ -19,10 +19,10 @@
 #include "Systems/UnionDropsSystem.h"
 #include "Systems/ForceCalculationSystem.h"
 #include "Systems/ShiftDropsSystem.h"
-#include "Systems/TestSystem.h"
+//#include "Systems/TestSystem.h"
 #include "BackGround_InitSystem.h"
 
-//#include "ZhizhaDraw_System.h"
+#include "ZhizhaDraw_System.h"
 #include "ZhizhaVolume_InitSystem.h"
 #include "FormZhizhaVolume_System.h"
 #include "SmallBrunch_InitSystem.h"
@@ -86,17 +86,17 @@ int main() {
 		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
 
 		.RegisterSystem<FormZhizhaVolume_System>()
-		.RegisterSystem<CameraMovingSystem>(camera_location)
 		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi)
 		.RegisterSystem<RenderSystem_HUD>(window, views)
-		//.RegisterSystem<ZhizhaDraw_System>(window, views, camera_location, global_phi)
+		.RegisterSystem<ZhizhaDraw_System>(window, views, camera_location, global_phi)
 
 		.RegisterSystem<CollisionSystem>()
 		.RegisterSystem<UnionDropsSystem>(window)
+		.RegisterSystem<FormZhizhaVolume_System>()
 		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ShiftDropsSystem>(engine->GetTime(), gravity)
-		.RegisterSystem<FormZhizhaVolume_System>()
-		.RegisterSystem<ResetParamsSystem>();
+		.RegisterSystem<ResetParamsSystem>(camera_location)
+		.RegisterSystem<CameraMovingSystem>(camera_location);
 	engine->Start();
 }

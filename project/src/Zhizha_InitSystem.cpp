@@ -24,8 +24,8 @@ void Zhizha_InitSystem::OnInit()
 				});
 
 			_entities->GetOrAddComponent<MaterialComponent>(ball, [&](MaterialComponent& c) {
-				c.VertexShader = _resources.GetOrAddResource<VertexShaderResource>("Circle");
-				c.FragmentShader = _resources.GetOrAddResource<FragmentShaderResource>("Circle");
+				c.VertexShader = _resources.GetOrAddResource<VertexShaderResource>("ZhizhaVolume");
+				c.FragmentShader = _resources.GetOrAddResource<FragmentShaderResource>("ZhizhaVolume");
 				c.Textures.emplace_back(_resources.GetOrAddResource<TextureResource>("Circle_Albedo.png"));
 				c.attributesCount = 2;
 				});

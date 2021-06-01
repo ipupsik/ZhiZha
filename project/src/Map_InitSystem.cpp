@@ -17,7 +17,7 @@ void Map_InitSystem::OnInit()
 	Entity& map = _entities->CreateEntity();
 
 	_entities->GetOrAddComponent<MeshComponent>(map, [&](MeshComponent& c) {
-		c.Mesh = _resources.GetOrAddResource<MeshResource>("map");
+		c.Mesh = _resources.GetOrAddResource<MeshResource>("Map");
 		});
 
 	_entities->GetOrAddComponent<MaterialComponent>(map, [&](MaterialComponent& c) {
