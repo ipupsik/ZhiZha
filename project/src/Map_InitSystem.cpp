@@ -40,7 +40,7 @@ void Map_InitSystem::OnInit()
 	});
 
 	_entities->GetOrAddComponent<GlobalRotation_Component>(map);
-	_entities->GetOrAddComponent<ComplexCollisionComponent>(ball);
+	_entities->GetOrAddComponent<ComplexCollisionComponent>(map);
 }
 
 Map_InitSystem::Map_InitSystem(ResourceManager& resources)

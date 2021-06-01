@@ -12,10 +12,6 @@ void ComplexCollision_InitSystem::OnInit() {
 	for (auto& [_comps, _entity] : items)
 	{
         auto& [_Mesh, CCC] = _comps;
-        CCC->ComplexCollision[0].v1;
-        CCC->ComplexCollision[0].v2;
-        CCC->ComplexCollision[0].v3;
-
         for (int i = 0; i < _Mesh->Mesh->_faces.size(); i++)
         {
             sf::Vector2f v1, v2, v3;

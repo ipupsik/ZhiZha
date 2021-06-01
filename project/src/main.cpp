@@ -34,6 +34,7 @@
 #include "Tree_1_InitSystem.h"
 #include "Tree_2_InitSystem.h"
 #include "Tree_3_InitSystem.h"
+#include "Systems/ComplexCollision_InitSystem.h"
 
 #if defined(linux)
 #include <X11/Xlib.h>
@@ -162,6 +163,7 @@ int main() {
 		.RegisterSystem<SmallSkull_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Zhizha_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<ComplexCollision_InitSystem>()
 		//.RegisterSystem<ZhizhaVolume_InitSystem>(engine->GetResourceManager())
 
 		.RegisterSystem<MaterialAttachSystem>(window)
