@@ -15,13 +15,18 @@ void CameraMovingSystem::OnFixedUpdate() {
 
 	for (auto& item : items) {
 		auto& [currentTransform, currentDrop] = item.Components;
-		_newLocation += currentTransform->Location;
+		sf::Vector2f screen_location = currentTransform->Location - _camera_location;
+		if (screen_location.x <= 1.4f && screen_location.x >= -1.4f)
+			if (screen_location.y <= 1.4f && screen_location.y >= -1.4f)
+				_newLocation += currentTransform->Location;
 	}
-
-	_newLocation /= (float)items.size();
-	_newLocation *= -1.f;
+	if (items.size() > 0)
+	{
+		_newLocation /= (float)items.size();
+		_newLocation *= -1.f;
+		_camera_location = _newLocation;
+	}
 	
-	//_camera_location = _newLocation;
 	if (_newLocation.x != _newLocation.x){
 		_camera_location = { 0,0 };
 	}
