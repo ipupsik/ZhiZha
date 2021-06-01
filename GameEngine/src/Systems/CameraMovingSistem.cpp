@@ -21,7 +21,7 @@ void CameraMovingSystem::OnFixedUpdate() {
 	_newLocation /= (float)items.size();
 	_newLocation *= -1.f;
 	
-	_camera_location = _newLocation;
+	//_camera_location = _newLocation;
 	if (_newLocation.x != _newLocation.x){
 		_camera_location = { 0,0 };
 	}
