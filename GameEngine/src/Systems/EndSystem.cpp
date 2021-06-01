@@ -16,11 +16,11 @@ void EndSystem::OnFixedUpdate() {
 	}
 
 	if (items.size() < 500) {
-		std::cout << "you've won!" << std::endl;
+		// std::cout << "you've won!" << std::endl;
 	}
 	
 	if (_time.Time() > 30) {
-		std::cout << "you've lost!" << std::endl;
+		// std::cout << "you've lost!" << std::endl;
 	}
 	//std::cout << items.size() << std::endl;
 }

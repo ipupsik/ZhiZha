@@ -20,6 +20,8 @@
 #include "Systems/UnionDropsSystem.h"
 #include "Systems/ForceCalculationSystem.h"
 #include "Systems/ShiftDropsSystem.h"
+#include "Systems/ComplexCollision_InitSystem.h"
+#include "Systems/ComplexCollisionSystem.h"
 //#include "Systems/TestSystem.h"
 #include "BackGround_InitSystem.h"
 
@@ -163,6 +165,7 @@ int main() {
 		.RegisterSystem<Zhizha_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
 		//.RegisterSystem<ZhizhaVolume_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<ComplexCollision_InitSystem>()
 
 		.RegisterSystem<MaterialAttachSystem>(window)
 		.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime(), global_phi)
@@ -180,6 +183,7 @@ int main() {
 		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ShiftDropsSystem>(engine->GetTime(), gravity)
+		.RegisterSystem<ComplexCollisionSystem>()
 		.RegisterSystem<ResetParamsSystem>(camera_location)
 		.RegisterSystem<CameraMovingSystem>(camera_location)
 		.RegisterSystem<EndSystem>(engine->GetTime());

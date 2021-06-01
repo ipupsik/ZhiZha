@@ -38,7 +38,7 @@ void ShiftDropsSystem::OnFixedUpdate() {
 
 		// hardcode mood begin
 
-		if (currentTransform->Location.y < -0.19) {
+		/*if (currentTransform->Location.y < -0.19) {
 			currentTransform->Location.y = -0.19;
 			currentSpeed->Speed.y = 0;
 		}
@@ -86,7 +86,7 @@ void ShiftDropsSystem::OnFixedUpdate() {
 			currentTransform->Location = { 0,0 };
 			currentSpeed->Speed = { 0,0 };
 		}
-		
+		*/
 		if ((currentTransform->Location - _oldLocation)->*Length() < (currentSpeed->Speed * _gameTime.FixedDeltaTime())->*Length() - 0.00001f) {
 			currentSpeed->Speed -= (_gravitation * _gameTime.FixedDeltaTime()) * 1.5f;  // change
 		}

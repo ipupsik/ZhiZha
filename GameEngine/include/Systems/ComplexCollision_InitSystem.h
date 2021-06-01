@@ -5,7 +5,7 @@
 
 class ComplexCollision_InitSystem : public virtual InitSystem {
 public:
-	explicit ComplexCollision_InitSystem(sf::Vector2f& camera_location){ }
+	explicit ComplexCollision_InitSystem(){ }
 
 	void OnInit() override;
 }; 
