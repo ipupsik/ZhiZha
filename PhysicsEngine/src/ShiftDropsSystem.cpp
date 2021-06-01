@@ -1,8 +1,5 @@
 #include <Components/TransformComponent.h>
 
-#include "ComponentDrop.h"
-#include "ComponentVolume.h"
-#include "Components/SpeedComponent.h"
 #include "utils.h"
 #include "DefinesPhysics.h"
 
@@ -32,17 +29,69 @@ void ShiftDropsSystem::OnFixedUpdate() {
 			auto distance = currentTransform->Location->*Magnitude(neighborTransform->Location);
 			if (distance < 2 * RADIUS) {
 				auto direction = (currentTransform->Location - neighborTransform->Location)->*Normalize();
-				//neighborSpeed->Speed += currentSpeed->Speed * (1.f - SURFACE_FORCE);
-				//currentSpeed->Speed *= SURFACE_FORCE;
+				/*neighborSpeed->Speed += currentSpeed->Speed * (1.f - SURFACE_FORCE);
+				currentSpeed->Speed *= SURFACE_FORCE;*/
 				MomentumConservation(*currentSpeed, *neighborSpeed, *neighborDrop);
 				currentTransform->Location += direction * (float)(2 * RADIUS - distance);
 			}
 		}
 
-		if ((currentTransform->Location - _oldLocation)->*Length() < 0.0000001f){
-			std::cout << "===" << std::endl;
+		// hardcode mood begin
+
+		if (currentTransform->Location.y < -0.19) {
+			currentTransform->Location.y = -0.19;
+			currentSpeed->Speed.y = 0;
+		}
+
+		if (currentTransform->Location.y > 0.83 && currentTransform->Location.x > 0.15 && currentTransform->Location.y < 0.86) {
+			currentTransform->Location.y = 0.83;
+			currentSpeed->Speed.y = 0;
+		}
+
+
+		if (currentTransform->Location.y > 0.83 && currentTransform->Location.x > 0.15 && currentTransform->Location.x < 0.18) {
+			currentTransform->Location.x = 0.15;
+			currentSpeed->Speed.x = 0;
+		}
+
+
+		if (currentTransform->Location.x < -0.15 && currentTransform->Location.y > 0.44 && currentTransform->Location.y < 1.15) {
+			currentTransform->Location.x = -0.15;
+			currentSpeed->Speed.x = 0;
+		}
+
+
+		if (currentTransform->Location.x < -0.88) {
+			currentTransform->Location.x = -0.88;
+			currentSpeed->Speed.x = 0;
+		}
+
+		if (currentTransform->Location.y - 0.75 * currentTransform->Location.x < -0.685) {
+			
+			currentTransform->Location.y = -0.685 + 0.75 * currentTransform->Location.x;
+			currentSpeed->Speed = { 0,0 };
+		}
+
+		if (currentTransform->Location.y + 0.63 * currentTransform->Location.x > 1.25 && (currentTransform->Location.x > 0.15 || currentTransform->Location.x < -0.15)) {
+			currentTransform->Location.y = 1.25 - 0.63 * currentTransform->Location.x;
+			currentSpeed->Speed = { 0,0 };
+		}
+
+		if (currentTransform->Location.x > 0.94) {
+			currentTransform->Location.x = 0.94;
+			currentSpeed->Speed.x = 0;
+		}
+
+		if (currentTransform->Location.x < -1 || currentTransform->Location.x > 1.2 || currentTransform->Location.y < -0.3 || currentTransform->Location.x > 1.5) {
+			currentTransform->Location = { 0,0 };
+			currentSpeed->Speed = { 0,0 };
 		}
 		
+		if ((currentTransform->Location - _oldLocation)->*Length() < (currentSpeed->Speed * _gameTime.FixedDeltaTime())->*Length() - 0.00001f) {
+			currentSpeed->Speed -= (_gravitation * _gameTime.FixedDeltaTime()) * 1.5f;  // change
+		}
+
+		// hardcode mood end
 
 		//float _wallY = 500; // take from another file
 		//float _wallThickness = 2; // take from another file
