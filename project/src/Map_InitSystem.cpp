@@ -10,6 +10,7 @@
 #include <DefinesPhysics.h>
 #include "Components/LayerComponent.h"
 #include "GlobalRotation_Component.h"
+#include "Components/ComplexCollisionComponent.h"
 
 void Map_InitSystem::OnInit()
 {
@@ -39,6 +40,7 @@ void Map_InitSystem::OnInit()
 	});
 
 	_entities->GetOrAddComponent<GlobalRotation_Component>(map);
+	_entities->GetOrAddComponent<ComplexCollisionComponent>(ball);
 }
 
 Map_InitSystem::Map_InitSystem(ResourceManager& resources)
