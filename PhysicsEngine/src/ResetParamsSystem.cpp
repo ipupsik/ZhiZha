@@ -22,13 +22,6 @@ void ResetParamsSystem::OnFixedUpdate()
 		drop_comp->is_volume_calculated = false;
 		drop_comp->is_moved = false;
 		drop_comp->if_changed_speed = false;
-
-		sf::Vector2f screen_location = transform->Location - _camera_location;
-		if (screen_location.y > 1.4f || screen_location.y < -1.4f ||
-			screen_location.x > 1.4f || screen_location.x < -1.4f)
-		{
-			_entities->DestroyEntity(*cur_entity);
-		}
 	}
 
 	const auto& volumes = _entities->GetEntitiesBy<ComponentVolume>();
