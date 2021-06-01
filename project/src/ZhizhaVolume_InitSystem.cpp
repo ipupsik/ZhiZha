@@ -17,8 +17,8 @@ void ZhizhaVolume_InitSystem::OnInit()
 	Entity& ZhizhaVolume = _entities->CreateEntity();
 
 	_entities->GetOrAddComponent<MaterialComponent>(ZhizhaVolume, [&](MaterialComponent& c) {
-		c.VertexShader = _resources.GetOrAddResource<VertexShaderResource>("Zhizha");
-		c.FragmentShader = _resources.GetOrAddResource<FragmentShaderResource>("Zhizha");
+		c.VertexShader = _resources.GetOrAddResource<VertexShaderResource>("ZhizhaVolume");
+		c.FragmentShader = _resources.GetOrAddResource<FragmentShaderResource>("ZhizhaVolume");
 		c.Textures.emplace_back(_resources.GetOrAddResource<TextureResource>("Circle_Albedo.png"));
 		c.attributesCount = 2;
 		});
@@ -33,14 +33,14 @@ void ZhizhaVolume_InitSystem::OnInit()
 		glGenBuffers(1, &c.indexVBO);
 		glBindBuffer(GL_ARRAY_BUFFER, c.indexVBO);
 		{
-			glBufferData(GL_ARRAY_BUFFER, sizeof(sf::Vector2f) * c.vertices[c.side].size(), c.vertices[c.side].begin()._Ptr, GL_DYNAMIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(sf::Vector2f) * c.vertices[c.side].size(), c.vertices[c.side].data(), GL_DYNAMIC_DRAW);
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glGenBuffers(1, &c.indexEBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		{
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(sf::Vector2f) * c.vertices[c.side].size(), c.vertices[c.side].begin()._Ptr, GL_DYNAMIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(sf::Vector2f) * c.vertices[c.side].size(), c.vertices[c.side].data(), GL_DYNAMIC_DRAW);
 		}
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 

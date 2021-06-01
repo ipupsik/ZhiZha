@@ -57,7 +57,7 @@ void ZhizhaDraw_System::OnPostUpdate() {
 					glBindBuffer(GL_ARRAY_BUFFER, ZhizhaVolume->indexVBO);
 					{
 						glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(float) * ZhizhaVolume->vertices[ZhizhaVolume->side].size(), 
-							ZhizhaVolume->vertices[ZhizhaVolume->side].begin()._Ptr, GL_STREAM_DRAW);
+							ZhizhaVolume->vertices[ZhizhaVolume->side].data(), GL_STREAM_DRAW);
 					}
 					glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -67,7 +67,7 @@ void ZhizhaDraw_System::OnPostUpdate() {
 						indexes.resize(ZhizhaVolume->vertices[ZhizhaVolume->side].size());
 						for (unsigned int i = 0; i < indexes.size(); i++)
 							indexes[i] = i;
-						glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indexes.size(), indexes.begin()._Ptr, GL_STREAM_DRAW);
+						glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indexes.size(), indexes.data(), GL_STREAM_DRAW);
 
 						glDrawElements(GL_TRIANGLES, indexes.size() / 3, GL_UNSIGNED_INT, NULL);
 					}

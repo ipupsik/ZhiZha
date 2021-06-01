@@ -17,7 +17,7 @@ public:
 		, _gravitation(gravitation) {}
 
 	void MomentumConservation(SpeedComponent& currentSpeed, SpeedComponent& neighborSpeed, ComponentDrop& neighborDrop);
-	void ÑhangeSpeed(SpeedComponent& currentSpeed, ComponentDrop& currentDrop, sf::Vector2f& newSpeed);
+	void ChangeSpeed(SpeedComponent& currentSpeed, ComponentDrop& currentDrop, sf::Vector2f& newSpeed);
 
 	void OnFixedUpdate() override;
 };
