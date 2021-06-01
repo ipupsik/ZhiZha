@@ -39,6 +39,83 @@
 #include <X11/Xlib.h>
 #endif
 
+#define OK 0
+#define WINDOW_WIDTH 900
+#define WINDOW_HEIGHT 900
+
+using namespace sf;
+
+void show_menu(RenderWindow& window, int* exit_code)
+{
+	Texture menu_bg, menu_start, menu_exit;
+
+	menu_bg.loadFromFile("../share/background.jpg");
+	menu_start.loadFromFile("../share/start_game.jpg");
+	menu_exit.loadFromFile("../share/exit.jpg");
+
+	Sprite bg(menu_bg);
+	Sprite start(menu_start);
+	Sprite exit(menu_exit);
+
+	bg.setPosition(0, 0);
+	start.setPosition(330, 300);
+	exit.setPosition(380, 400);
+
+	bool menu_alive = true;
+	int hovered_note = 0;
+
+	while (menu_alive)
+	{
+		Event event;
+
+		while (window.pollEvent(event))
+		{
+			if (event.type == Event::Closed)
+				window.close();
+		}
+
+		start.setColor(Color::White);
+		exit.setColor(Color::White);
+		hovered_note = 0;
+
+		window.clear(Color::White);
+
+		if (IntRect(330, 300, 306, 107).contains(Mouse::getPosition(window)))
+		{
+			start.setColor(Color::Blue);
+			hovered_note = 1;
+		}
+		else if (IntRect(380, 400, 128, 107).contains(Mouse::getPosition(window)))
+		{
+			exit.setColor(Color::Blue);
+			hovered_note = 2;
+		}
+
+		if (Mouse::isButtonPressed(Mouse::Left))
+		{
+			switch (hovered_note)
+			{
+			case 1:
+				menu_alive = false;
+				*exit_code = 1;
+				break;
+			case 2:
+				window.close();
+				menu_alive = false;
+				*exit_code = 2;
+			default:
+				break;
+			}
+		}
+
+		window.draw(bg);
+		window.draw(start);
+		window.draw(exit);
+
+		window.display();
+	}
+}
+
 int main() {
 #if defined(linux)
 	XInitThreads();
@@ -50,12 +127,18 @@ int main() {
 	settings.majorVersion = 3;
 	settings.minorVersion = 0;
 
-	auto window = sf::RenderWindow(sf::VideoMode(1080, 720), "Sample", sf::Style::Default,
+	auto window = sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Sample", sf::Style::Default,
 			settings);
 
-	gladLoadGL();
+	int exit_code;
+	show_menu(window, &exit_code);
 
-	glScalef(1, 1080.0f / 720.0f, 1);
+	if (exit_code == 2)
+	{
+		return 0;
+	}
+
+	gladLoadGL();
 
 	sf::Vector2f gravity = { 0, G / 20 };
 	sf::Vector2f camera_location = { 0.0f, 0.0f };
@@ -79,17 +162,17 @@ int main() {
 		.RegisterSystem<SmallSkull_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Zhizha_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<ZhizhaVolume_InitSystem>(engine->GetResourceManager())
+		//.RegisterSystem<ZhizhaVolume_InitSystem>(engine->GetResourceManager())
 
 		.RegisterSystem<MaterialAttachSystem>(window)
 		.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime(), global_phi)
 		.RegisterSystem<EventSystem>(window, views[Game])
 		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
 
-		.RegisterSystem<FormZhizhaVolume_System>()
+		//.RegisterSystem<FormZhizhaVolume_System>()
 		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi)
 		.RegisterSystem<RenderSystem_HUD>(window, views)
-		.RegisterSystem<ZhizhaDraw_System>(window, views, camera_location, global_phi)
+		//.RegisterSystem<ZhizhaDraw_System>(window, views, camera_location, global_phi)
 
 		.RegisterSystem<CollisionSystem>()
 		.RegisterSystem<UnionDropsSystem>(window)
