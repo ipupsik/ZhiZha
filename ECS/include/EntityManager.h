@@ -83,7 +83,7 @@ public:
 
 	template <typename T>
 	requires std::derived_from<T, ComponentData<T>>
-	ComponentHandle<T> GetComponent(const Entity& entity) const {
+	T* GetComponent(const Entity& entity) const {
 		if (!_componentsTable.contains(T::Type))
 			return nullptr;
 		const auto& components = _componentsTable.at(T::Type);
@@ -91,7 +91,7 @@ public:
 			return nullptr;
 		if (components.at(entity._id) == nullptr)
 			return nullptr;
-		return static_cast<T&>(*components.at(entity._id));
+		return static_cast<T*>(components.at(entity._id));
 	}
 
 	template <typename T>
