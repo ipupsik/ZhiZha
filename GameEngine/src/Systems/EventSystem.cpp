@@ -6,7 +6,7 @@ void EventSystem::OnPostInit() {
 	sf::Event event{};
 
 	while (_window.isOpen() && _engine.IsActive()) {
-		if (_window.waitEvent(event)) {
+		if (_window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
 				_window.close();
 			if (event.type == sf::Event::Resized) {
