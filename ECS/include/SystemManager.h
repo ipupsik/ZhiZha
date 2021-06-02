@@ -1,9 +1,9 @@
 #pragma once
 
 #include <concepts>
-#include <execution>
 
 #include "System.h"
+#include "Scene.h"
 
 class SystemManager {
 	std::vector<UpdateSystem*> _updates;
@@ -13,17 +13,17 @@ class SystemManager {
 	std::vector<PostInitSystem*> _postInits;
 	EntityManager& _inner;
 
-	template <std::derived_from<System> T>
-	void tickIfActive(std::vector<T*> from, void (T::*each)()) const {
+	template <std::derived_from<System> T, typename F>
+	void doFor(std::vector<T*> from, F each) const {
 #pragma unroll 4
 		for (const auto& system: from)
-			if (system->isActive())
-				(system->*each)();
+			each(system);
 	}
 
 public:
-	SystemManager(EntityManager& inner): _inner(inner) {}
-	
+	SystemManager(EntityManager& inner)
+			:_inner(inner) { }
+
 	SystemManager(const SystemManager&) = delete;
 	SystemManager& operator=(const SystemManager&) = delete;
 	SystemManager(SystemManager&&) = delete;
@@ -34,7 +34,7 @@ public:
 	requires std::derived_from<T, System>
 	SystemManager& RegisterSystem(T* system) {
 		system->_entities = &_inner;
-		
+
 		if constexpr (std::is_base_of_v<UpdateSystem, T>)
 			_updates.emplace_back(system);
 		if constexpr (std::is_base_of_v<PostUpdateSystem, T>)
@@ -58,4 +58,8 @@ public:
 	void PostUpdate() const;
 
 	void Init() const;
+
+	void ActivateInitSystems(Scene scene);
+
+	void ActivateUpdateSystems(Scene scene);
 };

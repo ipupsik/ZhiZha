@@ -1,18 +1,28 @@
 ﻿#pragma once
 
 #include "EntityManager.h"
+#include "Scene.h"
+#include <bitset>
 
 class System {
 	friend class SystemManager;
 
 	bool _isActive = true;
+	std::bitset<static_cast<int>(Scene::Count)> _workingScenes;
 
 protected:
 	EntityManager* _entities = nullptr;
-	System() = default;
+	System() {
+		_workingScenes.set(static_cast<int>(Scene::Main));
+	}
 	virtual ~System() = default;
-	void setActive(bool active = true) { _isActive = active; }
-	[[nodiscard]] bool isActive() const { return _isActive; }
+
+public:
+	[[nodiscard]] auto& GetWorkingScenes() const { return _workingScenes; }
+	void SetActive(bool active = true) { _isActive = active; }
+	[[nodiscard]] bool IsActive() const { return _isActive; }
+	void BindToScene(Scene scene) { _workingScenes.set(static_cast<int>(scene)); }
+	void UnbindFromScene(Scene scene) { _workingScenes.set(static_cast<int>(scene), false); }
 };
 
 /**
@@ -50,6 +60,6 @@ struct PostUpdateSystem : virtual System {
 /**
  * Система, которая вызывается перед первым кадром
  */
-struct InitSystem: virtual System {
+struct InitSystem : virtual System {
 	virtual void OnInit() = 0;
 };

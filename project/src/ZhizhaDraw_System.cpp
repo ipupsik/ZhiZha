@@ -28,7 +28,7 @@ void ZhizhaDraw_System::OnPostUpdate() {
 		for (int i = 0; i < material->Textures.size(); i++)
 		{
 			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, material->Textures[i]->_textureId);
+			glBindTexture(GL_TEXTURE_2D, material->Textures[i]->TextureId);
 
 			glUniform1i(glGetUniformLocation(material->_materialId, std::string("tex" + std::to_string(i)).c_str()), i);
 		}

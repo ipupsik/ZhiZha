@@ -13,22 +13,50 @@ SystemManager::~SystemManager() {
 		delete item;
 }
 
+template <std::derived_from<System> T>
+constexpr auto doIfActive(void (T::*tick)()) {
+	return [tick](T* system) {
+		if (system->IsActive())
+			(system->*tick)();
+	};
+}
+
 void SystemManager::PostInit() const {
-	tickIfActive(_postInits, &PostInitSystem::OnPostInit);
+	doFor(_postInits, doIfActive(&PostInitSystem::OnPostInit));
 }
 
 void SystemManager::Update() const {
-	tickIfActive(_updates, &UpdateSystem::OnUpdate);
+	doFor(_updates, doIfActive(&UpdateSystem::OnUpdate));
 }
 
 void SystemManager::FixedUpdate() const {
-	tickIfActive(_fixedUpdates, &FixedUpdateSystem::OnFixedUpdate);
+	doFor(_fixedUpdates, doIfActive(&FixedUpdateSystem::OnFixedUpdate));
 }
 
 void SystemManager::PostUpdate() const {
-	tickIfActive(_postUpdates, &PostUpdateSystem::OnPostUpdate);
+	doFor(_postUpdates, doIfActive(&PostUpdateSystem::OnPostUpdate));
 }
 
 void SystemManager::Init() const {
-	tickIfActive(_inits, &InitSystem::OnInit);
+	doFor(_inits, doIfActive(&InitSystem::OnInit));
+}
+
+constexpr auto updateActivity(Scene scene) {
+	return [scene](System* system) {
+		if (system->GetWorkingScenes()[static_cast<int>(scene)])
+			system->SetActive(true);
+		else
+			system->SetActive(false);
+	};
+}
+
+void SystemManager::ActivateInitSystems(Scene scene) {
+	doFor(_postInits, updateActivity(scene));
+	doFor(_inits, updateActivity(scene));
+}
+
+void SystemManager::ActivateUpdateSystems(Scene scene) {
+	doFor(_updates, updateActivity(scene));
+	doFor(_fixedUpdates, updateActivity(scene));
+	doFor(_postUpdates, updateActivity(scene));
 }

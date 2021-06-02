@@ -1,4 +1,5 @@
 #include <thread>
+#include <iostream>
 
 #include "Engine.h"
 #include "glad/glad.h"
@@ -7,9 +8,6 @@ void Engine::initRenderThread() {
 	_window.setActive(true);
 
 	glOrtho(-1.4, 1.4, -1.4, 1.4, -1, 8);
-	//glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_BACK);
 	while (_window.isOpen()) {
 		_window.clear(sf::Color { 0, 0, 0, 255 });
 		_systemManager->Update();
@@ -37,8 +35,6 @@ Engine::~Engine() {
 }
 
 void Engine::Start() {
-	_systemManager->Init();
-	_window.setActive(false);
 	std::thread update([&] { initRenderThread(); });
 	std::thread fixed([&] { initFixedUpdateThread(); });
 
@@ -46,4 +42,14 @@ void Engine::Start() {
 	update.join();
 	_window.setActive(true);
 	fixed.join();
+}
+
+void Engine::LoadScene(Scene scene) {
+	std::cout << "Loading scene #" << static_cast<int>(scene) << "..." << std::endl;
+	_systemManager->ActivateInitSystems(scene);
+	_window.setActive(true);
+	_systemManager->Init();
+	_window.setActive(false);
+
+	_systemManager->ActivateUpdateSystems(scene);
 }

@@ -40,6 +40,7 @@
 
 #if defined(linux)
 #include <X11/Xlib.h>
+#include <MenuSystem.h>
 #endif
 
 #define OK 0
@@ -134,7 +135,7 @@ int main() {
 			sf::Style::Close | sf::Style::Titlebar, settings);
 
 	int exit_code;
-	show_menu(window, &exit_code);
+	//show_menu(window, &exit_code);
 
 	if (exit_code == 2)
 	{
@@ -148,13 +149,13 @@ int main() {
 	float global_phi = 0;
 	std::vector views = {
 			window.getDefaultView(), // game view
-			window.getDefaultView() // gui view
+			window.getDefaultView(), // gui view
+			window.getDefaultView()  // menu view
 	};
-
-	views.at(Game).zoom(3);
 
 	auto engine = new Engine(window);
 	engine->RegisterSystem<BackGround_InitSystem>(engine->GetResourceManager())
+		.RegisterSystem<MenuSystem>(views[Menu], engine->GetResourceManager(), *engine).BindToScene(Scene::Menu).UnbindFromScene(Scene::Main)
 		.RegisterSystem<Grass_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<SmallBrunch_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Tree_1_InitSystem>(engine->GetResourceManager())
@@ -171,12 +172,12 @@ int main() {
 
 		.RegisterSystem<MaterialAttachSystem>(window)
 		.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime(), global_phi)
-		.RegisterSystem<EventSystem>(window, views[Game])
+		.RegisterSystem<EventSystem>(window, views[Game]).BindToScene(Scene::Menu).BindToScene(Scene::End)
 		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
 
 		//.RegisterSystem<FormZhizhaVolume_System>()
-		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi)
-		.RegisterSystem<RenderSystem_HUD>(window, views)
+		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi).BindToScene(Scene::Menu).BindToScene(Scene::End)
+		.RegisterSystem<RenderSystem_HUD>(window, views).BindToScene(Scene::Menu).BindToScene(Scene::End)
 		//.RegisterSystem<ZhizhaDraw_System>(window, views, camera_location, global_phi)
 
 		.RegisterSystem<CollisionSystem>()
@@ -189,5 +190,7 @@ int main() {
 		.RegisterSystem<ResetParamsSystem>(camera_location)
 		.RegisterSystem<CameraMovingSystem>(camera_location);
 //		.RegisterSystem<EndSystem>(engine->GetTime());
+
+	engine->LoadScene(Scene::Menu);
 	engine->Start();
 }

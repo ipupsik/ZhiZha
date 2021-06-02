@@ -7,7 +7,8 @@
 class TextureResource : public ResourceFile
 {
 public:
-	GLuint _textureId;
+	GLuint TextureId;
+	sf::Texture Texture;
 
 	explicit TextureResource(std::string&& filename);
 };

@@ -19,7 +19,7 @@ using namespace sf::Extensions::Vector2;
 void ComplexCollisionSystem::OnFixedUpdate()
 {
 	/*
-	//получаем все треугольники, принадлежащие карте (интерактивной) -- start
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ) -- start
 	const auto& mesh_componetns = _entities->GetEntitiesBy<MeshComponent, MeshCollider>();
 
 	struct face {
@@ -47,12 +47,12 @@ void ComplexCollisionSystem::OnFixedUpdate()
 			triangles_map.push_back(cur_face);
 		}		
 	}
-	//получаем все треугольники, принадлежащие карте (интерактивной) -- end
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ) -- end
 	*/
 
-	//сталкиваем все камли с треугольниками карты
-	const auto& drops = _entities->GetEntitiesBy<ComponentDrop, SpeedComponent, TransformComponent>(); //наши капли
-	const auto& maps_items = _entities->GetEntitiesBy<ComplexCollisionComponent>(); //наши объекты, с которыми мы можем столкнуться
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	const auto& drops = _entities->GetEntitiesBy<ComponentDrop, SpeedComponent, TransformComponent>(); //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	const auto& maps_items = _entities->GetEntitiesBy<ComplexCollisionComponent>(); //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 	for (auto& [components, cur_entity] : drops)
 	{
@@ -62,16 +62,14 @@ void ComplexCollisionSystem::OnFixedUpdate()
 		{
 			auto& [ccc] = components_map;
 
-			std::cout << ccc->ComplexCollision.size() << std::endl;
-
 			for (int i = 0; i < ccc->ComplexCollision.size(); ++i)
 			{
-				// составление векторов-сторон треугольника
+				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				sf::Vector2f vec12 = ccc->ComplexCollision[i].v2 - ccc->ComplexCollision[i].v1;
 				sf::Vector2f vec13 = ccc->ComplexCollision[i].v3 - ccc->ComplexCollision[i].v1;
 				sf::Vector2f vec23 = ccc->ComplexCollision[i].v3 - ccc->ComplexCollision[i].v2;
 
-				// составление вектора от каждой точки до центра окружности
+				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				sf::Vector2f vec10 = transform->Location - ccc->ComplexCollision[i].v1;
 				sf::Vector2f vec20 = transform->Location - ccc->ComplexCollision[i].v2;
 				sf::Vector2f vec30 = transform->Location - ccc->ComplexCollision[i].v3;
@@ -93,9 +91,9 @@ void ComplexCollisionSystem::OnFixedUpdate()
 				float h_13 = fabs(sqrt(pow(vec10->*Length(), 2) - pow(cos_013 * vec10->*Length(), 2)));
 				float h_23 = fabs(sqrt(pow(vec20->*Length(), 2) - pow(cos_023 * vec20->*Length(), 2)));
 
-				float min_h; //минимальное расстояние до стороны
-				sf::Vector2f min_line; //минимальная сторона
-				sf::Vector2f min_dist_to_center; //минимальное расстояние до центра окружности
+				float min_h; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+				sf::Vector2f min_line; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+				sf::Vector2f min_dist_to_center; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				bool does_hit = false;
 
 				if (cos_012 >= 0 && cos_021 >= 0)
@@ -162,12 +160,9 @@ void ComplexCollisionSystem::OnFixedUpdate()
 				}
 				
 				// int res = min_h < RADIUS;
-				std::cout << "hello" << std::endl;
 
 				if (does_hit && min_h < RADIUS)
 				{
-					std::cout << "collided wall" << std::endl;
-
 					float z_coord = -min_line.x * min_dist_to_center.y + min_line.y * min_dist_to_center.x;
 					sf::Vector2f n = {
 						min_line.y * z_coord,

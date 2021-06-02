@@ -5,6 +5,8 @@
 #include "GameTime.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 
+class SystemRegisteringHelper;
+
 class Engine {
 	EntityManager* _entityManager = new EntityManager();
 	SystemManager* _systemManager = new SystemManager(*_entityManager);
@@ -28,13 +30,38 @@ public:
 	[[nodiscard]] ResourceManager& GetResourceManager() const { return *_resourceManager; }
 	[[nodiscard]] GameTime& GetTime() const { return *_time; }
 
-	template <typename T, typename ...Args>
+	template <typename T, typename ...Args, typename Stub = SystemRegisteringHelper> // compiler cannot compile cyclic classes, but can lazily compile it with templates
 		requires std::derived_from<T, System>
-	Engine& RegisterSystem(Args&&... args) {
+	 Stub RegisterSystem(Args&&... args) {
 		T* instance = new T(std::forward<Args>(args)...);
 		_systemManager->RegisterSystem<T>(instance);
+		return Stub(*this, instance);
+	}
+
+	void LoadScene(Scene scene);
+
+	void Start();
+};
+
+class SystemRegisteringHelper {
+	Engine& _engine;
+	System* _system;
+
+public:
+	SystemRegisteringHelper(Engine& engine, System* system) : _engine(engine), _system(system) {}
+
+	template <typename T, typename ...Args>
+	SystemRegisteringHelper RegisterSystem(Args&&... args) {
+		return _engine.RegisterSystem<T>(std::forward<Args>(args)...);
+	}
+
+	SystemRegisteringHelper& BindToScene(Scene scene) {
+		_system->BindToScene(scene);
 		return *this;
 	}
 
-	void Start();
+	SystemRegisteringHelper& UnbindFromScene(Scene scene) {
+		_system->UnbindFromScene(scene);
+		return *this;
+	}
 };
