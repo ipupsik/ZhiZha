@@ -14,26 +14,21 @@ SystemManager::~SystemManager() {
 }
 
 void SystemManager::PostInit() const {
-	for (const auto& system : _postInits)
-		system->OnPostInit();
+	tickIfActive(_postInits, &PostInitSystem::OnPostInit);
 }
 
 void SystemManager::Update() const {
-	for (const auto& system: _updates)
-		system->OnUpdate();
+	tickIfActive(_updates, &UpdateSystem::OnUpdate);
 }
 
 void SystemManager::FixedUpdate() const {
-	for (const auto& system: _fixedUpdates)
-		system->OnFixedUpdate();
+	tickIfActive(_fixedUpdates, &FixedUpdateSystem::OnFixedUpdate);
 }
 
 void SystemManager::PostUpdate() const {
-	for (const auto& system: _postUpdates)
-		system->OnPostUpdate();
+	tickIfActive(_postUpdates, &PostUpdateSystem::OnPostUpdate);
 }
 
 void SystemManager::Init() const {
-	for (const auto& system: _inits)
-		system->OnInit();
+	tickIfActive(_inits, &InitSystem::OnInit);
 }

@@ -4,11 +4,15 @@
 
 class System {
 	friend class SystemManager;
-	
+
+	bool _isActive = true;
+
 protected:
 	EntityManager* _entities = nullptr;
 	System() = default;
 	virtual ~System() = default;
+	void setActive(bool active = true) { _isActive = active; }
+	[[nodiscard]] bool isActive() const { return _isActive; }
 };
 
 /**

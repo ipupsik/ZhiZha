@@ -8,7 +8,6 @@
 
 #include "Entity.h"
 #include "Component.h"
-#include "ComponentHandle.h"
 #include "utils.h"
 
 class EntityManager {
@@ -35,7 +34,7 @@ public:
 	[[nodiscard]] const std::vector<Entity*>& GetEntities() const;
 
 	template <std::derived_from<Component> ...Args>
-	auto GetEntitiesBy() {
+	auto GetEntitiesBy() const {
 		constexpr auto count = sizeof...(Args);
 		const auto types = std::make_tuple(Args::Type...);
 
@@ -43,6 +42,7 @@ public:
 		const auto first = std::get<0>(types);
 		if (!_componentsTable.contains(first)) return result;
 
+#pragma unroll 10
 		for (Component* item: _componentsTable.at(first)) {
 			if (item == nullptr) continue;
 
