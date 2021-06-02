@@ -13,8 +13,8 @@ class SystemManager {
 	std::vector<PostInitSystem*> _postInits;
 	EntityManager& _inner;
 
-	template <std::derived_from<System> T, template <typename _> typename V>
-	void tickIfActive(V<T*> from, void (T::*each)()) const {
+	template <std::derived_from<System> T>
+	void tickIfActive(std::vector<T*> from, void (T::*each)()) const {
 #pragma unroll 4
 		for (const auto& system: from)
 			if (system->isActive())
