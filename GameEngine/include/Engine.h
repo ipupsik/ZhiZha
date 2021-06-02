@@ -23,16 +23,18 @@ public:
 
 	~Engine();
 
-	explicit Engine(sf::RenderWindow& window): _window(window) {}
+	explicit Engine(sf::RenderWindow& window)
+			:_window(window) { }
 
 	[[nodiscard]] EntityManager& GetEntityManager() const { return *_entityManager; }
 	[[nodiscard]] SystemManager& GetSystemManager() const { return *_systemManager; }
 	[[nodiscard]] ResourceManager& GetResourceManager() const { return *_resourceManager; }
 	[[nodiscard]] GameTime& GetTime() const { return *_time; }
 
-	template <typename T, typename ...Args, typename Stub = SystemRegisteringHelper> // compiler cannot compile cyclic classes, but can lazily compile it with templates
-		requires std::derived_from<T, System>
-	 Stub RegisterSystem(Args&&... args) {
+	template <typename T, typename Stub = SystemRegisteringHelper, typename ...Args>
+	// compiler cannot compile cyclic classes, but can lazily compile it with templates
+	requires std::derived_from<T, System>
+	Stub RegisterSystem(Args&& ... args) {
 		T* instance = new T(std::forward<Args>(args)...);
 		_systemManager->RegisterSystem<T>(instance);
 		return Stub(*this, instance);
@@ -48,10 +50,11 @@ class SystemRegisteringHelper {
 	System* _system;
 
 public:
-	SystemRegisteringHelper(Engine& engine, System* system) : _engine(engine), _system(system) {}
+	SystemRegisteringHelper(Engine& engine, System* system)
+			:_engine(engine), _system(system) { }
 
 	template <typename T, typename ...Args>
-	SystemRegisteringHelper RegisterSystem(Args&&... args) {
+	SystemRegisteringHelper RegisterSystem(Args&& ... args) {
 		return _engine.RegisterSystem<T>(std::forward<Args>(args)...);
 	}
 
@@ -63,5 +66,10 @@ public:
 	SystemRegisteringHelper& UnbindFromScene(Scene scene) {
 		_system->UnbindFromScene(scene);
 		return *this;
+	}
+
+	Engine& BindStatic() {
+		BindToScene(Scene::Menu).BindToScene(Scene::Main).BindToScene(Scene::End);
+		return _engine;
 	}
 };

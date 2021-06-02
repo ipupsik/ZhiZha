@@ -11,6 +11,7 @@ class SystemManager {
 	std::vector<FixedUpdateSystem*> _fixedUpdates;
 	std::vector<InitSystem*> _inits;
 	std::vector<PostInitSystem*> _postInits;
+	std::vector<UnloadSystem*> _unloads;
 	EntityManager& _inner;
 
 	template <std::derived_from<System> T, typename F>
@@ -45,6 +46,8 @@ public:
 			_inits.emplace_back(system);
 		if constexpr (std::is_base_of_v<PostInitSystem, T>)
 			_postInits.emplace_back(system);
+		if constexpr (std::is_base_of_v<UnloadSystem, T>)
+			_unloads.emplace_back(system);
 
 		return *this;
 	}
@@ -59,7 +62,9 @@ public:
 
 	void Init() const;
 
+	void UnloadScene(Scene scene) const;
+
 	void ActivateInitSystems(Scene scene);
 
-	void ActivateUpdateSystems(Scene scene);
+	void ActivateOtherSystems(Scene scene);
 };

@@ -46,10 +46,11 @@ void Engine::Start() {
 
 void Engine::LoadScene(Scene scene) {
 	std::cout << "Loading scene #" << static_cast<int>(scene) << "..." << std::endl;
+	_systemManager->UnloadScene(scene);
 	_systemManager->ActivateInitSystems(scene);
 	_window.setActive(true);
 	_systemManager->Init();
 	_window.setActive(false);
 
-	_systemManager->ActivateUpdateSystems(scene);
+	_systemManager->ActivateOtherSystems(scene);
 }

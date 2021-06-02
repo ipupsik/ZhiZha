@@ -172,12 +172,12 @@ int main() {
 
 		.RegisterSystem<MaterialAttachSystem>(window)
 		.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime(), global_phi)
-		.RegisterSystem<EventSystem>(window, views[Game]).BindToScene(Scene::Menu).BindToScene(Scene::End)
+		.RegisterSystem<EventSystem>(window, views[Game]).BindStatic()
 		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
 
 		//.RegisterSystem<FormZhizhaVolume_System>()
-		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi).BindToScene(Scene::Menu).BindToScene(Scene::End)
-		.RegisterSystem<RenderSystem_HUD>(window, views).BindToScene(Scene::Menu).BindToScene(Scene::End)
+		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi).BindStatic()
+		.RegisterSystem<RenderSystem_HUD>(window, views).BindStatic()
 		//.RegisterSystem<ZhizhaDraw_System>(window, views, camera_location, global_phi)
 
 		.RegisterSystem<CollisionSystem>()

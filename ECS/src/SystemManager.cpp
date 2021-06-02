@@ -13,11 +13,11 @@ SystemManager::~SystemManager() {
 		delete item;
 }
 
-template <std::derived_from<System> T>
-constexpr auto doIfActive(void (T::*tick)()) {
-	return [tick](T* system) {
+template <std::derived_from<System> T, typename ...Args>
+constexpr auto doIfActive(void (T::*tick)(Args...), Args... args) {
+	return [=](T* system) {
 		if (system->IsActive())
-			(system->*tick)();
+			(system->*tick)(args...);
 	};
 }
 
@@ -55,8 +55,13 @@ void SystemManager::ActivateInitSystems(Scene scene) {
 	doFor(_inits, updateActivity(scene));
 }
 
-void SystemManager::ActivateUpdateSystems(Scene scene) {
+void SystemManager::ActivateOtherSystems(Scene scene) {
 	doFor(_updates, updateActivity(scene));
 	doFor(_fixedUpdates, updateActivity(scene));
 	doFor(_postUpdates, updateActivity(scene));
+	doFor(_unloads, updateActivity(scene));
+}
+
+void SystemManager::UnloadScene(Scene scene) const {
+	doFor(_unloads, doIfActive(&UnloadSystem::OnSceneUnload, scene));
 }

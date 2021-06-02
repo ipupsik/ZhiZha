@@ -5,10 +5,11 @@
 #include <Engine.h>
 #include "System.h"
 
-class MenuSystem : public virtual InitSystem, public virtual UpdateSystem {
+class MenuSystem : public virtual InitSystem, public virtual UpdateSystem, public virtual UnloadSystem {
 	sf::View& _menuView;
 	ResourceManager& _resources;
 	Engine& _engine;
+	std::vector<Entity*> _createdEntities;
 
 public:
 	explicit MenuSystem(sf::View& menuView, ResourceManager& resources, Engine& engine)
@@ -16,4 +17,5 @@ public:
 
 	void OnInit() override;
 	void OnUpdate() override;
+	void OnSceneUnload(Scene scene) override;
 };

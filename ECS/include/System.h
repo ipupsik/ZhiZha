@@ -63,3 +63,7 @@ struct PostUpdateSystem : virtual System {
 struct InitSystem : virtual System {
 	virtual void OnInit() = 0;
 };
+
+struct UnloadSystem: virtual System {
+	virtual void OnSceneUnload(Scene scene) = 0;
+};

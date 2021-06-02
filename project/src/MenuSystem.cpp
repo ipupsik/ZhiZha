@@ -9,6 +9,8 @@ void MenuSystem::OnInit() {
 	auto& startEntity = _entities->CreateEntity();
 	auto& endEntity = _entities->CreateEntity();
 
+	_createdEntities.assign({&backEntity, &startEntity, &endEntity});
+
 	auto menuBackground = _resources.GetOrAddResource<TextureResource>("background.jpg");
 	auto menuStart = _resources.GetOrAddResource<TextureResource>("start_game.jpg");
 	auto menuExit = _resources.GetOrAddResource<TextureResource>("exit.jpg");
@@ -41,4 +43,10 @@ void MenuSystem::OnInit() {
 void MenuSystem::OnUpdate() {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		_engine.LoadScene(Scene::Main);
+}
+
+void MenuSystem::OnSceneUnload(Scene scene) {
+#pragma unroll 3
+	for (auto item: _createdEntities)
+		_entities->DestroyEntity(*item);
 }
