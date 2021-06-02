@@ -6,5 +6,6 @@
 
 struct MeshComponent : public ComponentData<MeshComponent>
 {
+public:
 	MeshResource* Mesh;
 };

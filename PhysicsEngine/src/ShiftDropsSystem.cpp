@@ -9,7 +9,6 @@
 using namespace sf::Extensions::Vector2;
 
 void ShiftDropsSystem::OnFixedUpdate() {
-	int i = 0;//
 	const auto& items = _entities
 			->GetEntitiesBy<ComponentDrop, TransformComponent, SpeedComponent>();
 
@@ -27,35 +26,25 @@ void ShiftDropsSystem::OnFixedUpdate() {
 			if (!neighborTransform || !neighborSpeed) continue;
 
 			auto distance = currentTransform->Location->*Magnitude(neighborTransform->Location);
-			if (distance < 2 * RADIUS) {
-				auto direction = (currentTransform->Location - neighborTransform->Location)->*Normalize();
-				/*neighborSpeed->Speed += currentSpeed->Speed * (1.f - SURFACE_FORCE);
-				currentSpeed->Speed *= SURFACE_FORCE;*/
+			if (distance < 2 * RADIUS && distance >= RADIUS) {
+				auto direction = (_oldLocation - neighborTransform->Location)->*Normalize();
 				MomentumConservation(*currentSpeed, *neighborSpeed, *neighborDrop);
-				currentTransform->Location += direction * (float)(2 * RADIUS - distance);
+				currentTransform->Location += direction * (2 * RADIUS);
+			} else if (distance < RADIUS) {
+				auto direction = sf::Vector2f {0, 1};
+				MomentumConservation(*currentSpeed, *neighborSpeed, *neighborDrop);
+				currentTransform->Location += direction * (2 * RADIUS);
 			}
 		}
 
 		// hardcode mood begin
+		
+		sf::Vector2f _normalVector = { 0, 0 };
 
-		sf::Vector2f _normalVector = {0, 0};
-
-		//_columnHeight->*Cos(_gravitation);
-		/*if (currentSpeed->Speed.y < 0.000005) {
-			
-		}*/
-
-		if (currentTransform->Location.y < -0.19) { // низ
+		if (currentTransform->Location.y < -0.19) {
 			//std::cout << "last y speed: " << currentSpeed->Speed.y << std::endl;
 			//currentTransform->Location.y = -0.19;
 			_normalVector = { 0, 1 };
-
-			//currentSpeed->Speed -= currentSpeed->Speed;
-			
-			/*currentSpeed->Speed += _normalVector ;
-			currentSpeed->Speed *= 0.4f;*/
-			//currentSpeed->Speed.y = 0;
-			//std::cout << " y speed: " << currentSpeed->Speed.y << std::endl << "------------" << std::endl;
 		}
 
 		if (currentTransform->Location.y > 0.83 && currentTransform->Location.x > 0.15 && currentTransform->Location.y < 0.86) { // верх
@@ -116,42 +105,12 @@ void ShiftDropsSystem::OnFixedUpdate() {
 			_normalVector *= _normalVector->*Cos(currentSpeed->Speed);
 			currentSpeed->Speed = { 0, 0 };
 			currentSpeed->Speed += _normalVector;
-		}
-/*
-		_normalVector *= currentSpeed->Speed->*Length();
-
-		if (_normalVector->*Length() > 0.000001) {
-			_normalVector *= _normalVector->*Sin(currentSpeed->Speed);
-			currentSpeed->Speed = { 0, 0 };
-			currentSpeed->Speed += _normalVector;
-			currentSpeed->Speed *= 1.0f;
-		}/*
-		//std::cout << " _normalVector y: " << _normalVector.y << std::endl << "------------" << std::endl;
-		
-		
-
-		//currentSpeed->Speed += _normalVector;
-		/*if (abs(_normalVector->*Length() - 1) > 0.0001) {
-			std::cout << "_ " << _normalVector.y << std::endl;
-			currentSpeed->Speed *= 0.4f;
-		}*/
-		//currentSpeed->Speed *= 0.4f;
-
-		// hardcode mood end
-
-		//float _wallY = 500; // take from another file
-		//float _wallThickness = 2; // take from another file
-
-		//if (currentTransform->Location.y > _wallY - _wallThickness - 2 * RADIUS
-		//		&& currentTransform->Location.x < 1000
-		//		&& currentTransform->Location.x > 0) {
-		//		currentTransform->Location.y = _wallY - _wallThickness - 2 * RADIUS;
-		//		currentSpeed->Speed.y = 0;
-		//}
-
+		}	
 		if ((currentTransform->Location - _oldLocation)->*Length() < (currentSpeed->Speed * _gameTime.FixedDeltaTime())->*Length() - 0.00001f) {
 			currentSpeed->Speed -= (_gravitation * _gameTime.FixedDeltaTime()) * 1.5f;  // change
 		}
+
+		// hardcode mood end
 	}
 }
 
@@ -172,28 +131,3 @@ void ShiftDropsSystem::ChangeSpeed(SpeedComponent& currentSpeed, ComponentDrop& 
 			}
 	}
 }
-//
-//			auto& current_drop_comp = *(_entities->GetComponent<ComponentDrop>(*current_drop));
-//
-//			float _wallY = 500; // take from another file
-//			float _wallThickness = 2; // take from another file
-//
-//			if (neighborTransform->Location.y > _wallY - _wallThickness - 2 * RADIUS
-//				&& neighborTransform->Location.x < 1000
-//				&& neighborTransform->Location.x > 0) {
-////				current_drop_transform->Location.y = _wallY - _wallThickness - 2 * RADIUS;
-//				neighborSpeed.Speed.y = 0;
-//				currentDrop->Is_Interract_Wall = true;
-//			}
-//
-//			for (auto neighbour : current_drop_comp.neighbours) {
-//				auto& other_drop_comp = *(_entities->GetComponent<ComponentDrop>(*neighbour));
-//				if (!(other_drop_comp.is_moved) && !(other_drop_comp.is_in_queue))
-//				{
-//					other_drop_comp.is_in_queue = true;
-//					currentDrop->Perimetr_drops.push(neighbour);
-//				}
-//			}
-//
-//			current_drop_comp.is_in_queue = false;
-//			currentDrop->Perimetr_drops.pop();
