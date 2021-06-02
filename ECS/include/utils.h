@@ -53,14 +53,14 @@ namespace sf::Extensions::Vector2 {
 	template <typename T>
 	constexpr auto Sin(const sf::Vector2<T>& other) {
 		return [&](const sf::Vector2<T>& vector) constexpr -> float {
-			return vector->*Dot(other) / vector->*Length<T>() / other->*Length<T>();
+			return vector->*Cross(other) / vector->*Length<T>() / other->*Length<T>();
 		};
 	}
 
 	template <typename T>
 	constexpr auto Cos(const sf::Vector2<T>& other) {
 		return [&](const sf::Vector2<T>& vector) constexpr -> float {
-			return vector->*Cross(other) / vector->*Length<T>() / other->*Length<T>();
+			return vector->*Dot(other) / vector->*Length<T>() / other->*Length<T>();
 		};
 	};
 

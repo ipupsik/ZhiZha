@@ -38,46 +38,72 @@ void ShiftDropsSystem::OnFixedUpdate() {
 
 		// hardcode mood begin
 
-		if (currentTransform->Location.y < -0.19) {
-			currentTransform->Location.y = -0.19;
-			currentSpeed->Speed.y = 0;
-		}
+		sf::Vector2f _normalVector = {0.00000001, 0.000000001};
 
-		if (currentTransform->Location.y > 0.83 && currentTransform->Location.x > 0.15 && currentTransform->Location.y < 0.86) {
-			currentTransform->Location.y = 0.83;
-			currentSpeed->Speed.y = 0;
-		}
-
-
-		if (currentTransform->Location.y > 0.83 && currentTransform->Location.x > 0.15 && currentTransform->Location.x < 0.18) {
-			currentTransform->Location.x = 0.15;
-			currentSpeed->Speed.x = 0;
-		}
-
-
-		if (currentTransform->Location.x < -0.15 && currentTransform->Location.y > 0.44 && currentTransform->Location.y < 1.15) {
-			currentTransform->Location.x = -0.15;
-			currentSpeed->Speed.x = 0;
-		}
-
-
-		if (currentTransform->Location.x < -0.88) {
-			currentTransform->Location.x = -0.88;
-			currentSpeed->Speed.x = 0;
-		}
-
-		if (currentTransform->Location.y - 0.75 * currentTransform->Location.x < -0.685) {
+		//_columnHeight->*Cos(_gravitation);
+		/*if (currentSpeed->Speed.y < 0.000005) {
 			
+		}*/
+
+		if (currentTransform->Location.y < -0.19) { // низ
+			//std::cout << "last y speed: " << currentSpeed->Speed.y << std::endl;
+			currentTransform->Location.y = -0.19;
+			_normalVector = { 0, 1 };
+			currentSpeed->Speed.y = 0;
+			
+			/*_normalVector *= currentSpeed->Speed->*Length();
+			_normalVector *= _normalVector->*Sin(currentSpeed->Speed);
+			currentSpeed->Speed = { 0, 0 };
+			currentSpeed->Speed += _normalVector;*/
+
+			//currentSpeed->Speed -= currentSpeed->Speed;
+			
+			/*currentSpeed->Speed += _normalVector ;
+			currentSpeed->Speed *= 0.4f;*/
+			//currentSpeed->Speed.y = 0;
+			//std::cout << " y speed: " << currentSpeed->Speed.y << std::endl << "------------" << std::endl;
+		}
+
+		if (currentTransform->Location.y > 0.83 && currentTransform->Location.x > 0.15 && currentTransform->Location.y < 0.86) { // верх
+			currentTransform->Location.y = 0.83;
+			_normalVector = { 0, -1 };
+			currentSpeed->Speed.y = 0;
+		}
+
+
+		if (currentTransform->Location.y > 0.83 && currentTransform->Location.x > 0.15 && currentTransform->Location.x < 0.18) { // верх право
+			currentTransform->Location.x = 0.15;
+			_normalVector = { -1, 0 };
+			currentSpeed->Speed.x = 0;
+		}
+
+
+		if (currentTransform->Location.x < -0.15 && currentTransform->Location.y > 0.44 && currentTransform->Location.y < 1.15) { // перегородка
+			currentTransform->Location.x = -0.15;
+			_normalVector = { 1, 0 };
+			currentSpeed->Speed.x = 0;
+		}
+
+		if (currentTransform->Location.x < -0.88) {  // левая стенка
+			currentTransform->Location.x = -0.88;
+			_normalVector = { 1, 0 };
+			currentSpeed->Speed.x = 0;
+		}
+
+		if (currentTransform->Location.y - 0.75 * currentTransform->Location.x < -0.685) { // нижний треугольник 
 			currentTransform->Location.y = -0.685 + 0.75 * currentTransform->Location.x;
+			_normalVector = { -0.6, 0.8 };
+
 			currentSpeed->Speed = { 0,0 };
 		}
 
-		if (currentTransform->Location.y + 0.63 * currentTransform->Location.x > 1.25 && (currentTransform->Location.x > 0.15 || currentTransform->Location.x < -0.15)) {
+		if (currentTransform->Location.y + 0.63 * currentTransform->Location.x > 1.25 && (currentTransform->Location.x > 0.15 || currentTransform->Location.x < -0.15)) {  // верхний треугольник
 			currentTransform->Location.y = 1.25 - 0.63 * currentTransform->Location.x;
 			currentSpeed->Speed = { 0,0 };
 		}
 
-		if (currentTransform->Location.x > 0.94) {
+		if (currentTransform->Location.x > 0.94) { // вравая стенка
+			_normalVector = { -1, 0 };
 			currentTransform->Location.x = 0.94;
 			currentSpeed->Speed.x = 0;
 		}
@@ -86,10 +112,26 @@ void ShiftDropsSystem::OnFixedUpdate() {
 			currentTransform->Location = { 0,0 };
 			currentSpeed->Speed = { 0,0 };
 		}
+
+/*
+		_normalVector *= currentSpeed->Speed->*Length();
+
+		if (_normalVector->*Length() > 0.000001) {
+			_normalVector *= _normalVector->*Sin(currentSpeed->Speed);
+			currentSpeed->Speed = { 0, 0 };
+			currentSpeed->Speed += _normalVector;
+			currentSpeed->Speed *= 1.0f;
+		}/*
+		//std::cout << " _normalVector y: " << _normalVector.y << std::endl << "------------" << std::endl;
 		
-		if ((currentTransform->Location - _oldLocation)->*Length() < (currentSpeed->Speed * _gameTime.FixedDeltaTime())->*Length() - 0.00001f) {
-			currentSpeed->Speed -= (_gravitation * _gameTime.FixedDeltaTime()) * 1.5f;  // change
-		}
+		
+
+		//currentSpeed->Speed += _normalVector;
+		/*if (abs(_normalVector->*Length() - 1) > 0.0001) {
+			std::cout << "_ " << _normalVector.y << std::endl;
+			currentSpeed->Speed *= 0.4f;
+		}*/
+		//currentSpeed->Speed *= 0.4f;
 
 		// hardcode mood end
 
@@ -102,6 +144,10 @@ void ShiftDropsSystem::OnFixedUpdate() {
 		//		currentTransform->Location.y = _wallY - _wallThickness - 2 * RADIUS;
 		//		currentSpeed->Speed.y = 0;
 		//}
+
+		if ((currentTransform->Location - _oldLocation)->*Length() < (currentSpeed->Speed * _gameTime.FixedDeltaTime())->*Length() - 0.00001f) {
+			currentSpeed->Speed -= (_gravitation * _gameTime.FixedDeltaTime()) * 1.5f;  // change
+		}
 	}
 }
 

@@ -10,17 +10,17 @@ void EndSystem::OnFixedUpdate() {
 
 	for (auto& [components, current_entity] : items) {
 		auto& [drop_current, transformCurrent] = components;
-		if (transformCurrent->Location.y > 1) {
+		if (transformCurrent->Location.y > 2) {
 			_entities->DestroyEntity(*current_entity);
 		}
 	}
 
 	if (items.size() < 500) {
-		std::cout << "you've won!" << std::endl;
+		//std::cout << "you've won!" << std::endl;
 	}
 	
 	if (_time.Time() > 30) {
-		std::cout << "you've lost!" << std::endl;
+		//std::cout << "you've lost!" << std::endl;
 	}
 	//std::cout << items.size() << std::endl;
 }
