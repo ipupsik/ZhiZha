@@ -13,6 +13,7 @@ class Engine {
 	ResourceManager* _resourceManager = new ResourceManager();
 	GameTime* _time = new GameTime();
 	sf::RenderWindow& _window;
+	Scene _currentScene;
 
 	void initRenderThread();
 	void initFixedUpdateThread() const;
@@ -41,7 +42,7 @@ public:
 	}
 
 	void LoadScene(Scene scene);
-
+	void UnloadScene();
 	void Start();
 };
 

@@ -173,7 +173,7 @@ int main() {
 		.RegisterSystem<MaterialAttachSystem>(window)
 		.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime(), global_phi)
 		.RegisterSystem<EventSystem>(window, views[Game]).BindStatic()
-		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
+		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager()).BindStatic()
 
 		//.RegisterSystem<FormZhizhaVolume_System>()
 		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi).BindStatic()

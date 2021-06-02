@@ -50,6 +50,9 @@ public:
 			bool consideredToAdd = true;
 
 			complex.Entity = &item->GetEntity();
+			if (!complex.Entity->IsActive())
+				continue;
+
 			foreach([&](const auto i) {
 				typename std::tuple_element<i, std::tuple<Args...>>::type T;
 				const auto type = std::get<i>(types);
