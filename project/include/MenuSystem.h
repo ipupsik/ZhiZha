@@ -7,13 +7,14 @@
 
 class MenuSystem : public virtual InitSystem, public virtual UpdateSystem, public virtual UnloadSystem {
 	sf::View& _menuView;
-	ResourceManager& _resources;
 	Engine& _engine;
+	ResourceManager& _resources = _engine.GetResourceManager();
 	std::vector<Entity*> _createdEntities;
+	sf::Window& _window;
 
 public:
-	explicit MenuSystem(sf::View& menuView, ResourceManager& resources, Engine& engine)
-		: _menuView(menuView), _resources(resources), _engine(engine) {}
+	explicit MenuSystem(sf::View& menuView, Engine& engine, sf::Window& window)
+		: _menuView(menuView), _engine(engine), _window(window) {}
 
 	void OnInit() override;
 	void OnUpdate() override;

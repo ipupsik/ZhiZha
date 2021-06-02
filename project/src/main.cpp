@@ -8,7 +8,7 @@
 #include "Engine.h"
 #include "Components/LayerComponent.h"
 #include "glad/glad.h"
-
+#include "Systems/ButtonClickSystem.h"
 #include "Systems/CollisionSystem.h"
 #include "Systems/EventSystem.h"
 #include "Systems/CameraMovingSystem.h"
@@ -155,7 +155,7 @@ int main() {
 
 	auto engine = new Engine(window);
 	engine->RegisterSystem<BackGround_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<MenuSystem>(views[Menu], engine->GetResourceManager(), *engine).BindToScene(Scene::Menu).UnbindFromScene(Scene::Main)
+		.RegisterSystem<MenuSystem>(views[Menu], *engine, window).BindToScene(Scene::Menu).UnbindFromScene(Scene::Main)
 		.RegisterSystem<Grass_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<SmallBrunch_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Tree_1_InitSystem>(engine->GetResourceManager())
@@ -167,19 +167,16 @@ int main() {
 		.RegisterSystem<Zhizha_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<ComplexCollision_InitSystem>()
-		//.RegisterSystem<ZhizhaVolume_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<ComplexCollision_InitSystem>()
-
 		.RegisterSystem<MaterialAttachSystem>(window)
-		.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime(), global_phi)
-		.RegisterSystem<EventSystem>(window, views[Game]).BindStatic()
-		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager()).BindStatic()
 
-		//.RegisterSystem<FormZhizhaVolume_System>()
+		.RegisterSystem<EventSystem>(window, views[Game], *engine).BindStatic()
+		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager()).BindStatic()
 		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi).BindStatic()
 		.RegisterSystem<RenderSystem_HUD>(window, views).BindStatic()
-		//.RegisterSystem<ZhizhaDraw_System>(window, views, camera_location, global_phi)
+		.RegisterSystem<ButtonClickSystem>(window).BindStatic()
 
+		.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime(), global_phi)
 		.RegisterSystem<CollisionSystem>()
 		.RegisterSystem<UnionDropsSystem>(window)
 		.RegisterSystem<FormZhizhaVolume_System>()
@@ -189,7 +186,6 @@ int main() {
 		.RegisterSystem<ComplexCollisionSystem>()
 		.RegisterSystem<ResetParamsSystem>(camera_location)
 		.RegisterSystem<CameraMovingSystem>(camera_location);
-//		.RegisterSystem<EndSystem>(engine->GetTime());
 
 	engine->LoadScene(Scene::Menu);
 	engine->Start();

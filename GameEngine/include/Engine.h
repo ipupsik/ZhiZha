@@ -14,6 +14,7 @@ class Engine {
 	GameTime* _time = new GameTime();
 	sf::RenderWindow& _window;
 	Scene _currentScene;
+	bool _isActive = false;
 
 	void initRenderThread();
 	void initFixedUpdateThread() const;
@@ -44,6 +45,9 @@ public:
 	void LoadScene(Scene scene);
 	void UnloadScene();
 	void Start();
+	void Stop();
+
+	bool IsActive() { return _isActive; }
 };
 
 class SystemRegisteringHelper {

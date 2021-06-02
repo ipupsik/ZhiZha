@@ -8,7 +8,7 @@ void Engine::initRenderThread() {
 	_window.setActive(true);
 
 	glOrtho(-1.4, 1.4, -1.4, 1.4, -1, 8);
-	while (_window.isOpen()) {
+	while (_window.isOpen() && _isActive) {
 		_window.clear(sf::Color { 0, 0, 0, 255 });
 		_systemManager->Update();
 		_systemManager->PostUpdate();
@@ -21,7 +21,7 @@ void Engine::initRenderThread() {
 }
 
 void Engine::initFixedUpdateThread() const {
-	while (_window.isOpen()) {
+	while (_window.isOpen() && _isActive) {
 		_systemManager->FixedUpdate();
 
 		_time->waitForFixedUpdate();
@@ -35,6 +35,8 @@ Engine::~Engine() {
 }
 
 void Engine::Start() {
+	_isActive = true;
+
 	std::thread update([&] { initRenderThread(); });
 	std::thread fixed([&] { initFixedUpdateThread(); });
 
@@ -57,4 +59,8 @@ void Engine::LoadScene(Scene scene) {
 
 void Engine::UnloadScene() {
 	_systemManager->UnloadScene(_currentScene);
+}
+
+void Engine::Stop() {
+	_isActive = false;
 }

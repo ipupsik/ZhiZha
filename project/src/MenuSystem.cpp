@@ -2,6 +2,7 @@
 #include <TextureResource.h>
 #include <Components/RenderedComponent.h>
 #include <Components/LayerComponent.h>
+#include <Components/ButtonComponent.h>
 #include "MenuSystem.h"
 
 void MenuSystem::OnInit() {
@@ -29,6 +30,14 @@ void MenuSystem::OnInit() {
 
 		_entities->GetOrAddComponent<LayerComponent>(startEntity).Index = Menu;
 		_entities->GetOrAddComponent<RenderedComponent>(startEntity).DrawableObj = c.Sprite;
+
+		_entities->GetOrAddComponent<ButtonComponent>(startEntity, [&](ButtonComponent& cc) {
+			cc.Bounds = sf::IntRect(c.Sprite->getGlobalBounds());
+			cc.OnClick = [*this] {
+				_engine.UnloadScene();
+				_engine.LoadScene(Scene::Main);
+			};
+		});
 	});
 
 	_entities->GetOrAddComponent<SpriteComponent>(endEntity, [&](SpriteComponent& c) {
@@ -37,6 +46,15 @@ void MenuSystem::OnInit() {
 
 		_entities->GetOrAddComponent<LayerComponent>(endEntity).Index = Menu;
 		_entities->GetOrAddComponent<RenderedComponent>(endEntity).DrawableObj = c.Sprite;
+
+		_entities->GetOrAddComponent<ButtonComponent>(endEntity, [&](ButtonComponent& cc) {
+			cc.Bounds = sf::IntRect(c.Sprite->getGlobalBounds());
+			cc.OnClick = [*this] {
+				_engine.UnloadScene();
+				_engine.Stop();
+				_window.close();
+			};
+		});
 	});
 }
 
