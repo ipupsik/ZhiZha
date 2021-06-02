@@ -1,6 +1,5 @@
 #include "Systems/RenderSystem_HUD.h"
 #include "Systems/RenderSystem_Models.h"
-#include "Systems/MoveSystem.h"
 #include "Systems/EndSystem.h"
 #include "DefinesPhysics.h"
 #include "Zhizha_InitSystem.h"
@@ -22,11 +21,7 @@
 #include "Systems/ShiftDropsSystem.h"
 #include "Systems/ComplexCollision_InitSystem.h"
 #include "Systems/ComplexCollisionSystem.h"
-//#include "Systems/TestSystem.h"
 #include "BackGround_InitSystem.h"
-
-#include "ZhizhaDraw_System.h"
-#include "ZhizhaVolume_InitSystem.h"
 #include "FormZhizhaVolume_System.h"
 #include "SmallBrunch_InitSystem.h"
 #include "SmallSkull_InitSystem.h"
@@ -36,89 +31,17 @@
 #include "Tree_1_InitSystem.h"
 #include "Tree_2_InitSystem.h"
 #include "Tree_3_InitSystem.h"
-#include "Systems/ComplexCollision_InitSystem.h"
 
 #if defined(linux)
 #include <X11/Xlib.h>
 #include <MenuSystem.h>
+#include <iostream>
 #endif
 
-#define OK 0
 #define WINDOW_WIDTH 900
 #define WINDOW_HEIGHT 900
 
 using namespace sf;
-
-void show_menu(RenderWindow& window, int* exit_code)
-{
-	Texture menu_bg, menu_start, menu_exit;
-
-	menu_bg.loadFromFile("../share/background.jpg");
-	menu_start.loadFromFile("../share/start_game.jpg");
-	menu_exit.loadFromFile("../share/exit.jpg");
-
-	Sprite bg(menu_bg);
-	Sprite start(menu_start);
-	Sprite exit(menu_exit);
-
-	bg.setPosition(0, 0);
-	start.setPosition(330, 300);
-	exit.setPosition(380, 400);
-
-	bool menu_alive = true;
-	int hovered_note = 0;
-
-	while (menu_alive)
-	{
-		Event event;
-
-		while (window.pollEvent(event))
-		{
-			if (event.type == Event::Closed)
-				window.close();
-		}
-
-		start.setColor(Color::White);
-		exit.setColor(Color::White);
-		hovered_note = 0;
-
-		window.clear(Color::White);
-
-		if (IntRect(330, 300, 306, 107).contains(Mouse::getPosition(window)))
-		{
-			start.setColor(Color::Blue);
-			hovered_note = 1;
-		}
-		else if (IntRect(380, 400, 128, 107).contains(Mouse::getPosition(window)))
-		{
-			exit.setColor(Color::Blue);
-			hovered_note = 2;
-		}
-
-		if (Mouse::isButtonPressed(Mouse::Left))
-		{
-			switch (hovered_note)
-			{
-			case 1:
-				menu_alive = false;
-				*exit_code = 1;
-				break;
-			case 2:
-				window.close();
-				menu_alive = false;
-				*exit_code = 2;
-			default:
-				break;
-			}
-		}
-
-		window.draw(bg);
-		window.draw(start);
-		window.draw(exit);
-
-		window.display();
-	}
-}
 
 int main() {
 #if defined(linux)
@@ -134,14 +57,7 @@ int main() {
 	auto window = sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "ZhiZha",
 			sf::Style::Close | sf::Style::Titlebar, settings);
 
-	int exit_code;
-	//show_menu(window, &exit_code);
-
-	if (exit_code == 2)
-	{
-		return 0;
-	}
-
+	std::ostream::sync_with_stdio(false);
 	gladLoadGL();
 
 	sf::Vector2f gravity = { 0, G / 20 };
