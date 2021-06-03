@@ -76,6 +76,8 @@ void ComplexCollisionSystem::OnFixedUpdate()
 
 				
 
+				
+
 				float cos_012 = vec12->*Dot(vec10) / vec12->*Length() / vec10->*Length();
 				
 				float cos_021 = (-vec12)->*Dot(vec20) / vec12->*Length() / vec20->*Length();
@@ -164,20 +166,33 @@ void ComplexCollisionSystem::OnFixedUpdate()
 				if (does_hit && min_h < RADIUS)
 				{
 					float z_coord = -min_line.x * min_dist_to_center.y + min_line.y * min_dist_to_center.x;
-					sf::Vector2f n = {
+					sf::Vector2f _normalVector = {
 						min_line.y * z_coord,
 						-min_line.x * z_coord
 					};
 
-					n->*Normalize();
+					_normalVector = _normalVector->*Normalize();
 
+					std::cout << "x: " << _normalVector.x << " y: " << _normalVector.y << std::endl;
+
+					_normalVector *= -1.f;
+					transform->Location += _normalVector * min_h * -5.f * RADIUS;
+
+					_normalVector = _normalVector->*RotateRad(PI / 2);
 					
+
+					_normalVector *= speed_comp->Speed->*Length();
+					_normalVector *= _normalVector->*Cos(speed_comp->Speed);
+					speed_comp->Speed = { 0, 0 };
+					speed_comp->Speed += _normalVector;
+
+					/*
 
 					sf::Vector2f new_velocity = speed_comp->Speed - n * 2.f * n->*Dot(speed_comp->Speed);
 
 					speed_comp->Speed = new_velocity * 1.f;
 
-					transform->Location = transform->Location + n * (RADIUS - min_h);
+					transform->Location = transform->Location + n * (RADIUS - min_h);/**/
 				}
 			}
 		}
