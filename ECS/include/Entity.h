@@ -14,6 +14,7 @@ private:
 
 	const Entity* _parent;
 	const Id _id;
+	bool _isActive = true;
 
 	static std::atomic_size_t _count;
 
@@ -31,6 +32,8 @@ public:
 	bool operator<(const Entity& rhs) const;
 
 	[[nodiscard]] const Entity* GetParent() const;
+	[[nodiscard]] bool IsActive() const { return _isActive; }
+	void SetActive(bool active = true) { _isActive = active; }
 };
 
 template <>

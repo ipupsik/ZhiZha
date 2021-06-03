@@ -22,6 +22,7 @@ class GameTime {
 
 	void waitForUpdate();
 	void waitForFixedUpdate();
+	void reset();
 
 public:
 	GameTime() = default;

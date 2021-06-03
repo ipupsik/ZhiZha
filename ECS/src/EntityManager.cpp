@@ -6,6 +6,7 @@ Entity& EntityManager::Instantiate(const Entity& parent) {
 		_entities.resize(Entity::_count);
 	_entities[copy->_id] = copy;
 
+#pragma unroll 10
 	for (auto&[_, v] : _componentsTable) {
 		if (v.size() <= parent._id || v.size() <= copy->_id)
 			v.resize(Entity::_count, nullptr);
@@ -27,8 +28,10 @@ Entity& EntityManager::CreateEntity() {
 
 EntityManager::~EntityManager() {
 	for (const auto&[_, v] : _componentsTable)
+#pragma unroll 10
 		for (auto component : v)
 			delete component;
+#pragma unroll 10
 	for (auto entity : _entities)
 		delete entity;
 }
@@ -38,6 +41,7 @@ const std::vector<Entity*>& EntityManager::GetEntities() const {
 }
 
 void EntityManager::DestroyEntity(const Entity& entity) {
+#pragma unroll 10
 	for (auto&[k, v] : _componentsTable)
 		if (v.size() > entity._id) {
 			v[entity._id] = nullptr;

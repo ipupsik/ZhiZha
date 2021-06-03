@@ -452,7 +452,7 @@ public:
     /// If a window requests focus, it only hints to the operating
     /// system, that it would like to be focused. The operating system
     /// is free to deny the request.
-    /// This is not to be confused with setActive().
+    /// This is not to be confused with SetActive().
     ///
     /// \see hasFocus
     ///
@@ -610,7 +610,7 @@ private:
 ///    }
 ///
 ///    // Activate the window for OpenGL rendering
-///    window.setActive();
+///    window.SetActive();
 ///
 ///    // OpenGL drawing commands go here...
 ///

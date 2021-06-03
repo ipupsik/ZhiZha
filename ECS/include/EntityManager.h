@@ -8,7 +8,6 @@
 
 #include "Entity.h"
 #include "Component.h"
-#include "ComponentHandle.h"
 #include "utils.h"
 
 class EntityManager {
@@ -35,7 +34,7 @@ public:
 	[[nodiscard]] const std::vector<Entity*>& GetEntities() const;
 
 	template <std::derived_from<Component> ...Args>
-	auto GetEntitiesBy() {
+	auto GetEntitiesBy() const {
 		constexpr auto count = sizeof...(Args);
 		const auto types = std::make_tuple(Args::Type...);
 
@@ -43,6 +42,7 @@ public:
 		const auto first = std::get<0>(types);
 		if (!_componentsTable.contains(first)) return result;
 
+#pragma unroll 10
 		for (Component* item: _componentsTable.at(first)) {
 			if (item == nullptr) continue;
 
@@ -50,6 +50,9 @@ public:
 			bool consideredToAdd = true;
 
 			complex.Entity = &item->GetEntity();
+			if (!complex.Entity->IsActive())
+				continue;
+
 			foreach([&](const auto i) {
 				typename std::tuple_element<i, std::tuple<Args...>>::type T;
 				const auto type = std::get<i>(types);
@@ -83,7 +86,7 @@ public:
 
 	template <typename T>
 	requires std::derived_from<T, ComponentData<T>>
-	ComponentHandle<T> GetComponent(const Entity& entity) const {
+	T* GetComponent(const Entity& entity) const {
 		if (!_componentsTable.contains(T::Type))
 			return nullptr;
 		const auto& components = _componentsTable.at(T::Type);
@@ -91,7 +94,7 @@ public:
 			return nullptr;
 		if (components.at(entity._id) == nullptr)
 			return nullptr;
-		return static_cast<T&>(*components.at(entity._id));
+		return static_cast<T*>(components.at(entity._id));
 	}
 
 	template <typename T>

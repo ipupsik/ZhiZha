@@ -14,32 +14,36 @@
 void Grass_InitSystem::OnInit()
 {
 	//Initialize Enityty
-	Entity& grass = _entities->CreateEntity();
+	_grass = &_entities->CreateEntity();
 
-	_entities->GetOrAddComponent<MeshComponent>(grass, [&](MeshComponent& c) {
+	_entities->GetOrAddComponent<MeshComponent>(*_grass, [&](MeshComponent& c) {
 		c.Mesh = _resources.GetOrAddResource<MeshResource>("grass");
 		});
 
-	_entities->GetOrAddComponent<MaterialComponent>(grass, [&](MaterialComponent& c) {
+	_entities->GetOrAddComponent<MaterialComponent>(*_grass, [&](MaterialComponent& c) {
 		c.VertexShader = _resources.GetOrAddResource<VertexShaderResource>("Map");
 		c.FragmentShader = _resources.GetOrAddResource<FragmentShaderResource>("Map");
 		c.Textures.emplace_back(_resources.GetOrAddResource<TextureResource>("grass_Albedo.png"));
 		c.attributesCount = 2;
 		});
 
-	_entities->GetOrAddComponent<TransformComponent>(grass, [&](TransformComponent& c) {
+	_entities->GetOrAddComponent<TransformComponent>(*_grass, [&](TransformComponent& c) {
 		c.Location = { 0.0, -.2 };
 		c.Scale = { 0.07, 0.07 };
 		c.Angle = 0.0f;
 		c.parent = nullptr;
 		});
 
-	_entities->GetOrAddComponent<LayerComponent>(grass, [](LayerComponent& c) {
+	_entities->GetOrAddComponent<LayerComponent>(*_grass, [](LayerComponent& c) {
 		c.Index = Game;
 	});
 
-	_entities->GetOrAddComponent<GlobalRotation_Component>(grass);
+	_entities->GetOrAddComponent<GlobalRotation_Component>(*_grass);
 }
 
 Grass_InitSystem::Grass_InitSystem(ResourceManager& resources)
 	: _resources(resources) { }
+
+void Grass_InitSystem::OnSceneUnload(Scene scene) {
+	_entities->DestroyEntity(*_grass);
+}
