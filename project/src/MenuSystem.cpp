@@ -7,13 +7,12 @@
 #include "FontResource.h"
 
 void MenuSystem::OnInit() {
-	auto& backEntity = _entities->CreateEntity();
 	auto& startEntity = _entities->CreateEntity();
 	auto& endEntity = _entities->CreateEntity();
+	auto& namingEntity = _entities->CreateEntity();
 
-	_createdEntities.assign({ &backEntity, &startEntity, &endEntity });
+	_createdEntities.assign({ &startEntity, &endEntity, &namingEntity });
 
-	auto menuBackground = _resources.GetOrAddResource<TextureResource>("background.jpg");
 	auto& font = _resources.GetOrAddResource<FontResource>("JetBrainsMono-Regular")->Font();
 
 	_startText.setCharacterSize(48);
@@ -26,13 +25,13 @@ void MenuSystem::OnInit() {
 	_endText.setString("Exit");
 	_endText.setPosition(300, 404);
 
-	_entities->GetOrAddComponent<SpriteComponent>(backEntity, [&](SpriteComponent& c) {
-		c.Sprite = new sf::Sprite(menuBackground->Texture);
-		c.Sprite->setPosition(0, 0);
+	_namingText.setCharacterSize(64);
+	_namingText.setFont(font);
+	_namingText.setString("ZhiZha");
+	_namingText.setPosition(250, 250);
 
-		_entities->GetOrAddComponent<LayerComponent>(backEntity).Index = Background;
-		_entities->GetOrAddComponent<RenderedComponent>(backEntity).DrawableObj = c.Sprite;
-	});
+	_entities->GetOrAddComponent<RenderedComponent>(namingEntity).DrawableObj = &_namingText;
+	_entities->GetOrAddComponent<LayerComponent>(namingEntity).Index = Gui;
 
 	_entities->GetOrAddComponent<LayerComponent>(startEntity).Index = Gui;
 	_entities->GetOrAddComponent<RenderedComponent>(startEntity).DrawableObj = &_startText;
@@ -74,4 +73,8 @@ void MenuSystem::OnSceneUnload(Scene scene) {
 #pragma unroll 3
 	for (auto item: _createdEntities)
 		_entities->DestroyEntity(*item);
+}
+
+void MenuSystem::OnUpdate() {
+	_window.clear(sf::Color{144, 144, 144});
 }
