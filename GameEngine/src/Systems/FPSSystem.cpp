@@ -1,5 +1,6 @@
+#include <FontResource.h>
 #include "Systems/FPSSystem.h"
-
+#include "ResourceFile.h"
 #include "Components/LayerComponent.h"
 #include "Components/RenderedComponent.h"
 
@@ -13,12 +14,11 @@ void FPSSystem::OnFixedUpdate() {
 }
 
 void FPSSystem::OnInit() {
-	const auto font = _resources.GetOrAddResource<ResourceFile>("JetBrainsMono-Regular.ttf");
-	_font.loadFromStream(*font);
+	auto& font = _resources.GetOrAddResource<FontResource>("JetBrainsMono-Regular")->Font();
 	_fontEntity = &_entities->CreateEntity();
 	_fontEntity->SetActive(false);
 	_entities->GetOrAddComponent<RenderedComponent>(*_fontEntity, [&](RenderedComponent& c) {
-		_fps.setFont(_font);
+		_fps.setFont(font);
 		_fps.setCharacterSize(20);
 		c.DrawableObj = &_fps;
 	});

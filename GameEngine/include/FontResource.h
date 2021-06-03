@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ResourceFile.h"
+#include "SFML/Graphics.hpp"
 
 class FontResource: public ResourceFile {
 	sf::Font _font;

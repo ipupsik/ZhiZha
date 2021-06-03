@@ -9,7 +9,6 @@ class CountdownSystem : public virtual InitSystem,
 						public virtual UnloadSystem {
 	Entity* _textEntity;
 	sf::Text _text;
-	sf::Font _font;
 	ResourceManager& _resources;
 	GameTime& _time;
 

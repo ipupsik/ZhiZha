@@ -2,6 +2,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <Components/RenderedComponent.h>
 #include <Components/LayerComponent.h>
+#include <FontResource.h>
 #include "CountdownSystem.h"
 
 void CountdownSystem::OnUpdate() {
@@ -20,11 +21,10 @@ void CountdownSystem::OnUpdate() {
 }
 
 void CountdownSystem::OnInit() {
-	const auto fontRes = _resources.GetOrAddResource<ResourceFile>("JetBrainsMono-Regular.ttf");
-	_font.loadFromStream(*fontRes);
+	auto& font = _resources.GetOrAddResource<FontResource>("JetBrainsMono-Regular")->Font();
 	_textEntity = &_entities->CreateEntity();
 	_entities->GetOrAddComponent<RenderedComponent>(*_textEntity, [&](RenderedComponent& c) {
-		_text.setFont(_font);
+		_text.setFont(font);
 		_text.setCharacterSize(20);
 		_text.setFillColor(sf::Color{43, 232, 39});
 		_text.setPosition(0, 60);

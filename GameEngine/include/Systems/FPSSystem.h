@@ -10,7 +10,6 @@ class FPSSystem : public virtual FixedUpdateSystem,
 				  public virtual UnloadSystem {
 	GameTime& _time;
 	sf::Text _fps;
-	sf::Font _font;
 	ResourceManager& _resources;
 	Entity* _fontEntity;
 	bool _wasF3Pressed = false;
