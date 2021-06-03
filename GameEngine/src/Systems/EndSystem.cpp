@@ -13,9 +13,9 @@ void EndSystem::OnFixedUpdate() {
 		if (transformCurrent->Location.x > 6.35) {
 			transformCurrent->Scale = { 0.03, 0.03 };
 		}
-		if (transformCurrent->Location.x > 7) {
+		if (transformCurrent->Location.x > 7 && (transformCurrent->Location.y > 4.4 && transformCurrent->Location.y < 4.87)) {
 			_entities->DestroyEntity(*current_entity);
-			// Win
+			std::cout << " Win" << std::endl;
 		}
 	}
 
