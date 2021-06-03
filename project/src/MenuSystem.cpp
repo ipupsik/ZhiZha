@@ -1,5 +1,4 @@
 #include "Components/SpriteComponent.h"
-#include <TextureResource.h>
 #include <Components/RenderedComponent.h>
 #include <Components/LayerComponent.h>
 #include <Components/ButtonComponent.h>

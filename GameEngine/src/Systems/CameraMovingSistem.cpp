@@ -5,7 +5,6 @@
 
 
 void CameraMovingSystem::OnFixedUpdate() {
-	//_camera_location = { 0, 0 };
 	const auto& items = _entities->GetEntitiesBy<TransformComponent, ComponentDrop>();
 
 	sf::Vector2f _newLocation = { 0, 0 };
@@ -26,16 +25,10 @@ void CameraMovingSystem::OnFixedUpdate() {
 		_camera_location = (_camera_location + _newLocation) * (1 / 2.f);
 		for (auto& [components, current_entity] : items) {
 			auto& [currentTransform, currentDrop] = components;
-			if (abs(currentTransform->Location.x + _camera_location.x) > 1.5f ||
-				abs(currentTransform->Location.y + _camera_location.y) > 1.5f) {
+			if (std::abs(currentTransform->Location.x + _camera_location.x) > 1.5f ||
+				std::abs(currentTransform->Location.y + _camera_location.y) > 1.5f) {
 				_entities->DestroyEntity(*current_entity);
-				//std::cout << " camera x: " << _camera_location.x << " y: " << _camera_location.y << std::endl;
-				//std::cout << " currentTransform x: " << currentTransform->Location.x << " currentTransform y: " << currentTransform->Location.y << std::endl;
-				//system("pause");
 			}
 		}
 	}
-	
-
-	
 }
