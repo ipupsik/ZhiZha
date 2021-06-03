@@ -58,13 +58,6 @@ void MenuSystem::OnInit() {
 	});
 }
 
-void MenuSystem::OnUpdate() {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-		_engine.UnloadScene();
-		_engine.LoadScene(Scene::Main);
-	}
-}
-
 void MenuSystem::OnSceneUnload(Scene scene) {
 #pragma unroll 3
 	for (auto item: _createdEntities)

@@ -14,12 +14,9 @@ void EndSystem::OnFixedUpdate() {
 			_entities->DestroyEntity(*current_entity);
 		}
 	}
-
-	if (items.size() < 500) {
-		// std::cout << "you've won!" << std::endl;
-	}
 	
-	if (_engine.GetTime().Time() > 30) {
+	if (_engine.GetTime().Time() > 40 && !_isOver) {
+		_isOver = true;
 		_engine.UnloadScene();
 		_engine.LoadScene(Scene::End);
 		// std::cout << "you've lost!" << std::endl;

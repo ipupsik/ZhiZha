@@ -5,7 +5,7 @@
 #include <Engine.h>
 #include "System.h"
 
-class MenuSystem : public virtual InitSystem, public virtual UpdateSystem, public virtual UnloadSystem {
+class MenuSystem : public virtual InitSystem, public virtual UnloadSystem {
 	Engine& _engine;
 	ResourceManager& _resources = _engine.GetResourceManager();
 	std::vector<Entity*> _createdEntities;
@@ -16,6 +16,5 @@ public:
 		: _engine(engine), _window(window) {}
 
 	void OnInit() override;
-	void OnUpdate() override;
 	void OnSceneUnload(Scene scene) override;
 };

@@ -31,6 +31,7 @@
 #include "Tree_2_InitSystem.h"
 #include "Tree_3_InitSystem.h"
 #include "MenuSystem.h"
+#include "CountdownSystem.h"
 #include <iostream>
 
 #if defined(linux)
@@ -98,6 +99,7 @@ int main() {
 		.RegisterSystem<ShiftDropsSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ResetParamsSystem>(camera_location)
 		.RegisterSystem<CameraMovingSystem>(camera_location)
+		.RegisterSystem<CountdownSystem>(engine->GetResourceManager(), engine->GetTime())
 		.RegisterSystem<EndSystem>(*engine);
 
 	engine->LoadScene(Scene::Menu);
