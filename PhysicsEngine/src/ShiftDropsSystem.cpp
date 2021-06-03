@@ -177,18 +177,10 @@ void ShiftDropsSystem::OnFixedUpdate() {
 					};
 
 					_normalVector = _normalVector->*Normalize();
-					//_normalVector *= -1.f;
-
-					/*std::cout << "x: " << _normalVector.x << " y: " << _normalVector.y << std::endl;
-					std::cout << "current location x: " << currentTransform->Location.x << " current location y: " << currentTransform->Location.y << std::endl;
-					std::cout << "_oldLocation x: " << _oldLocation.x << " _oldLocation y: " << _oldLocation.y << std::endl << std::endl;
-					*/
-					
 					
 					currentTransform->Location = _oldLocation;
 
 					_normalVector = _normalVector->*RotateRad(PI / 2);
-
 
 					_normalVector *= currentSpeed->Speed->*Length();
 					_normalVector *= _normalVector->*Cos(currentSpeed->Speed);
@@ -206,133 +198,30 @@ void ShiftDropsSystem::OnFixedUpdate() {
 				float _cos13 = vec01->*Cos(vec03);
 				float _cos23 = vec02->*Cos(vec03);
 
-				if (abs((acos(_cos12) + acos(_cos13) + acos(_cos23) - 2 * PI)) < 0.0001) {
-					std::cout << "--------------" << std::endl;
-					/*std::cout << "h_13: " << h_13 << std::endl;
-					std::cout << "h_23: " << h_23 << std::endl;
-					std::cout << "h_12: " << h_12 << std::endl;
-					std::cout << "min_h: " << min_h << std::endl;*/
-
-					//sf::Vector2f _normalVector = _camera_location - currentTransform->Location;
+				if (abs((acos(_cos12) + acos(_cos13) + acos(_cos23) - 2 * PI)) < 0.1) {
 					float z_coord = -min_line.x * min_dist_to_center.y + min_line.y * min_dist_to_center.x;
+
 					sf::Vector2f _normalVector = {
 						min_line.y * z_coord,
 						-min_line.x * z_coord
 					};
-					_normalVector = _normalVector->*Normalize();
 
-					//currentTransform->Location += _normalVector * (min_h + RADIUS + 0.001f);
-					currentTransform->Location += _normalVector * 0.001f;
-
-					if (abs((acos(_cos12) + acos(_cos13) + acos(_cos23) - 2 * PI)) < 0.0001) {
-						currentTransform->Location = { 0,0 };
-					}
-					//currentTransform->Location = currentDrop->OldLocation;
-
-					//std::cout << "\n\n\n" << std::endl;
-					//_entities->DestroyEntity(*item.Entity);
-					//currentTransform->Location = _oldLocation;
-					//system("pause");
+					currentSpeed->Speed = _normalVector * 0.5f;
+					currentTransform->Location = _oldLocation + _normalVector * 0.1f;
 				}
-				//// Erema
-
-				/*
-
-				sf::Vector2f new_velocity = speed_comp->Speed - n * 2.f * n->*Dot(speed_comp->Speed);
-
-				speed_comp->Speed = new_velocity * 1.f;
-
-				currentTransform->Location = currentTransform->Location + n * (RADIUS - min_h);/**/
-				//std::cout << "New location x: " << currentTransform->Location.x << " New location y: " << currentTransform->Location.y << std::endl;
-				//system("pause");
-				
 			}
 		}
-		currentDrop->OldLocationCounter++;
+		/*currentDrop->OldLocationCounter++;
 		if (currentDrop->OldLocationCounter == 20) {
 			currentDrop->OldLocation = currentTransform->Location;
 			currentDrop->OldLocationCounter = 0;
-		}
-		
+		}*/
 
-		// hardcode mood begin
-	/*
-		sf::Vector2f _normalVector = { 0, 0 };
-		std::cout << "X: " << currentTransform->Location.x << "\tY: " << currentTransform->Location.y << std::endl;
-		if (currentTransform->Location.y < -0.19) {
-			//std::cout << "last y speed: " << currentSpeed->Speed.y << std::endl;
-			//currentTransform->Location.y = -0.19;
-			_normalVector = { 0, 1 };
-		}
-
-		if (currentTransform->Location.y > 0.83 && currentTransform->Location.x > 0.15 && currentTransform->Location.y < 0.86) { // верх
-			//currentTransform->Location.y = 0.83;
-			_normalVector = { 0, -1 };
-			//currentSpeed->Speed.y = 0;
-		}
-
-
-		if (currentTransform->Location.y > 0.83 && currentTransform->Location.x > 0.15 && currentTransform->Location.x < 0.18) { // верх право
-			//currentTransform->Location.x = 0.15;
-			_normalVector = { -1, 0 };
-			//currentSpeed->Speed.x = 0;
-		}
-
-
-		if (currentTransform->Location.x < -0.15 && currentTransform->Location.y > 0.44 && currentTransform->Location.y < 1.15) { // перегородка
-			//currentTransform->Location.x = -0.15;
-			_normalVector = { 1, 0 };
-			//currentSpeed->Speed.x = 0;
-		}
-
-		if (currentTransform->Location.x < -0.88) {  // левая стенка
-			//currentTransform->Location.x = -0.88;
-			_normalVector = { 1, 0 };
-			//currentSpeed->Speed.x = 0;
-		}
-
-		if (currentTransform->Location.y - 0.75 * currentTransform->Location.x < -0.685) { // нижний треугольник 
-			//currentTransform->Location.y = -0.685 + 0.75 * currentTransform->Location.x;
-			_normalVector = { -0.6, 0.8 };
-
-			//currentSpeed->Speed = { 0,0 };
-		}
-
-		if (currentTransform->Location.y + 0.63 * currentTransform->Location.x > 1.25 && (currentTransform->Location.x > 0.15 || currentTransform->Location.x < -0.15)) {  // верхний треугольник
-			//currentTransform->Location.y = 1.25 - 0.63 * currentTransform->Location.x;
-			//currentSpeed->Speed = { 0,0 };
-		}
-
-		if (currentTransform->Location.x > 0.94) { // вравая стенка
-			_normalVector = { -1, 0 };
-			//currentTransform->Location.x = 0.94;
-			//currentSpeed->Speed.x = 0;
-		}
-
-		if (currentTransform->Location.x < -1 || currentTransform->Location.x > 1.2 || currentTransform->Location.y < -0.3 || currentTransform->Location.x > 1.5) {
-			currentTransform->Location = { 0,0 };
-			currentSpeed->Speed = { 0,0 };
-		}
-
-		if (_normalVector->*Length() > 0.00001) {
-			_normalVector = _normalVector->*RotateRad(PI / 2);
-			//currentSpeed->Speed.y = 0;
-			currentTransform->Location = _oldLocation;
-
-			_normalVector *= currentSpeed->Speed->*Length();
-			_normalVector *= _normalVector->*Cos(currentSpeed->Speed);
-			currentSpeed->Speed = { 0, 0 };
-			currentSpeed->Speed += _normalVector;
-		}	*/
 		if ((currentTransform->Location - _oldLocation)->*Length() < (currentSpeed->Speed * _gameTime.FixedDeltaTime())->*Length() - 0.00001f) {
 			currentSpeed->Speed -= (_gravitation * _gameTime.FixedDeltaTime()) * 1.5f;  // change
 		}
 
-		// hardcode mood end
-
-		//std::cout << "x : " << currentTransform->Location.x << "\ty : " << currentTransform->Location.y << std::endl;
 	}
-	//std::cout << std::endl;
 }
 
 void ShiftDropsSystem::MomentumConservation(SpeedComponent& currentSpeed, SpeedComponent& neighborSpeed, ComponentDrop& neighborDrop) {
