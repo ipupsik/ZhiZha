@@ -12,7 +12,7 @@ class CountdownSystem : public virtual InitSystem,
 	ResourceManager& _resources;
 	GameTime& _time;
 
-	static constexpr auto _timeToPlay = 40.;
+	static constexpr auto _timeToPlay = 90.;
 
 public:
 	CountdownSystem(ResourceManager& resources, GameTime& time)

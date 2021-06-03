@@ -1,3 +1,4 @@
+#include <DefinesPhysics.h>
 #include "ComponentDrop.h"
 
 #include "Systems/GravitationSystem.h"
@@ -12,4 +13,8 @@ void GravitationSystem::OnFixedUpdate() {
 		auto&[speed] = components;
 		speed->Speed += _gravitation * _gameTime.FixedDeltaTime();
 	}
+}
+
+void GravitationSystem::OnSceneUnload(Scene scene) {
+	_gravitation = sf::Vector2f{0, G / 20};
 }

@@ -3,7 +3,7 @@
 #include "System.h"
 #include "GameTime.h"
 
-class GravitationSystem : public virtual FixedUpdateSystem {
+class GravitationSystem : public virtual FixedUpdateSystem, public virtual UnloadSystem {
 	GameTime& _gameTime;
 	sf::Vector2f& _gravitation;
 
@@ -13,4 +13,5 @@ public:
 		, _gravitation(gravitation) {}
 
 	void OnFixedUpdate() override;
+	void OnSceneUnload(Scene scene) override;
 };

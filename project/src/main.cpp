@@ -36,6 +36,7 @@
 
 #if defined(linux)
 #include <X11/Xlib.h>
+#include <HappyEndSystem.h>
 #endif
 
 #define WINDOW_WIDTH 900
@@ -94,13 +95,14 @@ int main() {
 		.RegisterSystem<CollisionSystem>()
 		.RegisterSystem<UnionDropsSystem>(window)
 		.RegisterSystem<FormZhizhaVolume_System>()
-		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
+		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity).BindToScene(Scene::End)
 		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
 		//.RegisterSystem<ComplexCollisionSystem>()
 		.RegisterSystem<ShiftDropsSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ResetParamsSystem>(camera_location)
 		.RegisterSystem<CameraMovingSystem>(camera_location)
 		.RegisterSystem<CountdownSystem>(engine->GetResourceManager(), engine->GetTime())
+		.RegisterSystem<HappyEndSystem>(window, engine->GetResourceManager()).BindToScene(Scene::End).UnbindFromScene(Scene::Main)
 		.RegisterSystem<EndSystem>(*engine);
 
 	engine->LoadScene(Scene::Menu);
