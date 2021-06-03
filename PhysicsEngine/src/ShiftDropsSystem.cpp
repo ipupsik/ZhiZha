@@ -220,7 +220,7 @@ void ShiftDropsSystem::OnFixedUpdate() {
 		if ((currentTransform->Location - _oldLocation)->*Length() < (currentSpeed->Speed * _gameTime.FixedDeltaTime())->*Length() - 0.00001f) {
 			currentSpeed->Speed -= (_gravitation * _gameTime.FixedDeltaTime()) * 1.5f;  // change
 		}
-
+		//std::cout << "X: " << currentTransform->Location.x << " Y: " << currentTransform->Location.y << std::endl;
 	}
 }
 
