@@ -1,6 +1,7 @@
 #include "Component.h"
 #include "Entity.h"
 #include "SFML/System/Vector2.hpp"
+#include <vector>
 
 struct ComplexCollisionComponent : public ComponentData<ComplexCollisionComponent>
 {
