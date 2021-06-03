@@ -1,5 +1,6 @@
 ﻿#include <Components/TransformComponent.h>
 #include <iostream>
+#include <stdlib.h> 
 #include "../PhysicsEngine/include/ComponentDrop.h"
 
 #include "../GameEngine/include/Systems/EndSystem.h"
@@ -11,11 +12,14 @@ void EndSystem::OnFixedUpdate() {
 	for (auto& [components, current_entity] : items) {
 		auto& [drop_current, transformCurrent] = components;
 		if (transformCurrent->Location.y > 2) {
+			//transformCurrent->Scale = { 0.03, 0.03 };
+		}
+		if (transformCurrent->Location.y > 2.2) {
 			//_entities->DestroyEntity(*current_entity);
 		}
 	}
 	
-	if (_engine.GetTime().Time() > 40 && !_isOver) {
+	if (_engine.GetTime().Time() > 70 && !_isOver) {
 		_isOver = true;
 		_engine.UnloadScene();
 		_engine.LoadScene(Scene::End);
