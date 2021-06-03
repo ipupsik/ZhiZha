@@ -207,7 +207,7 @@ void ShiftDropsSystem::OnFixedUpdate() {
 					};
 
 					currentSpeed->Speed = _normalVector * 0.5f;
-					currentTransform->Location = _oldLocation + _normalVector * 0.1f;
+					currentTransform->Location = _oldLocation + _normalVector * 0.05f;
 				}
 			}
 		}
