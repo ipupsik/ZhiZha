@@ -30,11 +30,11 @@
 #include "Tree_1_InitSystem.h"
 #include "Tree_2_InitSystem.h"
 #include "Tree_3_InitSystem.h"
+#include "MenuSystem.h"
+#include <iostream>
 
 #if defined(linux)
 #include <X11/Xlib.h>
-#include <MenuSystem.h>
-#include <iostream>
 #endif
 
 #define WINDOW_WIDTH 900
@@ -96,9 +96,9 @@ int main() {
 		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ShiftDropsSystem>(engine->GetTime(), gravity)
-//		.RegisterSystem<ComplexCollisionSystem>()
 		.RegisterSystem<ResetParamsSystem>(camera_location)
-		.RegisterSystem<CameraMovingSystem>(camera_location);
+		.RegisterSystem<CameraMovingSystem>(camera_location)
+		.RegisterSystem<EndSystem>(*engine);
 
 	engine->LoadScene(Scene::Menu);
 	engine->Start();

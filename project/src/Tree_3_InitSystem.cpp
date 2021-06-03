@@ -14,32 +14,36 @@
 void Tree_3_InitSystem::OnInit()
 {
 	//Initialize Enityty
-	Entity& tree_3 = _entities->CreateEntity();
+	_tree = &_entities->CreateEntity();
 
-	_entities->GetOrAddComponent<MeshComponent>(tree_3, [&](MeshComponent& c) {
+	_entities->GetOrAddComponent<MeshComponent>(*_tree, [&](MeshComponent& c) {
 		c.Mesh = _resources.GetOrAddResource<MeshResource>("tree_3");
 		});
 
-	_entities->GetOrAddComponent<MaterialComponent>(tree_3, [&](MaterialComponent& c) {
+	_entities->GetOrAddComponent<MaterialComponent>(*_tree, [&](MaterialComponent& c) {
 		c.VertexShader = _resources.GetOrAddResource<VertexShaderResource>("Map");
 		c.FragmentShader = _resources.GetOrAddResource<FragmentShaderResource>("Map");
 		c.Textures.emplace_back(_resources.GetOrAddResource<TextureResource>("Tree_1_Albedo.png"));
 		c.attributesCount = 2;
 		});
 
-	_entities->GetOrAddComponent<TransformComponent>(tree_3, [&](TransformComponent& c) {
+	_entities->GetOrAddComponent<TransformComponent>(*_tree, [&](TransformComponent& c) {
 		c.Location = { 0.0, -.2 };
 		c.Scale = { 0.07, 0.07 };
 		c.Angle = 0.0f;
 		c.parent = nullptr;
 		});
 
-	_entities->GetOrAddComponent<LayerComponent>(tree_3, [](LayerComponent& c) {
+	_entities->GetOrAddComponent<LayerComponent>(*_tree, [](LayerComponent& c) {
 		c.Index = Game;
 	});
 
-	_entities->GetOrAddComponent<GlobalRotation_Component>(tree_3);
+	_entities->GetOrAddComponent<GlobalRotation_Component>(*_tree);
 }
 
 Tree_3_InitSystem::Tree_3_InitSystem(ResourceManager& resources)
 	: _resources(resources) { }
+
+void Tree_3_InitSystem::OnSceneUnload(Scene scene) {
+	_entities->DestroyEntity(*_tree);
+}

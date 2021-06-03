@@ -19,7 +19,9 @@ void EndSystem::OnFixedUpdate() {
 		// std::cout << "you've won!" << std::endl;
 	}
 	
-	if (_time.Time() > 30) {
+	if (_engine.GetTime().Time() > 30) {
+		_engine.UnloadScene();
+		_engine.LoadScene(Scene::End);
 		// std::cout << "you've lost!" << std::endl;
 	}
 	//std::cout << items.size() << std::endl;

@@ -59,6 +59,7 @@ void Engine::LoadScene(Scene scene) {
 }
 
 void Engine::UnloadScene() {
+	_time->reset();
 	_systemManager->UnloadScene(_currentScene);
 }
 

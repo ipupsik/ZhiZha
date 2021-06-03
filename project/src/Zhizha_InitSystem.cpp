@@ -18,6 +18,7 @@ void Zhizha_InitSystem::OnInit()
 		for (int j = 0; j < 5; j++)
 		{
 			Entity& ball = _entities->CreateEntity();
+			_createdEntities.emplace_back(&ball);
 
 			_entities->GetOrAddComponent<MeshComponent>(ball, [&](MeshComponent& c) {
 				c.Mesh = _resources.GetOrAddResource<MeshResource>("Circle");
@@ -54,3 +55,8 @@ void Zhizha_InitSystem::OnInit()
 
 Zhizha_InitSystem::Zhizha_InitSystem(ResourceManager& resources)
 	: _resources(resources) { }
+
+void Zhizha_InitSystem::OnSceneUnload(Scene scene) {
+	for (auto entity: _createdEntities)
+		_entities->DestroyEntity(*entity);
+}

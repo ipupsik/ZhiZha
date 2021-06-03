@@ -36,3 +36,9 @@ void GameTime::waitForFixedUpdate() {
 void GameTime::Manipulate(const float times) {
 	_fixedDeltaTime *= times;
 }
+
+void GameTime::reset() {
+	_time = 0;
+	_fixedTime = 0;
+	_frameCount = 0;
+}
