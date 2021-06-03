@@ -4,18 +4,17 @@
 #include "Systems/ButtonClickSystem.h"
 
 void ButtonClickSystem::OnUpdate() {
-	const auto& items = _entities->GetEntitiesBy<ButtonComponent, SpriteComponent>();
+	const auto& items = _entities->GetEntitiesBy<ButtonComponent>();
 
 	for (auto item: items) {
-		auto&[button, sprite] = item.Components;
+		auto&[button] = item.Components;
 
 		if (!button->Bounds.contains(sf::Mouse::getPosition(_window))) {
-			sprite->Sprite->setColor(sf::Color::White);
+			button->OnHoverEnds();
 			continue;
 		}
 
-		sprite->Sprite->setColor(sf::Color{ 144, 144, 144 });
-
+		button->OnHover();
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			button->OnClick();
 	}

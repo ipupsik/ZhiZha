@@ -10,6 +10,7 @@ class MenuSystem : public virtual InitSystem, public virtual UnloadSystem {
 	ResourceManager& _resources = _engine.GetResourceManager();
 	std::vector<Entity*> _createdEntities;
 	sf::Window& _window;
+	sf::Text _startText, _endText;
 
 public:
 	explicit MenuSystem(Engine& engine, sf::Window& window)
