@@ -13,9 +13,9 @@
 
 void Zhizha_InitSystem::OnInit()
 {
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		for (int j = 0; j < 30; j++)
+		for (int j = 0; j < 10; j++)
 		{
 			Entity& ball = _entities->CreateEntity();
 
@@ -32,8 +32,8 @@ void Zhizha_InitSystem::OnInit()
 
 			_entities->GetOrAddComponent<TransformComponent>(ball, [&](TransformComponent& c) {
 				c.Location = {
-				i * 0.02f + 0.1f,
-				j * 0.02f
+				i * 0.04f + 0.1f,
+				j * 0.04f
 				};
 				c.Scale = { 0.2f, 0.2f };
 				c.Angle = 0;

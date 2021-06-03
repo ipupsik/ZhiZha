@@ -10,6 +10,6 @@ void GravitationSystem::OnFixedUpdate() {
 
 	for (auto&[components, entity] : items) {
 		auto&[speed] = components;
-		speed->Speed += _gravitation * _gameTime.FixedDeltaTime();
+		speed->Speed += _gravitation * _gameTime.FixedDeltaTime() / 2.f;
 	}
 }

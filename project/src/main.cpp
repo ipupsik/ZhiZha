@@ -184,8 +184,8 @@ int main() {
 		.RegisterSystem<FormZhizhaVolume_System>()
 		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
-		.RegisterSystem<ShiftDropsSystem>(engine->GetTime(), gravity)
-		.RegisterSystem<ComplexCollisionSystem>()
+		//.RegisterSystem<ComplexCollisionSystem>()
+		.RegisterSystem<ShiftDropsSystem>(engine->GetTime(), gravity, camera_location)
 		.RegisterSystem<ResetParamsSystem>(camera_location)
 		.RegisterSystem<CameraMovingSystem>(camera_location);
 //		.RegisterSystem<EndSystem>(engine->GetTime());

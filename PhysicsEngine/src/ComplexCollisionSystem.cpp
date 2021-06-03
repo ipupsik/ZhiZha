@@ -62,7 +62,7 @@ void ComplexCollisionSystem::OnFixedUpdate()
 		{
 			auto& [ccc] = components_map;
 
-			std::cout << ccc->ComplexCollision.size() << std::endl;
+			//std::cout << ccc->ComplexCollision.size() << std::endl;
 
 			for (int i = 0; i < ccc->ComplexCollision.size(); ++i)
 			{
@@ -75,6 +75,8 @@ void ComplexCollisionSystem::OnFixedUpdate()
 				sf::Vector2f vec10 = transform->Location - ccc->ComplexCollision[i].v1;
 				sf::Vector2f vec20 = transform->Location - ccc->ComplexCollision[i].v2;
 				sf::Vector2f vec30 = transform->Location - ccc->ComplexCollision[i].v3;
+
+				
 
 				
 
@@ -162,27 +164,40 @@ void ComplexCollisionSystem::OnFixedUpdate()
 				}
 				
 				// int res = min_h < RADIUS;
-				std::cout << "hello" << std::endl;
+				//std::cout << "hello" << std::endl;
 
 				if (does_hit && min_h < RADIUS)
 				{
 					std::cout << "collided wall" << std::endl;
 
 					float z_coord = -min_line.x * min_dist_to_center.y + min_line.y * min_dist_to_center.x;
-					sf::Vector2f n = {
+					sf::Vector2f _normalVector = {
 						min_line.y * z_coord,
 						-min_line.x * z_coord
 					};
 
-					n->*Normalize();
+					_normalVector = _normalVector->*Normalize();
 
+					std::cout << "x: " << _normalVector.x << " y: " << _normalVector.y << std::endl;
+
+					_normalVector *= -1.f;
+					transform->Location += _normalVector * min_h * -5.f * RADIUS;
+
+					_normalVector = _normalVector->*RotateRad(PI / 2);
 					
+
+					_normalVector *= speed_comp->Speed->*Length();
+					_normalVector *= _normalVector->*Cos(speed_comp->Speed);
+					speed_comp->Speed = { 0, 0 };
+					speed_comp->Speed += _normalVector;
+
+					/*
 
 					sf::Vector2f new_velocity = speed_comp->Speed - n * 2.f * n->*Dot(speed_comp->Speed);
 
 					speed_comp->Speed = new_velocity * 1.f;
 
-					transform->Location = transform->Location + n * (RADIUS - min_h);
+					transform->Location = transform->Location + n * (RADIUS - min_h);/**/
 				}
 			}
 		}

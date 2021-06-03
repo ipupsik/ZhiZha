@@ -11,7 +11,7 @@ void EndSystem::OnFixedUpdate() {
 	for (auto& [components, current_entity] : items) {
 		auto& [drop_current, transformCurrent] = components;
 		if (transformCurrent->Location.y > 2) {
-			_entities->DestroyEntity(*current_entity);
+			//_entities->DestroyEntity(*current_entity);
 		}
 	}
 
