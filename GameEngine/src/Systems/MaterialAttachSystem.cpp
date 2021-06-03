@@ -4,7 +4,7 @@
 
 void MaterialAttachSystem::OnInit()
 {
-    auto Entities = _entities->GetEntitiesBy<MaterialComponent>();
+    const auto& Entities = _entities->GetEntitiesBy<MaterialComponent>();
 
     for (const auto& it : Entities)
     {

@@ -1,42 +1,28 @@
-#include "Components/TransformComponent.h"
 #include "Components/MaterialComponent.h"
 #include "Components/RenderedComponent.h"
 #include "BackGround_InitSystem.h"
-#include "Components/MeshComponent.h"
 #include <random>
-#include <ctime>
-#include <Components/SpeedComponent.h>
-#include <ComponentDrop.h>
-#include <DefinesPhysics.h>
 #include "Components/LayerComponent.h"
 
-void BackGround_InitSystem::OnInit()
-{
+void BackGround_InitSystem::OnInit() {
 	//Initialize Enityty
-	Entity& BackGround = _entities->CreateEntity();
+	_background = &_entities->CreateEntity();
 
-	_entities->GetOrAddComponent<MeshComponent>(BackGround, [&](MeshComponent& c) {
-		c.Mesh = _resources.GetOrAddResource<MeshResource>("BackGround");
-		});
+	_entities->GetOrAddComponent<LayerComponent>(*_background, [](LayerComponent& c) {
+		c.Index = Background;
+	});
 
-	_entities->GetOrAddComponent<MaterialComponent>(BackGround, [&](MaterialComponent& c) {
-		c.VertexShader = _resources.GetOrAddResource<VertexShaderResource>("BackGround");
-		c.FragmentShader = _resources.GetOrAddResource<FragmentShaderResource>("BackGround");
-		c.Textures.emplace_back(_resources.GetOrAddResource<TextureResource>("lava.jpg"));
-		c.attributesCount = 2;
-		});
-
-	_entities->GetOrAddComponent<TransformComponent>(BackGround, [&](TransformComponent& c) {
-		c.Location = { 0.0, 0.0 };
-		c.Scale = { 1, 1 };
-		c.Angle = 0.0f;
-		c.parent = nullptr;
-		});
-
-	_entities->GetOrAddComponent<LayerComponent>(BackGround, [](LayerComponent& c) {
-		c.Index = Game;
+	_entities->GetOrAddComponent<RenderedComponent>(*_background, [&](RenderedComponent& c) {
+		auto texture = _resources.GetOrAddResource<TextureResource>("lava.jpg");
+		auto lava = new sf::Sprite(texture->Texture);
+		lava->setTextureRect({150, 0, 900, 900});
+		c.DrawableObj = lava;
 	});
 }
 
 BackGround_InitSystem::BackGround_InitSystem(ResourceManager& resources)
-	: _resources(resources) { }
+		:_resources(resources) { }
+
+void BackGround_InitSystem::OnSceneUnload(Scene scene) {
+	_entities->DestroyEntity(*_background);
+}

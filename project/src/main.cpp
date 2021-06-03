@@ -1,5 +1,4 @@
-#include "Systems/RenderSystem_HUD.h"
-#include "Systems/RenderSystem_Models.h"
+#include "Systems/RenderSystem.h"
 #include "Systems/EndSystem.h"
 #include "DefinesPhysics.h"
 #include "Zhizha_InitSystem.h"
@@ -64,14 +63,14 @@ int main() {
 	sf::Vector2f camera_location = { 0.0f, 0.0f };
 	float global_phi = 0;
 	std::vector views = {
+			window.getDefaultView(),  // background view
 			window.getDefaultView(), // game view
 			window.getDefaultView(), // gui view
-			window.getDefaultView()  // menu view
 	};
 
 	auto engine = new Engine(window);
 	engine->RegisterSystem<BackGround_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<MenuSystem>(views[Menu], *engine, window).BindToScene(Scene::Menu).UnbindFromScene(Scene::Main)
+		.RegisterSystem<MenuSystem>(*engine, window).BindToScene(Scene::Menu).UnbindFromScene(Scene::Main)
 		.RegisterSystem<Grass_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<SmallBrunch_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Tree_1_InitSystem>(engine->GetResourceManager())
@@ -83,13 +82,11 @@ int main() {
 		.RegisterSystem<Zhizha_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<ComplexCollision_InitSystem>()
-		.RegisterSystem<ComplexCollision_InitSystem>()
 		.RegisterSystem<MaterialAttachSystem>(window)
 
 		.RegisterSystem<EventSystem>(window, views[Game], *engine).BindStatic()
 		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager()).BindStatic()
-		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi).BindStatic()
-		.RegisterSystem<RenderSystem_HUD>(window, views).BindStatic()
+		.RegisterSystem<RenderSystem>(window, views, camera_location, global_phi).BindStatic()
 		.RegisterSystem<ButtonClickSystem>(window).BindStatic()
 
 		.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime(), global_phi)
@@ -99,7 +96,7 @@ int main() {
 		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
 		.RegisterSystem<ShiftDropsSystem>(engine->GetTime(), gravity)
-		.RegisterSystem<ComplexCollisionSystem>()
+//		.RegisterSystem<ComplexCollisionSystem>()
 		.RegisterSystem<ResetParamsSystem>(camera_location)
 		.RegisterSystem<CameraMovingSystem>(camera_location);
 

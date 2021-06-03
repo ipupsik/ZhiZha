@@ -20,7 +20,7 @@ void MenuSystem::OnInit() {
 		c.Sprite = new sf::Sprite(menuBackground->Texture);
 		c.Sprite->setPosition(0, 0);
 
-		_entities->GetOrAddComponent<LayerComponent>(backEntity).Index = Menu;
+		_entities->GetOrAddComponent<LayerComponent>(backEntity).Index = Background;
 		_entities->GetOrAddComponent<RenderedComponent>(backEntity).DrawableObj = c.Sprite;
 	});
 
@@ -28,7 +28,7 @@ void MenuSystem::OnInit() {
 		c.Sprite = new sf::Sprite(menuStart->Texture);
 		c.Sprite->setPosition(330, 300);
 
-		_entities->GetOrAddComponent<LayerComponent>(startEntity).Index = Menu;
+		_entities->GetOrAddComponent<LayerComponent>(startEntity).Index = Gui;
 		_entities->GetOrAddComponent<RenderedComponent>(startEntity).DrawableObj = c.Sprite;
 
 		_entities->GetOrAddComponent<ButtonComponent>(startEntity, [&](ButtonComponent& cc) {
@@ -44,7 +44,7 @@ void MenuSystem::OnInit() {
 		c.Sprite = new sf::Sprite(menuExit->Texture);
 		c.Sprite->setPosition(380, 400);
 
-		_entities->GetOrAddComponent<LayerComponent>(endEntity).Index = Menu;
+		_entities->GetOrAddComponent<LayerComponent>(endEntity).Index = Gui;
 		_entities->GetOrAddComponent<RenderedComponent>(endEntity).DrawableObj = c.Sprite;
 
 		_entities->GetOrAddComponent<ButtonComponent>(endEntity, [&](ButtonComponent& cc) {
