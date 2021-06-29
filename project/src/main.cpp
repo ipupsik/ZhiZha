@@ -133,14 +133,6 @@ int main() {
 	auto window = sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "ZhiZha",
 			sf::Style::Close | sf::Style::Titlebar, settings);
 
-	int exit_code;
-	show_menu(window, &exit_code);
-
-	if (exit_code == 2)
-	{
-		return 0;
-	}
-
 	gladLoadGL();
 
 	sf::Vector2f gravity = { 0, G / 20 };
@@ -154,40 +146,12 @@ int main() {
 	views.at(Game).zoom(3);
 
 	auto engine = new Engine(window);
-	engine->RegisterSystem<BackGround_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<Grass_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<SmallBrunch_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<Tree_1_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<Tree_2_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<Tree_3_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<Stone_1_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<Stone_2_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<SmallSkull_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<Zhizha_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<ComplexCollision_InitSystem>()
-		//.RegisterSystem<ZhizhaVolume_InitSystem>(engine->GetResourceManager())
-		.RegisterSystem<ComplexCollision_InitSystem>()
-
+	engine->RegisterSystem<Map_InitSystem>(engine->GetResourceManager())
 		.RegisterSystem<MaterialAttachSystem>(window)
 		.RegisterSystem<RotateSystem>(views[Game], gravity, engine->GetTime(), global_phi)
 		.RegisterSystem<EventSystem>(window, views[Game])
-		.RegisterSystem<FPSSystem>(engine->GetTime(), engine->GetResourceManager())
-
-		//.RegisterSystem<FormZhizhaVolume_System>()
 		.RegisterSystem<RenderSystem_Models>(window, views, camera_location, global_phi)
-		.RegisterSystem<RenderSystem_HUD>(window, views)
-		//.RegisterSystem<ZhizhaDraw_System>(window, views, camera_location, global_phi)
+		.RegisterSystem<RenderSystem_HUD>(window, views);
 
-		.RegisterSystem<CollisionSystem>()
-		.RegisterSystem<UnionDropsSystem>(window)
-		.RegisterSystem<FormZhizhaVolume_System>()
-		.RegisterSystem<GravitationSystem>(engine->GetTime(), gravity)
-		.RegisterSystem<ForceCalculationSystem>(engine->GetTime(), gravity)
-		//.RegisterSystem<ComplexCollisionSystem>()
-		.RegisterSystem<ShiftDropsSystem>(engine->GetTime(), gravity)
-		.RegisterSystem<ResetParamsSystem>(camera_location)
-		.RegisterSystem<CameraMovingSystem>(camera_location);
-//		.RegisterSystem<EndSystem>(engine->GetTime());
 	engine->Start();
 }
