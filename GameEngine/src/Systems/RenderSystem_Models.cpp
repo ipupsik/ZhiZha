@@ -11,14 +11,13 @@
 #include "glm/gtc/type_ptr.hpp"
 
 void RenderSystem_Models::OnPostUpdate() {
-	const auto& items = _entities->GetEntitiesBy<MaterialComponent, MeshComponent, TransformComponent>();
+	const auto& items = _entities->GetEntitiesBy<MaterialComponent, MeshComponent, MyTransformComponent>();
 
 	for (auto& [components, entity] : items) {
 		glPushMatrix();
 		auto& [material, mesh, transform] = components;
 		if (_entities->HasComponent<GlobalRotation_Component>(*entity))
-			glRotatef(_phi, 0, 0, 1);
-		glTranslatef(_camera_location.x, _camera_location.y, 0);
+			glRotatef(_phi, 1, 0, 0);
 		glUseProgram(material->_materialId);
 
 		//Attach all textures
@@ -38,14 +37,14 @@ void RenderSystem_Models::OnPostUpdate() {
 			glm::vec4(0.0f, 0.0f, 1.0f, 0.0f),
 			glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)
 		);
-		const TransformComponent* TmpParent = transform;
+		const MyTransformComponent* TmpParent = transform;
 		while (TmpParent)
 		{
 			glPushMatrix();
 			{
-				glTranslatef(TmpParent->Location.x, TmpParent->Location.y, 0);
+				glTranslatef(TmpParent->Location.x, TmpParent->Location.y, TmpParent->Location.z);
 
-				glScalef(TmpParent->Scale.x, TmpParent->Scale.y, 1);
+				glScalef(TmpParent->Scale.x, TmpParent->Scale.y, TmpParent->Scale.z);
 				glRotatef(TmpParent->Angle, 0, 0, 1);
 				float transMatrix[16];
 				glGetFloatv(GL_MODELVIEW_MATRIX, transMatrix);

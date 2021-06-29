@@ -6,10 +6,8 @@
 void Engine::initRenderThread() {
 	_window.setActive(true);
 
-	glOrtho(-1.4, 1.4, -1.4, 1.4, -1, 8);
-
 	while (_window.isOpen()) {
-		_window.clear(sf::Color { 0, 0, 0, 255 });
+		_window.clear(sf::Color { 50, 0, 100, 255 });
 		_systemManager->Update();
 		_systemManager->PostUpdate();
 		_window.display();

@@ -18,7 +18,7 @@ void RotateSystem::OnUpdate() {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		_dphi = 900 / 1000.0f * 100;
 
-	_phi += _dphi * _time.DeltaTime();
+	_phi += _dphi * _time.DeltaTime() * 0.1 * 3;
 	
 	_gravitation = sf::Vector2f{0, -G / 20}->*RotateDeg(-_phi);
 }
